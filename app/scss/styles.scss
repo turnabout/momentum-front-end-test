@@ -1,0 +1,38 @@
+// Core variables and mixins
+@import "partials/variables";
+
+
+body {
+	background: $white;
+	color: $orange;
+}
+
+.testing {
+	color: darken(#449955, 10%);
+	background: $white;
+	width: 90%;
+}
+
+.slide-in {
+  animation-duration: 3s;
+  animation-name: slidein;
+	font-feature-settings: "liga", "dlig";
+}
+
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 300%; 
+    transform: rotate(30deg);
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+    transform: rotate(0deg);
+  }
+}
+
+.element {
+	appearance: none;
+}
