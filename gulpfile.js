@@ -1,15 +1,15 @@
-var gulp = require('gulp'),
-	sass = require('gulp-sass'),
-	gulpIf = require('gulp-if'),
-	cssnano = require('gulp-cssnano'),
-	uglify = require('gulp-uglify'),
-	imagemin = require('gulp-imagemin'),
-	browserSync = require('browser-sync').create(),
-	useref = require('gulp-useref'),
-	cache = require('gulp-cache'),
-	del = require('del'),
-	runSequence = require('run-sequence'),
-	autoprefixer = require('gulp-autoprefixer');
+var gulp = require('gulp');
+var	sass = require('gulp-sass');
+var	gulpIf = require('gulp-if');
+var	cssnano = require('gulp-cssnano');
+var	uglify = require('gulp-uglify');
+var	imagemin = require('gulp-imagemin');
+var	browserSync = require('browser-sync').create();
+var	useref = require('gulp-useref');
+var	cache = require('gulp-cache');
+var	del = require('del');
+var	runSequence = require('run-sequence');
+var	autoprefixer = require('gulp-autoprefixer');
 
 
 // Development tasks
