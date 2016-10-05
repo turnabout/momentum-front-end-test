@@ -2,9 +2,9 @@
 // Login page
 // 
 
-body.login {
-	@include gradient-x($start-color: $primary, $end-color: lighten($primary, 2%), $start-percent: 0%, $end-percent: 100%);
 
+
+.login.page {
 	h1 {
 		font-size: 32px;
 		text-align: center;
