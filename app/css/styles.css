@@ -34,6 +34,39 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; }
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit; }
+
+@-ms-viewport {
+  width: device-width; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: .5rem;
+  font-family: Georgia, Times, "Times New Roman", serif; }
+
+button {
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  overflow: visible;
+  padding: 0;
+  cursor: hand; }
+  button:focus {
+    outline: none; }
+
+button::-moz-focus-inner {
+  border: 0;
+  padding: 0; }
+
 .container {
   margin-left: auto;
   margin-right: auto;
@@ -1576,39 +1609,6 @@ button.list-group-item-danger {
 .list-group-item-text {
   margin-bottom: 0;
   line-height: 1.3; }
-
-html {
-  box-sizing: border-box;
-  font-size: 16px;
-  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; }
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit; }
-
-@-ms-viewport {
-  width: device-width; }
-
-h1, h2, h3, h4, h5, h6 {
-  margin-bottom: .5rem;
-  font-family: Georgia, Times, "Times New Roman", serif; }
-
-button {
-  background: none;
-  border: 0;
-  color: inherit;
-  font: inherit;
-  line-height: normal;
-  overflow: visible;
-  padding: 0;
-  cursor: hand; }
-  button:focus {
-    outline: none; }
-
-button::-moz-focus-inner {
-  border: 0;
-  padding: 0; }
 
 body {
   background: #fefefd;

@@ -1,12 +1,12 @@
 // Base
-@import "partials/reset";
-@import "partials/variables";
+@import "partials/base/variables";
+@import "partials/base/reset";
+@import "partials/base/base";
 
 // Bootstrap
 @import "partials/bootstrap/bootstrap";
 
 // App SCSS
-@import "partials/base";
 
 
 
