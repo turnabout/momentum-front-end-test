@@ -6,11 +6,19 @@
 @import "partials/base/base";
 
 // App SCSS
+@import "partials/pages";
+@import "partials/fields";
+@import "partials/login";
 
 
 
 
-body {
-	background: $white;
-	color: $text-color;
+::selection {
+  background: $primary;
+  color: #fff;
+}
+
+::-moz-selection {
+  background: $primary;
+  color: #fff;
 }

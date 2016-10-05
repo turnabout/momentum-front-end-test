@@ -1,0 +1,42 @@
+// 
+// Login page
+// 
+
+body.login {
+
+	@include gradient-x($start-color: $primary, $end-color: lighten($primary, 2%), $start-percent: 0%, $end-percent: 100%);
+
+	h1 {
+		color: #fff;
+
+		span.line {
+			display: block;
+
+			&:first-child {
+				font-size: 40px;
+			}
+		}
+	}
+}
+
+.login-box {
+	background: #fefefe;
+	border-radius: $border-radius;
+	max-width: 500px;
+
+	.title {
+		color: $primary;
+		font-size: 28px;
+		text-align: center;
+	}
+
+	.login.field {
+		display: block;
+		max-width: none;
+		width: 100%;
+	}
+
+	.btn {
+		font-size: 21px;
+	}
+}
