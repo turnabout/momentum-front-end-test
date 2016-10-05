@@ -1589,7 +1589,7 @@ button.list-group-item-danger {
   border: 1px solid transparent;
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  border-radius: 0.25rem; }
+  border-radius: 0.4rem; }
   .btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .btn.active.focus {
     outline: 5px auto -webkit-focus-ring-color;
     outline-offset: -2px; }
@@ -2265,7 +2265,7 @@ h1 {
   padding: 0 5px;
   color: #818a91;
   border: 1px solid #818a91;
-  border-radius: 0.25rem; }
+  border-radius: 0.4rem; }
   .field:focus {
     outline: none;
     border-color: #2E4172;
@@ -2284,7 +2284,7 @@ body.login {
 
 .login-box {
   background: #fefefe;
-  border-radius: 0.25rem;
+  border-radius: 0.4rem;
   max-width: 500px; }
   .login-box .title {
     color: #2E4172;
@@ -2296,6 +2296,9 @@ body.login {
     width: 100%; }
   .login-box .btn {
     font-size: 21px; }
+
+body {
+  color: #201f1f; }
 
 ::selection {
   background: #2E4172;

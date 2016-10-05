@@ -9,13 +9,34 @@ $white: #fefefd;
 $primary: #2E4172;
 $primary-light: #4F628E;
 
-$text-color: #1f1f1f;
+$text-color: #201f1f;
 $brand-primary: $primary;
 
 
 
 // Spacing
-// $spacer: 15px;
+$spacer:   1rem;
+$spacer-x: $spacer;
+$spacer-y: $spacer;
+$spacers: (
+  0: (
+    x: 0,
+    y: 0
+  ),
+  1: (
+    x: $spacer-x,
+    y: $spacer-y
+  ),
+  2: (
+    x: ($spacer-x * 2),
+    y: ($spacer-y * 2)
+  ),
+  3: (
+    x: ($spacer-x * 3),
+    y: ($spacer-y * 3)
+  )
+);
+$border-width: 1px;
 
 
 
@@ -39,6 +60,13 @@ $grid-breakpoints: (
 $font-family-text: Arial, "Helvetica Neue", Helvetica, sans-serif;
 $font-family-titles: Georgia, Times, "Times New Roman", serif;
 $base-font-size: 16px;
+
+
+
+// Components
+$border-radius:          .40rem;
+$border-radius-lg:       .3rem;
+$border-radius-sm:       .2rem;
 
 
 
