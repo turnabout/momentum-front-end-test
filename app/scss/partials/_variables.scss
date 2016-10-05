@@ -1,0 +1,43 @@
+// 
+// Variables used throughout project
+// 
+
+
+
+// Colors
+$white: #fefefd;
+$primary: #dd3333;
+$text-color: #1f1f1f;
+
+
+
+// Spacing
+$spacer: 15px;
+
+
+
+// Grid breakpoints
+$grid-breakpoints: (
+  // Extra small screen / phone
+  xs: 0,
+  // Small screen / phone
+  sm: 544px,
+  // Medium screen / tablet
+  md: 768px,
+  // Large screen / desktop
+  lg: 992px,
+  // Extra large screen / wide desktop
+  xl: 1200px
+);
+
+
+
+// Typography
+$font-family-text: Arial, "Helvetica Neue", Helvetica, sans-serif;
+$font-family-titles: Georgia, Times, "Times New Roman", serif;
+$base-font-size: 16px;
+
+
+
+// App
+$chars-cols-per-page: 16;

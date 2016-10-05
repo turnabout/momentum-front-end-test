@@ -1,0 +1,62 @@
+// 
+// Base starting styles
+// 
+
+html {
+  box-sizing: border-box;
+  font-size: $base-font-size;
+  font-family: $font-family-text;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+
+
+// Make viewport responsive
+// 
+// For support with IE10
+@at-root {
+  @-ms-viewport { width: device-width; }
+}
+
+
+
+// 
+// Typography
+// 
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: .5rem;
+  font-family: $font-family-titles;
+}
+
+
+
+// 
+// Reset button style
+// 
+button {
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    padding: 0;
+    cursor: hand;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+
+
