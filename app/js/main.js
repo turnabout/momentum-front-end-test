@@ -24,11 +24,11 @@ var momentumModule = (function momentumModule() {
 	 */
 	function getJSON(url, callback) {
 		var oReq = new XMLHttpRequest();
-		
+
 		oReq.addEventListener('load', function returnParsedJSON() {
 			callback( JSON.parse(this.responseText) );
 		});
-		
+
 		oReq.open('GET', url);
 		oReq.send();
 	}
@@ -38,38 +38,54 @@ var momentumModule = (function momentumModule() {
 	 * @param {Event} event - The event.
 	 */
 	function login(event) {
-		var loginField = document.getElementById('login-field');
-		var loginAlert = document.getElementById('login-alert');
-		var loginBox = document.getElementById('login-box');
-		var loginBtn = document.getElementById('login-btn');
-		var username = loginField.value;
+
+		// Store references to used elements
+		var elems = {
+			loginField: document.getElementById('login-field'),
+			loginAlert: document.getElementById('login-alert'),
+			loginBox: document.getElementById('login-box'),
+			loginBtn: document.getElementById('login-btn')
+		};
+
+		var username = elems.loginField.value;
 
 		if(username) {
-
 			// Disable the form
-			loginField.setAttribute('disabled', 'disabled');
-			loginBtn.setAttribute('disabled', 'disabled');
+			elems.loginField.setAttribute('disabled', 'disabled');
+			elems.loginBtn.setAttribute('disabled', 'disabled');
 
-			getJSON(`http://jsonplaceholder.typicode.com/users?username=${username}`, function (result) {
+			getJSON(`http://jsonplaceholder.typicode.com/users?username=${username}`, function processResult(result) {
+
 				if(result.length > 0) {
 					// Username exists, clear any previous error and log in
 					user = result[0];
+					elems.loginAlert.innerHTML = `Logging in as "${username}".`;
+
+					prepareLoggedInPage(user);
 				} else {
 					// Username does not exist, display error message
-					loginAlert.innerHTML = `Username "${username}" does not exist.`;
-					loginAlert.classList.add('active');
-					loginBox.classList.add('error');
+					elems.loginAlert.innerHTML = `Username "${username}" does not exist.`;
+					elems.loginAlert.classList.add('active');
+					elems.loginBox.classList.add('error');
 
 					// Enable form and focus back on field
-					loginField.removeAttribute('disabled', 'disabled');
-					loginBtn.removeAttribute('disabled', 'disabled');
-					loginField.focus();
-
+					elems.loginField.removeAttribute('disabled', 'disabled');
+					elems.loginBtn.removeAttribute('disabled', 'disabled');
+					elems.loginField.focus();
 				}
+				
 			});
 		}
-
 		event.preventDefault();
+	}
+
+	/**
+	 * 
+	 * @param {Number} a 
+	 * @return {Number} sum
+	 */
+	function prepareLoggedInPage(user) {
+		
 	}
 
 	return {
