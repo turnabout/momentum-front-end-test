@@ -1,7 +1,7 @@
 @import "fadeOut";
 
 .animated {
-  animation-duration: 1s;
+  animation-duration: $animations-duration;
   animation-fill-mode: both;
 }
 
