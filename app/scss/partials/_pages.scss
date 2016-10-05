@@ -13,3 +13,11 @@ h1 {
 		&:last-child { font-size: 33px; }
 	}
 }
+
+.page {
+	display: none;
+
+	&.active {
+		display: block;
+	}
+}

@@ -2290,6 +2290,11 @@ h1 {
     h1 .line:last-child {
       font-size: 33px; }
 
+.page {
+  display: none; }
+  .page.active {
+    display: block; }
+
 .field {
   font-size: 16px;
   box-shadow: inset 0 1px 2px rgba(203, 203, 210, 0.4);
