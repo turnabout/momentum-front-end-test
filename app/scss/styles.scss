@@ -1,10 +1,9 @@
 // Base
-@import "partials/base/variables";
 @import "partials/base/reset";
-@import "partials/base/base";
-
-// Bootstrap
+@import "partials/bootstrap/variables";
+@import "partials/variables";
 @import "partials/bootstrap/bootstrap";
+@import "partials/base/base";
 
 // App SCSS
 
