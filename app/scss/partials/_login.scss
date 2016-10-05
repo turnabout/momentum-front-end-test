@@ -8,21 +8,13 @@ body.login {
 
 	h1 {
 		color: #fff;
-
-		span.line {
-			display: block;
-
-			&:first-child {
-				font-size: 40px;
-			}
-		}
 	}
 }
 
 .login-box {
 	background: #fefefe;
 	border-radius: $border-radius;
-	max-width: 500px;
+	max-width: 368px;
 
 	.title {
 		color: $primary;
