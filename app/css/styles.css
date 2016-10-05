@@ -2309,21 +2309,17 @@ h1 {
     border-color: #4F628E;
     color: #4F628E; }
 
-body.login {
-  background-image: linear-gradient(to right, #2E4172 0%, #314579 100%);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF2E4172', endColorstr='#FF314579', GradientType=1); }
-  body.login h1 {
-    font-size: 32px;
-    text-align: center;
-    text-transform: uppercase;
-    color: #fff; }
-    body.login h1 .line {
-      display: block; }
-      body.login h1 .line:first-child {
-        font-size: 42px; }
-      body.login h1 .line:last-child {
-        font-size: 33px; }
+.login.page h1 {
+  font-size: 32px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff; }
+  .login.page h1 .line {
+    display: block; }
+    .login.page h1 .line:first-child {
+      font-size: 42px; }
+    .login.page h1 .line:last-child {
+      font-size: 33px; }
 
 .login-box {
   background: #fefefe;
@@ -2352,7 +2348,10 @@ body.login {
       border-color: #4F628E; }
 
 body {
-  color: #201f1f; }
+  color: #201f1f;
+  background-image: linear-gradient(to right, #2E4172 0%, #314579 100%);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF2E4172', endColorstr='#FF314579', GradientType=1); }
 
 ::selection {
   background: #2E4172;
