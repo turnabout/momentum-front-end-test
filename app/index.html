@@ -12,7 +12,7 @@
 
 	<div id="login-page" class="login page active">
 		<div class="container">
-			<h1 class="m-y-3"><span class="line">Momentum</span> <span class="line">Front-End App</span></h1>
+			<h1 class="main-title m-y-3"><span class="line">Momentum</span> <span class="line">Front-End App</span></h1>
 
 			<div id="login-box" class="login-box p-a-1 m-x-auto">
 				<div class="inner p-a-2">
@@ -27,8 +27,20 @@
 		</div>
 	</div>
 
-	<div id="main-page" class="main page dashboard-page">
-		<div class="title"><span class="line">Momentum</span> <span class="line">Front-End App</span></div>
+	<div id="dashboard" class="dashboard page">
+		<div id="main" class="dashboard-part main">
+			<div class="main-title"><span class="line">Momentum</span> <span class="line">Front-End App</span></div>
+
+			<div class="list-group main-menu">
+				<div class="list-group-item title">Your content</div>
+				<a href="#" class="list-group-item list-group-item-action">Your Posts (<span class="count"></span>)</a>
+				<a href="#" class="list-group-item list-group-item-action">Your Albums (<span class="count"></span>)</a>
+
+				<div class="list-group-item title">All content</div>
+				<a href="#" class="list-group-item list-group-item-action disabled">Posts (<span class="count"></span>)</a>
+			</div>
+
+		</div>
 	</div>
 
 	<!-- build:js js/main.min.js -->

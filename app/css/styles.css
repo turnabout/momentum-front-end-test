@@ -43,7 +43,7 @@ table {
     content: "";
     display: table;
     clear: both; }
-  @media (min-width: 544px) {
+  @media (min-width: 310px) {
     .container {
       max-width: 576px; } }
   @media (min-width: 768px) {
@@ -73,7 +73,7 @@ table {
     content: "";
     display: table;
     clear: both; }
-  @media (min-width: 544px) {
+  @media (min-width: 310px) {
     .row {
       margin-right: -15px;
       margin-left: -15px; } }
@@ -95,7 +95,7 @@ table {
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px; }
-  @media (min-width: 544px) {
+  @media (min-width: 310px) {
     .col-xs, .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12, .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12 {
       padding-right: 15px;
       padding-left: 15px; } }
@@ -271,7 +271,7 @@ table {
 .offset-xs-11 {
   margin-left: 91.66667%; }
 
-@media (min-width: 544px) {
+@media (min-width: 310px) {
   .col-sm-1 {
     float: left;
     width: 8.33333%; }
@@ -736,7 +736,7 @@ table {
     content: "";
     display: table;
     clear: both; }
-  @media (min-width: 544px) {
+  @media (min-width: 310px) {
     .container {
       max-width: 576px; } }
   @media (min-width: 768px) {
@@ -766,7 +766,7 @@ table {
     content: "";
     display: table;
     clear: both; }
-  @media (min-width: 544px) {
+  @media (min-width: 310px) {
     .row {
       margin-right: -15px;
       margin-left: -15px; } }
@@ -788,7 +788,7 @@ table {
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px; }
-  @media (min-width: 544px) {
+  @media (min-width: 310px) {
     .col-xs, .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12, .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12 {
       padding-right: 15px;
       padding-left: 15px; } }
@@ -964,7 +964,7 @@ table {
 .offset-xs-11 {
   margin-left: 91.66667%; }
 
-@media (min-width: 544px) {
+@media (min-width: 310px) {
   .col-sm-1 {
     float: left;
     width: 8.33333%; }
@@ -2280,15 +2280,15 @@ a {
 .animated.bounceOut {
   animation-duration: .75s; }
 
-h1 {
+.main-title {
   font-size: 32px;
   text-align: center;
   text-transform: uppercase; }
-  h1 .line {
+  .main-title .line {
     display: block; }
-    h1 .line:first-child {
+    .main-title .line:first-child {
       font-size: 42px; }
-    h1 .line:last-child {
+    .main-title .line:last-child {
       font-size: 33px; }
 
 .page {
@@ -2309,17 +2309,8 @@ h1 {
     border-color: #4F628E;
     color: #4F628E; }
 
-.login.page h1 {
-  font-size: 32px;
-  text-align: center;
-  text-transform: uppercase;
+.login.page .main-title {
   color: #fff; }
-  .login.page h1 .line {
-    display: block; }
-    .login.page h1 .line:first-child {
-      font-size: 42px; }
-    .login.page h1 .line:last-child {
-      font-size: 33px; }
 
 .login-box {
   background: #fefefe;
@@ -2346,6 +2337,17 @@ h1 {
     border: 1px solid #d9534f; }
     .login-box.error .login.field:focus {
       border-color: #4F628E; }
+
+.dashboard.page {
+  background: #fefefd;
+  height: 100%; }
+  .dashboard.page .main-title {
+    text-align: left;
+    padding: 0.75rem 1.25rem; }
+    .dashboard.page .main-title .line:first-child {
+      font-size: 23px; }
+    .dashboard.page .main-title .line:last-child {
+      font-size: 17px; }
 
 body {
   color: #201f1f;

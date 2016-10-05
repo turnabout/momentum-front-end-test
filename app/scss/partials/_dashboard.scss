@@ -1,0 +1,17 @@
+// 
+// Dashboard
+// 
+
+.dashboard.page {
+	background: $white;
+	height: 100%;
+
+	// Top title
+	.main-title {
+		text-align: left;
+		padding: $list-group-item-padding-y $list-group-item-padding-x;
+
+		.line:first-child {font-size: 23px;}
+		.line:last-child  {font-size: 17px;}
+	}
+}

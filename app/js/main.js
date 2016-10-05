@@ -61,8 +61,8 @@ var momentumModule = (function momentumModule() {
 					elems.loginAlert.classList.remove('active');
 					elems.loginBox.classList.remove('error');
 					
-					// Fade login page out
-					animateElem(elems.loginPage, 'fadeOut', function () {
+					// Fade login page out and load dashboard
+					animateElem(elems.loginPage, 'fadeOut', function switchToDashboard() {
 						elems.loginPage.classList.remove('active');
 						prepareDashboard(user);
 					});
@@ -89,7 +89,9 @@ var momentumModule = (function momentumModule() {
 	 * @param {Object} user - The current user.
 	 */
 	function prepareDashboard(user) {
+		document.getElementById('dashboard').classList.add('active');
 		console.log('here come dat boi');
+
 	}
 
 	/**
