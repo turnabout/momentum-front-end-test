@@ -19,20 +19,6 @@ body.login {
 	}
 }
 
-.login.page {
-
-	&.logged-in {
-	    color: #FFFFFF;
-	    text-align: center;
-
-	    -webkit-transition: opacity 3s ease-in-out;
-	    -moz-transition: opacity 3s ease-in-out;
-	    -ms-transition: opacity 3s ease-in-out;
-	    -o-transition: opacity 3s ease-in-out;
-	     opacity: 1;
-	}
-}
-
 .login-box {
 	background: #fefefe;
 	border-radius: $border-radius;
