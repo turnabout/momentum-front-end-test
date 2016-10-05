@@ -1,3 +1,2 @@
-# Gulp for Webapps Demo
+# Momentum Front-end Test
 
-This showcases Gulp & Gulp plugins usage in a full generic webapp.
