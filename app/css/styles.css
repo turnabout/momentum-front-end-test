@@ -2254,6 +2254,31 @@ button::-moz-focus-inner {
 a {
   text-decoration: none; }
 
+@keyframes fadeOut {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0; } }
+
+.fadeOut {
+  animation-name: fadeOut; }
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both; }
+
+.animated.infinite {
+  animation-iteration-count: infinite; }
+
+.animated.hinge {
+  animation-duration: 2s; }
+
+.animated.flipOutX,
+.animated.flipOutY,
+.animated.bounceIn,
+.animated.bounceOut {
+  animation-duration: .75s; }
+
 h1 {
   font-size: 32px;
   text-align: center;
@@ -2283,7 +2308,25 @@ body.login {
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF2E4172', endColorstr='#FF314579', GradientType=1); }
   body.login h1 {
+    font-size: 32px;
+    text-align: center;
+    text-transform: uppercase;
     color: #fff; }
+    body.login h1 .line {
+      display: block; }
+      body.login h1 .line:first-child {
+        font-size: 42px; }
+      body.login h1 .line:last-child {
+        font-size: 33px; }
+
+.login.page.logged-in {
+  color: #FFFFFF;
+  text-align: center;
+  -webkit-transition: opacity 3s ease-in-out;
+  -moz-transition: opacity 3s ease-in-out;
+  -ms-transition: opacity 3s ease-in-out;
+  -o-transition: opacity 3s ease-in-out;
+  opacity: 1; }
 
 .login-box {
   background: #fefefe;

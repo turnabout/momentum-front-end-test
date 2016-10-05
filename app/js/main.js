@@ -13,8 +13,6 @@ var momentumModule = (function momentumModule() {
 	 function init() {
 	 	// Attach login function to login form
 	 	document.getElementById('login').addEventListener('submit', login);
-
-
 	 }
 
 	/**
@@ -34,7 +32,7 @@ var momentumModule = (function momentumModule() {
 	}
 
 	/**
-	 * Attempt to log user in on form submit.
+	 * Attempt to log in user on form submit.
 	 * @param {Event} event - The event.
 	 */
 	function login(event) {
@@ -44,7 +42,8 @@ var momentumModule = (function momentumModule() {
 			loginField: document.getElementById('login-field'),
 			loginAlert: document.getElementById('login-alert'),
 			loginBox: document.getElementById('login-box'),
-			loginBtn: document.getElementById('login-btn')
+			loginBtn: document.getElementById('login-btn'),
+			loginPage: document.getElementById('login-page')
 		};
 
 		var username = elems.loginField.value;
@@ -57,11 +56,16 @@ var momentumModule = (function momentumModule() {
 			getJSON(`http://jsonplaceholder.typicode.com/users?username=${username}`, function processResult(result) {
 
 				if(result.length > 0) {
-					// Username exists, clear any previous error and log in
+					// Username exists, clear any previous error and show the "dashboard"
 					user = result[0];
-					elems.loginAlert.innerHTML = `Logging in as "${username}".`;
+					elems.loginAlert.classList.remove('active');
+					elems.loginBox.classList.remove('error');
+					
+					// Fade login page out
+					animateElem(elems.loginPage, 'fadeOut', function () {
+						prepareDashboard(user);
+					});
 
-					prepareLoggedInPage(user);
 				} else {
 					// Username does not exist, display error message
 					elems.loginAlert.innerHTML = `Username "${username}" does not exist.`;
@@ -80,12 +84,22 @@ var momentumModule = (function momentumModule() {
 	}
 
 	/**
-	 * 
-	 * @param {Number} a 
-	 * @return {Number} sum
+	 * Prepare the "dashboard" for the logged-in user.
+	 * @param {Object} user - The current user.
 	 */
-	function prepareLoggedInPage(user) {
-		
+	function prepareDashboard(user) {
+		console.log('here come dat boi');
+	}
+
+	/**
+	 * Animate an element.
+	 * @param {Object} element - The element to fade.
+	 * @param {String} animationName - The name of the animation. Translates to a css class.
+	 * @param {Function} callback - Function to call once fade is done.
+	 */
+	function animateElem(element, transitionName, callback) {
+		element.classList.add(transitionName, 'animated');
+		element.addEventListener('animationend', callback);
 	}
 
 	return {

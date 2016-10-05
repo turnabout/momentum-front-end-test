@@ -6,7 +6,30 @@ body.login {
 	@include gradient-x($start-color: $primary, $end-color: lighten($primary, 2%), $start-percent: 0%, $end-percent: 100%);
 
 	h1 {
+		font-size: 32px;
+		text-align: center;
+		text-transform: uppercase;
 		color: #fff;
+
+		.line {
+			display: block;
+			&:first-child { font-size: 42px; }
+			&:last-child { font-size: 33px; }
+		}
+	}
+}
+
+.login.page {
+
+	&.logged-in {
+	    color: #FFFFFF;
+	    text-align: center;
+
+	    -webkit-transition: opacity 3s ease-in-out;
+	    -moz-transition: opacity 3s ease-in-out;
+	    -ms-transition: opacity 3s ease-in-out;
+	    -o-transition: opacity 3s ease-in-out;
+	     opacity: 1;
 	}
 }
 
