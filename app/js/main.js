@@ -63,6 +63,7 @@ var momentumModule = (function momentumModule() {
 					
 					// Fade login page out
 					animateElem(elems.loginPage, 'fadeOut', function () {
+						elems.loginPage.classList.remove('active');
 						prepareDashboard(user);
 					});
 
@@ -99,7 +100,11 @@ var momentumModule = (function momentumModule() {
 	 */
 	function animateElem(element, transitionName, callback) {
 		element.classList.add(transitionName, 'animated');
-		element.addEventListener('animationend', callback);
+
+		element.addEventListener('animationend', function afterAnimationEnd(e) {
+			element.classList.remove(transitionName, 'animated');
+			callback();
+		});
 	}
 
 	return {
