@@ -82,9 +82,9 @@ $btn-primary-color:              #fff;
 $btn-primary-bg:                 $brand-primary;
 $btn-primary-border:             $btn-primary-bg;
 
-$btn-secondary-color:            $gray-dark;
-$btn-secondary-bg:               #fff;
-$btn-secondary-border:           #ccc;
+$btn-secondary-color:            #fff;
+$btn-secondary-bg:               $primary-light;
+$btn-secondary-border:           $btn-secondary-bg;
 
 $btn-info-color:                 #fff;
 $btn-info-bg:                    $brand-info;
