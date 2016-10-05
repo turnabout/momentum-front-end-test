@@ -13,13 +13,13 @@
 		<h1 class="m-y-3"><span class="line">Momentum</span> <span class="line">Front-end App</span></h1>
 
 		<div class="login page">
-			<div class="login-box p-a-1 m-x-auto">
+			<div id="login-box" class="login-box p-a-1 m-x-auto">
 				<div class="inner p-a-2">
 					<h3 class="title m-b-2">Log in to look at stuff!</h3>
 					<form action="" id="login">
-						<input type="text" class="login field" id="login-field" placeholder="Username" autofocus>
+						<input type="text" class="login field" id="login-field" placeholder="Username" maxlength="20" autofocus>
 						<div id="login-alert" class="alert"></div>
-						<button class="btn btn-block btn-secondary m-t-1" type="submit">Log in</button>
+						<button id="login-btn" class="btn btn-block btn-secondary m-t-1" type="submit">Log in</button>
 					</form>
 				</div>
 			</div>

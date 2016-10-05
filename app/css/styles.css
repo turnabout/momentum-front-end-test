@@ -2275,8 +2275,8 @@ h1 {
   border-radius: 0.4rem; }
   .field:focus {
     outline: none;
-    border-color: #354b84;
-    color: #354b84; }
+    border-color: #4F628E;
+    color: #4F628E; }
 
 body.login {
   background-image: linear-gradient(to right, #2E4172 0%, #314579 100%);
@@ -2299,6 +2299,17 @@ body.login {
     width: 100%; }
   .login-box .btn {
     font-size: 21px; }
+  .login-box .alert {
+    display: none;
+    font-size: 12px;
+    color: #d9534f;
+    margin: 6px 0 0 6px; }
+    .login-box .alert.active {
+      display: block; }
+  .login-box.error .login.field {
+    border: 1px solid #d9534f; }
+    .login-box.error .login.field:focus {
+      border-color: #4F628E; }
 
 body {
   color: #201f1f; }
