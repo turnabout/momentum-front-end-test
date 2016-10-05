@@ -23,17 +23,12 @@ var momentumModule = (function momentumModule() {
 	 * @param {Function} callback - The function to call once the JSON data is fetched.
 	 */
 	function getJSON(url, callback) {
-
-		/**
-		 * Parses the JSON file and passes it to a callback function.
-		 */
-		function returnParsedJSON() {
-			var data = JSON.parse(this.responseText);
-			callback(data);
-		}
-
 		var oReq = new XMLHttpRequest();
-		oReq.addEventListener('load', returnParsedJSON);
+		
+		oReq.addEventListener('load', function returnParsedJSON() {
+			callback( JSON.parse(this.responseText) );
+		});
+		
 		oReq.open('GET', url);
 		oReq.send();
 	}
@@ -54,7 +49,7 @@ var momentumModule = (function momentumModule() {
 			// Disable the form
 			loginField.setAttribute('disabled', 'disabled');
 			loginBtn.setAttribute('disabled', 'disabled');
-			
+
 			getJSON(`http://jsonplaceholder.typicode.com/users?username=${username}`, function (result) {
 				if(result.length > 0) {
 					// Username exists, clear any previous error and log in
