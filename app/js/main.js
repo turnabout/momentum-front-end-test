@@ -7,6 +7,8 @@ var momentumModule = (function momentumModule() {
 	var user = {};
 	var apiUrl = '';
 
+	
+
 	// Store all different requests to use to different pages
 	var requests = {
 		'userPosts': function (userId) { return `posts?userId=${userId}`; },
@@ -21,7 +23,7 @@ var momentumModule = (function momentumModule() {
 	 * @param {String} url - Base URL from which the API info is fetched.
 	 */
 	 function init(url) {
-	 	var dashboardMenuItems = document.getElementsByClassName('dashboard-menu-item');
+	 	var dashboardMenuItems = document.querySelectorAll('.dashboard-menu-item');
 	 	apiUrl = url;
 
 	 	// Add events to each dashboard menu items which request appropriate content and renders a page with it
