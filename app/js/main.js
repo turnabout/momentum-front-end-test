@@ -72,7 +72,8 @@ var momentumModule = (function momentumModule() {
 			loginAlert: document.getElementById('login-alert'),
 			loginBox: document.getElementById('login-box'),
 			loginBtn: document.getElementById('login-btn'),
-			loginPage: document.getElementById('login-page')
+			loginPage: document.getElementById('login-page'),
+			dashboard: document.getElementById('dashboard')
 		};
 
 		var username = elems.loginField.value;
@@ -91,9 +92,13 @@ var momentumModule = (function momentumModule() {
 					elems.loginBox.classList.remove('error');
 					
 					// Fade login page out and load dashboard
-					animateElem(elems.loginPage, 'fadeOut', function switchToDashboard() {
+					animateElem(elems.loginPage, 'fadeOut', function () {
 						elems.loginPage.classList.remove('active');
-						prepareDashboard(user);
+						elems.dashboard.classList.add('active');
+
+						animateElem(elems.dashboard, 'fadeInLeft', function () {
+							prepareDashboard(user);
+						});
 					});
 
 				} else {
@@ -125,14 +130,21 @@ var momentumModule = (function momentumModule() {
 
 		user = {};
 
-		// Fade dashboard out, login back in
-		animateElem(dashboard, 'fadeOut', function () {
+		// Prepare login page to be shown again
+		loginBtn.removeAttribute('disabled', 'disabled');
+		loginField.removeAttribute('disabled', 'disabled');
+		loginField.value = '';
+
+		// Fade dashboard out
+		animateElem(dashboard, 'fadeOutLeft', function () {
 			dashboard.classList.remove('active');
-			loginField.removeAttribute('disabled', 'disabled');
-			loginField.value = '';
-			loginBtn.removeAttribute('disabled', 'disabled');
 			loginPage.classList.add('active');
-			loginField.focus();
+
+			// Fade login page in
+			animateElem(loginPage, 'fadeIn', function () {
+				loginField.focus();				
+			});
+			
 		});
 
 		event.preventDefault();
@@ -167,10 +179,23 @@ var momentumModule = (function momentumModule() {
 	function animateElem(element, transitionName, callback) {
 		element.classList.add(transitionName, 'animated');
 
-		element.addEventListener('animationend', function afterAnimationEnd(e) {
+		addEventListenerOnce(element, 'animationend', function afterAnimationEnd(e) {
 			element.classList.remove(transitionName, 'animated');
 			callback();
 		});
+
+		/**
+		 * Add a one-time event listener.
+		 * @param {Object} target - The target element.
+		 * @param {String} type - The type of the event.
+		 * @param {Function} listener - The listener to attach to the event.
+		 */
+		function addEventListenerOnce(target, type, listener) {
+			target.addEventListener(type, function fn(event) {
+				target.removeEventListener(type, fn);
+				listener(event);
+			});
+		}
 	}
 
 	return {
