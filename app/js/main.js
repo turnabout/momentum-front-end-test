@@ -7,7 +7,7 @@ var momentumModule = (function momentumModule() {
 	var user = {};
 	var apiUrl = '';
 
-	// Store all different requests to use while loading different pages
+	// Store all different requests to use to different pages
 	var requests = {
 		'userPosts': function (userId) { return `posts?userId=${userId}`; },
 		'userAlbums': function (userId) { return `albums?userId=${userId}`; },
@@ -93,10 +93,7 @@ var momentumModule = (function momentumModule() {
 					
 					// Fade dashboard in
 					elems.dashboard.classList.add('active');
-
-					animateElem(elems.dashboard, 'fadeInLeft', function () {
-						
-					});
+					animateElem(elems.dashboard, 'fadeInLeft');
 
 					// Fade login page out
 					animateElem(elems.loginPage, 'fadeOut', function () {
@@ -170,6 +167,7 @@ var momentumModule = (function momentumModule() {
 	 * @param {Function} callback - Function to call once fade is done.
 	 */
 	function animateElem(element, transitionName, callback) {
+		callback = callback || function() {};
 		element.classList.add(transitionName, 'animated');
 
 		addEventListenerOnce(element, 'animationend', function afterAnimationEnd(e) {
