@@ -2356,7 +2356,7 @@ a {
   .dashboard.page .menu .title {
     color: #ddd;
     background: #2E4172; }
-  .dashboard.page .menu .list-group-item:focus, .dashboard.page .menu .list-group-item:active, .dashboard.page .menu .list-group-item:hover {
+  .dashboard.page .menu a.list-group-item:focus, .dashboard.page .menu a.list-group-item:active, .dashboard.page .menu a.list-group-item:hover {
     background: #4F628E;
     color: #fff; }
   .dashboard.page .logout {

@@ -24,7 +24,7 @@
 			background: $primary;
 		}
 
-		.list-group-item {
+		a.list-group-item {
 			@include hover-focus-active {
 				background: $primary-light;
 				color: #fff;
