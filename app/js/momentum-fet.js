@@ -36,17 +36,7 @@ var momentumModule = (function momentumModule() {
 
 	 	// Add events to each dashboard menu items which request appropriate content and renders a page with it
 	 	for (var i = 0; i < dashboardMenuItems.length; i++) {
-
-	 		addEvent(dashboardMenuItems[i], 'click', function () {
-				// Get request attached to this menu item
-				var request = requests[this.dataset.req](user.id);
-
-				// Request the content and render page with it
-				getJSON(request, function (result) {
-					renderDashboardPage(result, request);
-				});
-	 		});
-
+	 		addEvent(dashboardMenuItems[i], 'click', handleDashboardMenuClick);
 	 	}
 
 	 	// Add login/out events
@@ -68,6 +58,20 @@ var momentumModule = (function momentumModule() {
 
 		oReq.open('GET', `${apiUrl}/${request}`);
 		oReq.send();
+	}
+
+	/**
+	* Function fired when a dashboard menu item is clicked.
+	* @param {Event} event
+	*/
+	function handleDashboardMenuClick (event) {
+		// Get request attached to this menu item
+		var request = requests[this.dataset.req](user.id);
+
+		// Request the content and render page with it
+		getJSON(request, function (result) {
+			renderDashboardPage(result, request);
+		});
 	}
 
 	/**
