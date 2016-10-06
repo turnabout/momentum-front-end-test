@@ -5,7 +5,7 @@
 var momentumModule = (function momentumModule() {
 	
 	var user = {};
-	var userPosts = [];
+	var content = {};
 	var apiUrl = '';
 
 
@@ -119,8 +119,6 @@ var momentumModule = (function momentumModule() {
 	 * @param {Object} user - The current user.
 	 */
 	function prepareDashboard(user) {
-		// Get all the content quantities and place in menu items
-
 
 		// Display dashboard
 		document.getElementById('dashboard').classList.add('active');
