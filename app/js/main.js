@@ -21,18 +21,18 @@ var momentumModule = (function momentumModule() {
 	 }
 
 	/**
-	 * Get JSON data.
-	 * @param {String} url - The URL to fetch the JSON from.
+	 * Get JSON data from the API.
+	 * @param {String} request - The request.
 	 * @param {Function} callback - The function to call once the JSON data is fetched.
 	 */
-	function getJSON(url, callback) {
+	function getJSON(request, callback) {
 		var oReq = new XMLHttpRequest();
 
 		oReq.addEventListener('load', function returnParsedJSON() {
 			callback( JSON.parse(this.responseText) );
 		});
 
-		oReq.open('GET', url);
+		oReq.open('GET', `${apiUrl}/${request}`);
 		oReq.send();
 	}
 
@@ -58,7 +58,7 @@ var momentumModule = (function momentumModule() {
 			elems.loginField.setAttribute('disabled', 'disabled');
 			elems.loginBtn.setAttribute('disabled', 'disabled');
 
-			getJSON(`${apiUrl}/users?username=${username}`, function processResult(result) {
+			getJSON(`users?username=${username}`, function processResult(result) {
 
 				if(result.length > 0) {
 					// Username exists, clear any previous error and show the "dashboard"
@@ -120,7 +120,7 @@ var momentumModule = (function momentumModule() {
 	 */
 	function prepareDashboard(user) {
 		// Get all the content quantities and place in menu items
-		
+
 
 		// Display dashboard
 		document.getElementById('dashboard').classList.add('active');
