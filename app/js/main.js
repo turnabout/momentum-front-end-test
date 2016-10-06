@@ -6,13 +6,16 @@ var momentumModule = (function momentumModule() {
 	
 	var user = {};
 	var userPosts = [];
+	var apiUrl = '';
 
 
 	/**
 	 * Initialize everything.
+	 * @param {String} url - Base URL from which the API info is fetched.
 	 */
-	 function init() {
-	 	// Attach login functions
+	 function init(url) {
+	 	apiUrl = url;
+
 	 	document.getElementById('login').addEventListener('submit', login);
 	 	document.getElementById('logout').addEventListener('click', logout);
 	 }
@@ -55,7 +58,7 @@ var momentumModule = (function momentumModule() {
 			elems.loginField.setAttribute('disabled', 'disabled');
 			elems.loginBtn.setAttribute('disabled', 'disabled');
 
-			getJSON(`http://jsonplaceholder.typicode.com/users?username=${username}`, function processResult(result) {
+			getJSON(`${apiUrl}/users?username=${username}`, function processResult(result) {
 
 				if(result.length > 0) {
 					// Username exists, clear any previous error and show the "dashboard"
@@ -116,6 +119,8 @@ var momentumModule = (function momentumModule() {
 	 * @param {Object} user - The current user.
 	 */
 	function prepareDashboard(user) {
+		// Get all the content quantities and place in menu items
+		
 
 		// Display dashboard
 		document.getElementById('dashboard').classList.add('active');
@@ -144,4 +149,4 @@ var momentumModule = (function momentumModule() {
 
 })();
 
-momentumModule.init();
+momentumModule.init('http://jsonplaceholder.typicode.com');
