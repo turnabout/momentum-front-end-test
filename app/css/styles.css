@@ -2364,6 +2364,9 @@ a {
     right: 1.25rem;
     top: 1.25rem;
     color: #2E4172; }
+    .dashboard.page .logout:focus, .dashboard.page .logout:active, .dashboard.page .logout:hover {
+      color: #4F628E;
+      cursor: pointer; }
 
 body {
   color: #201f1f;

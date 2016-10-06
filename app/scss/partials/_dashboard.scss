@@ -37,5 +37,10 @@
 		right: $list-group-item-padding-x;
 		top: $list-group-item-padding-x;
 		color: $primary;
+
+		@include hover-focus-active {
+			color: $primary-light;
+			cursor: pointer;
+		}
 	}
 }
