@@ -5,8 +5,15 @@
 var momentumModule = (function momentumModule() {
 	
 	var user = {};
-	var content = {};
 	var apiUrl = '';
+
+	// Store all different requests to use while loading different pages
+	var requests = {
+		'userPosts': function (userId) { return `posts?userId=${userId}`; },
+		'userAlbums': function (userId) { return `albums?userId=${userId}`; },
+		'allPosts': function () { return `posts`; },
+		'postComments': function (postId) { return `comments?postId=${postId}`; },
+	};
 
 
 	/**
@@ -14,7 +21,20 @@ var momentumModule = (function momentumModule() {
 	 * @param {String} url - Base URL from which the API info is fetched.
 	 */
 	 function init(url) {
+	 	var dashboardMenuItems = document.getElementsByClassName('dashboard-menu-item');
 	 	apiUrl = url;
+
+	 	// For each dashboard menu items, add click event which requests appropriate content and renders a page with it
+	 	for (var i = 0; i < dashboardMenuItems.length; i++) {
+	 		dashboardMenuItems[i].addEventListener('click', function () {
+	 			var request = requests[this.dataset.req](user.id);
+
+	 			getJSON(request, function (result) {
+	 				renderDashboardPage(result, request);
+	 			});
+	 			
+	 		});
+	 	}
 
 	 	document.getElementById('login').addEventListener('submit', login);
 	 	document.getElementById('logout').addEventListener('click', logout);
@@ -122,6 +142,16 @@ var momentumModule = (function momentumModule() {
 
 		// Display dashboard
 		document.getElementById('dashboard').classList.add('active');
+	}
+
+	/**
+	* Render a dashboard page with some passed-in content.
+	* @param {Array} content - Content to render in the page.
+	* @param {String} request - The type of request, so we know what content should be rendered, how.
+	*/
+	function renderDashboardPage(content, request) {
+		console.log(content);
+		console.log(request);
 	}
 
 	/**
