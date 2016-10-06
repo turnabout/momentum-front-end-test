@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Momentum Front-End App</title>
+	<link rel="stylesheet" href="css/styles.min.css">
+</head>
+<body>
+
+	<div id="login-page" class="login page active">
+		<div class="container">
+			<h1 class="main-title m-y-3"><span class="line">Momentum</span> <span class="line">Front-End App</span></h1>
+
+			<div id="login-box" class="login-box p-a-1 m-x-auto">
+				<div class="inner p-a-2">
+					<h3 class="title m-b-2">Log in to look at stuff!</h3>
+					<form action="" id="login">
+						<input type="text" class="login field" id="login-field" placeholder="Username" maxlength="20" autofocus>
+						<div id="login-alert" class="alert"></div>
+						<button id="login-btn" class="btn btn-block btn-secondary m-t-1" type="submit">Log in</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="dashboard" class="dashboard page">
+		<div class="main-title"><span class="line">Momentum</span> <span class="line">Front-End App</span></div>
+		
+		<div id="main-dbp" class="dashboard-page active">
+			<div class="list-group main-menu menu">
+				<div class="list-group-item title">Your content</div>
+				<a href="#" id="posts-user" class="list-group-item list-group-item-action dashboard-menu-item" data-req="userPosts">Your Posts</a>
+				<a href="#" id="album-user" class="list-group-item list-group-item-action dashboard-menu-item" data-req="userAlbums">Your Albums</a>
+
+				<div class="list-group-item title">All content</div>
+				<a href="#" id="posts-all" class="list-group-item list-group-item-action dashboard-menu-item" data-req="allPosts">Posts</a>
+			</div>
+		</div>
+
+		<div id="secondary-dbp" class="dashboard-page">
+			
+		</div>
+
+		<button id="logout" class="logout">Logout</button>
+	</div>
+
+	<script src="js/main.min.js"></script>
+</body>
+</html>
