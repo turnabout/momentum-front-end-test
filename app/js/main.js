@@ -24,18 +24,22 @@ var momentumModule = (function momentumModule() {
 	 	var dashboardMenuItems = document.getElementsByClassName('dashboard-menu-item');
 	 	apiUrl = url;
 
-	 	// For each dashboard menu items, add click event which requests appropriate content and renders a page with it
+	 	// Add events to each dashboard menu items which request appropriate content and renders a page with it
 	 	for (var i = 0; i < dashboardMenuItems.length; i++) {
+
 	 		dashboardMenuItems[i].addEventListener('click', function () {
+	 			// Get request attached to this menu item
 	 			var request = requests[this.dataset.req](user.id);
 
+	 			// Request the content and render page with it
 	 			getJSON(request, function (result) {
 	 				renderDashboardPage(result, request);
 	 			});
-	 			
 	 		});
+
 	 	}
 
+	 	// Add login/out events
 	 	document.getElementById('login').addEventListener('submit', login);
 	 	document.getElementById('logout').addEventListener('click', logout);
 	 }
