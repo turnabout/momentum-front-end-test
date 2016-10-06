@@ -53,7 +53,8 @@ gulp.task('useref', function() {
 		.pipe(gulpIf('*.js', uglify()))
 		.pipe(gulpIf('*.css', cssnano()))
 		.pipe(gulpIf('*.css', autoprefixer({
-			browsers: ['last 4 versions'],
+			browsers: ['> 1%', 'IE 8'],
+			remove: false,
 			cascade: false
 		})))
 		.pipe(gulp.dest('dist'))
