@@ -14,4 +14,19 @@
 		.line:first-child {font-size: 23px;}
 		.line:last-child  {font-size: 17px;}
 	}
+
+	// Menus
+	.menu {
+		.title {
+			color: #ddd;
+			background: $primary;
+		}
+
+		.list-group-item {
+			@include hover-focus-active {
+				background: $primary-light;
+				color: #fff;
+			}
+		}
+	}
 }

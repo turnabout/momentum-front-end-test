@@ -2224,6 +2224,9 @@ html {
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   height: 100%; }
 
+body {
+  height: 100%; }
+
 *,
 *::before,
 *::after {
@@ -2348,6 +2351,12 @@ a {
       font-size: 23px; }
     .dashboard.page .main-title .line:last-child {
       font-size: 17px; }
+  .dashboard.page .menu .title {
+    color: #ddd;
+    background: #2E4172; }
+  .dashboard.page .menu .list-group-item:focus, .dashboard.page .menu .list-group-item:active, .dashboard.page .menu .list-group-item:hover {
+    background: #4F628E;
+    color: #fff; }
 
 body {
   color: #201f1f;
