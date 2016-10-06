@@ -4,7 +4,7 @@
 
 html {
   box-sizing: border-box;
-  font-size: $base-font-size;
+  font-size: $font-size-base;
   font-family: $font-family-text;
   height: 100%;
 }
@@ -35,7 +35,7 @@ body {
 // Typography
 // 
 h1, h2, h3, h4, h5, h6 {
-  margin-bottom: .5rem;
+  margin-bottom: 8px;
   font-family: $font-family-titles;
 }
 
