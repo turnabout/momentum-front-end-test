@@ -5,6 +5,8 @@
 .dashboard.page {
 	background: $white;
 	height: 100%;
+	position: relative;
+	max-width: 500px;
 
 	// Top title
 	.main-title {
@@ -28,5 +30,11 @@
 				color: #fff;
 			}
 		}
+	}
+
+	.logout {
+		position: absolute;
+		right: $list-group-item-padding-x;
+		top: $list-group-item-padding-x;
 	}
 }

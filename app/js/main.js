@@ -5,14 +5,16 @@
 var momentumModule = (function momentumModule() {
 	
 	var user = {};
+	var userPosts = [];
 
 
 	/**
 	 * Initialize everything.
 	 */
 	 function init() {
-	 	// Attach login function to login form
+	 	// Attach login functions
 	 	document.getElementById('login').addEventListener('submit', login);
+	 	document.getElementById('logout').addEventListener('click', logout);
 	 }
 
 	/**
@@ -85,13 +87,38 @@ var momentumModule = (function momentumModule() {
 	}
 
 	/**
+	* Log the user out and return to login page.
+	* @param {Event} event - The event.
+	*/
+	function logout(event) {
+		var dashboard = document.getElementById('dashboard'),
+			loginPage = document.getElementById('login-page'),
+			loginField = document.getElementById('login-field'),
+			loginBtn = document.getElementById('login-btn');
+
+		user = {};
+
+		// Fade dashboard out, login back in
+		animateElem(dashboard, 'fadeOut', function () {
+			dashboard.classList.remove('active');
+			loginField.removeAttribute('disabled', 'disabled');
+			loginField.value = '';
+			loginBtn.removeAttribute('disabled', 'disabled');
+			loginPage.classList.add('active');
+			loginField.focus();
+		});
+
+		event.preventDefault();
+	}
+
+	/**
 	 * Prepare the "dashboard" for the logged-in user.
 	 * @param {Object} user - The current user.
 	 */
 	function prepareDashboard(user) {
-		document.getElementById('dashboard').classList.add('active');
-		console.log('here come dat boi');
 
+		// Display dashboard
+		document.getElementById('dashboard').classList.add('active');
 	}
 
 	/**

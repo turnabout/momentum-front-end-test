@@ -2343,7 +2343,9 @@ a {
 
 .dashboard.page {
   background: #fefefd;
-  height: 100%; }
+  height: 100%;
+  position: relative;
+  max-width: 500px; }
   .dashboard.page .main-title {
     text-align: left;
     padding: 0.75rem 1.25rem; }
@@ -2357,6 +2359,10 @@ a {
   .dashboard.page .menu .list-group-item:focus, .dashboard.page .menu .list-group-item:active, .dashboard.page .menu .list-group-item:hover {
     background: #4F628E;
     color: #fff; }
+  .dashboard.page .logout {
+    position: absolute;
+    right: 1.25rem;
+    top: 1.25rem; }
 
 body {
   color: #201f1f;
