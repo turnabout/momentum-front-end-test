@@ -95,7 +95,7 @@ var momentumModule = (function momentumModule() {
 					elems.dashboard.classList.add('active');
 
 					animateElem(elems.dashboard, 'fadeInLeft', function () {
-						prepareDashboard(user);
+						
 					});
 
 					// Fade login page out
