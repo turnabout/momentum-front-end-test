@@ -2362,7 +2362,8 @@ a {
   .dashboard.page .logout {
     position: absolute;
     right: 1.25rem;
-    top: 1.25rem; }
+    top: 1.25rem;
+    color: #2E4172; }
 
 body {
   color: #201f1f;
