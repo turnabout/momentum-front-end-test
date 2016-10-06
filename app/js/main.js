@@ -91,14 +91,17 @@ var momentumModule = (function momentumModule() {
 					elems.loginAlert.classList.remove('active');
 					elems.loginBox.classList.remove('error');
 					
-					// Fade login page out and load dashboard
+					// Fade dashboard in
+					elems.dashboard.classList.add('active');
+
+					animateElem(elems.dashboard, 'fadeInLeft', function () {
+						prepareDashboard(user);
+					});
+
+					// Fade login page out
 					animateElem(elems.loginPage, 'fadeOut', function () {
 						elems.loginPage.classList.remove('active');
 						elems.dashboard.classList.add('active');
-
-						animateElem(elems.dashboard, 'fadeInLeft', function () {
-							prepareDashboard(user);
-						});
 					});
 
 				} else {
@@ -138,13 +141,13 @@ var momentumModule = (function momentumModule() {
 		// Fade dashboard out
 		animateElem(dashboard, 'fadeOutLeft', function () {
 			dashboard.classList.remove('active');
-			loginPage.classList.add('active');
+		});
 
-			// Fade login page in
-			animateElem(loginPage, 'fadeIn', function () {
-				loginField.focus();				
-			});
-			
+		// Fade login page in
+		loginPage.classList.add('active');
+
+		animateElem(loginPage, 'fadeIn', function () {
+			loginField.focus();				
 		});
 
 		event.preventDefault();
@@ -156,8 +159,7 @@ var momentumModule = (function momentumModule() {
 	 */
 	function prepareDashboard(user) {
 
-		// Display dashboard
-		document.getElementById('dashboard').classList.add('active');
+
 	}
 
 	/**

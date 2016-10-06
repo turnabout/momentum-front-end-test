@@ -2331,6 +2331,14 @@ a {
     border-color: #4F628E;
     color: #4F628E; }
 
+.login.page.animated {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: 0 auto; }
+
 .login.page .main-title {
   color: #fff; }
 
