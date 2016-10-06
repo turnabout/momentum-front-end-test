@@ -154,15 +154,6 @@ var momentumModule = (function momentumModule() {
 	}
 
 	/**
-	 * Prepare the "dashboard" for the logged-in user.
-	 * @param {Object} user - The current user.
-	 */
-	function prepareDashboard(user) {
-
-
-	}
-
-	/**
 	* Render a dashboard page with some passed-in content.
 	* @param {Array} content - Content to render in the page.
 	* @param {String} request - The type of request, so we know what content should be rendered, how.
