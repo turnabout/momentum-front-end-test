@@ -7,8 +7,6 @@ var momentumModule = (function momentumModule() {
 	var user = {};
 	var apiUrl = '';
 
-	
-
 	// Store all different requests to use to different pages
 	var requests = {
 		'userPosts': function (userId) { return `posts?userId=${userId}`; },
@@ -29,21 +27,21 @@ var momentumModule = (function momentumModule() {
 	 	// Add events to each dashboard menu items which request appropriate content and renders a page with it
 	 	for (var i = 0; i < dashboardMenuItems.length; i++) {
 
-	 		dashboardMenuItems[i].addEventListener('click', function () {
-	 			// Get request attached to this menu item
-	 			var request = requests[this.dataset.req](user.id);
+	 		addEvent(dashboardMenuItems[i], 'click', function () {
+				// Get request attached to this menu item
+				var request = requests[this.dataset.req](user.id);
 
-	 			// Request the content and render page with it
-	 			getJSON(request, function (result) {
-	 				renderDashboardPage(result, request);
-	 			});
+				// Request the content and render page with it
+				getJSON(request, function (result) {
+					renderDashboardPage(result, request);
+				});
 	 		});
 
 	 	}
 
 	 	// Add login/out events
-	 	document.getElementById('login').addEventListener('submit', login);
-	 	document.getElementById('logout').addEventListener('click', logout);
+	 	addEvent(document.getElementById('login'), 'submit', login);
+	 	addEvent(document.getElementById('logout'), 'click', logout);
 	 }
 
 	/**
@@ -54,7 +52,7 @@ var momentumModule = (function momentumModule() {
 	function getJSON(request, callback) {
 		var oReq = new XMLHttpRequest();
 
-		oReq.addEventListener('load', function returnParsedJSON() {
+		addEvent(oReq, 'load', function returnParsedJSON() {
 			callback( JSON.parse(this.responseText) );
 		});
 
@@ -172,7 +170,7 @@ var momentumModule = (function momentumModule() {
 		callback = callback || function() {};
 		element.classList.add(transitionName, 'animated');
 
-		addEventListenerOnce(element, 'animationend', function afterAnimationEnd(e) {
+		addEventOnce(element, 'animationend', function afterAnimationEnd(e) {
 			element.classList.remove(transitionName, 'animated');
 			callback();
 		});
@@ -183,11 +181,25 @@ var momentumModule = (function momentumModule() {
 		 * @param {String} type - The type of the event.
 		 * @param {Function} listener - The listener to attach to the event.
 		 */
-		function addEventListenerOnce(target, type, listener) {
-			target.addEventListener(type, function fn(event) {
+		function addEventOnce(target, type, listener) {
+			addEvent(target, type, function fn(event) {
 				target.removeEventListener(type, fn);
 				listener(event);
 			});
+		}
+	}
+
+	/**
+	 * 'addEventListener' polyfill.
+	 * @param {Object} element - The element to add the event listener to.
+	 * @param {Event} event - The event type.
+	 * @param {Function} callback - The event listener function callback.
+	 */
+	function addEvent(element, event, callback) {
+		if (element.addEventListener) {
+			element.addEventListener(event, callback, false);
+		} else {
+			element.attachEvent('on'+event, callback);
 		}
 	}
 
