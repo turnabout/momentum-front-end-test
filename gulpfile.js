@@ -10,6 +10,7 @@ var	cache = require('gulp-cache');
 var	del = require('del');
 var	runSequence = require('run-sequence');
 var	autoprefixer = require('gulp-autoprefixer');
+var babel = require('gulp-babel');
 
 
 // Development tasks
@@ -48,6 +49,7 @@ gulp.task('default', function(callback) {
 gulp.task('useref', function() {
 	return gulp.src('app/*.html')
 		.pipe(useref())
+		.pipe(gulpIf('*.js', babel({presets: ['es2015']})))
 		.pipe(gulpIf('*.js', uglify()))
 		.pipe(gulpIf('*.css', cssnano()))
 		.pipe(gulpIf('*.css', autoprefixer({
@@ -57,30 +59,25 @@ gulp.task('useref', function() {
 		.pipe(gulp.dest('dist'))
 });
 
-gulp.task('images', function() {
-	return gulp.src('app/images/**/*.+(png|jpg|gif|svg)')
-	.pipe(cache(imagemin({
-			interlaced: true
-		})))
-	.pipe(gulp.dest('dist/images'))
-});
-
-gulp.task('fonts', function() {
-	return gulp.src('app/fonts/**/*')
-		.pipe(gulp.dest('dist/fonts'))
-});
-
-gulp.task('clean:dist', function() {
-	return del.sync('dist');
-});
-
-gulp.task('cache:clear', function(callback) {
-	return cache.clearAll(callback);
+gulp.task('cleanDist', function() {
+	return del('dist');
 });
 
 gulp.task('build', function(callback) {
-	runSequence('clean:dist',
-		['sass', 'useref', 'images', 'fonts'],
+	runSequence('cleanDist',
+		['sass', 'useref'],
 		callback
 	)
+});
+
+gulp.task('browserSyncDist', function() {
+	browserSync.init({
+		server: {
+			baseDir: 'dist'
+		},
+	})
+});
+
+gulp.task('serve', function(callback) {
+	runSequence('build', 'browserSyncDist', callback);
 });
