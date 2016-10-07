@@ -50,18 +50,15 @@ var momentumModule = (function momentumModule(helper) {
 	 * @param {Event} event
 	 */
 	function handleDashboardMenuClick (event) {
-		// Get request attached to this menu item
-		if ( !(this.dataset.req in requests) ) {
+
+		// If page is already busy being processed/animated or request doesn't exist, don't do anything
+		if (helper.isElement(elems.dashboardSecPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
 			return;
 		}
 
+		// Get request attached to this menu item
 		var request = requests[this.dataset.req](user.id);
 
-		// If dbp page is already busy being processed or animated, don't do anything
-		if (helper.isElement(elems.dashboardSecPage, ['processing', 'animating'])) {
-			console.log('byebye');
-			return;
-		}
 
 		// Slide the second page in
 		elems.dashboardSecPage.dataset.processing = true;
