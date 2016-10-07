@@ -118,7 +118,6 @@ var momentumHelperModule = (function momentumHelperModule() {
 					return true;
 				}
 			}
-			console.log('returning false');
 			return false;
 		}
 

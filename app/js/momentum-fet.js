@@ -50,31 +50,37 @@ var momentumModule = (function momentumModule(helper) {
 	 * @param {Event} event
 	 */
 	function handleDashboardMenuClick (event) {
-
+		console.log(this);
 		// If page is already busy being processed/animated or request doesn't exist, don't do anything
 		if (helper.isElement(elems.dashboardSecPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
 			return;
 		}
 
+		// If button clicked already active, slide page back in and do nothing else
+		if (this.getAttribute('id') === 'active-dbp-btn') {
+			transitionDashboardPage('slideIn');
+			return;
+		}
+
+		// Set any other active button as inactive
+		if (document.getElementById('active-dbp-btn')) {
+			let alreadyActive = document.getElementById('active-dbp-btn');
+			alreadyActive.setAttribute('id', '');
+			alreadyActive.classList.remove('active');
+		}
+
+		this.setAttribute('id', 'active-dbp-btn');
+
 		// Get request attached to this menu item
 		var request = requests[this.dataset.req](user.id);
 
-
 		// Slide the second page in
 		elems.dashboardSecPage.dataset.processing = true;
-		elems.dashboardSecPage.dataset.animating = true;
-		elems.dashboardSecPage.classList.add('active');
 
 		if (elems.dashboardSecPage.dataset.active) {
-			helper.animateElem(elems.dashboardSecPage, ['slideOutLeft', 'fast'], function () {
-				helper.animateElem(elems.dashboardSecPage, ['slideInLeft'], function () {
-					elems.dashboardSecPage.dataset.animating = false;
-				});
-			});
+			transitionDashboardPage('slideInOut');
 		} else {
-			helper.animateElem(elems.dashboardSecPage, ['fadeInLeft'], function () {
-				elems.dashboardSecPage.dataset.animating = false;
-			});
+			transitionDashboardPage('slideOut');
 		}
 
 		// For knowing which animation to use
@@ -85,6 +91,36 @@ var momentumModule = (function momentumModule(helper) {
 			renderDashboardPage(result, request);
 		});
 	}
+
+	/**
+	 * Transition the dashboard page.
+	 * @param {String} type - The type of transition.
+	 */
+	function transitionDashboardPage(type) {
+		elems.dashboardSecPage.dataset.animating = true;
+		elems.dashboardSecPage.classList.add('active');
+
+		switch (type) {
+			case 'slideIn':
+				elems.dashboardSecPage.dataset.animating = false;
+				break;
+
+			case 'slideOut':
+				helper.animateElem(elems.dashboardSecPage, ['fadeInLeft'], function () {
+					elems.dashboardSecPage.dataset.animating = false;
+				});
+				break;
+
+			case 'slideInOut':
+				helper.animateElem(elems.dashboardSecPage, ['slideOutLeft', 'fast'], function () {
+					helper.animateElem(elems.dashboardSecPage, ['slideInLeft'], function () {
+						elems.dashboardSecPage.dataset.animating = false;
+					});
+				});
+				break;
+		}
+	}
+
 
 	/**
 	 * Attempt to log in user on form submit.
@@ -166,9 +202,8 @@ var momentumModule = (function momentumModule(helper) {
 	* @param {String} request - The type of request, so we know what content should be rendered, how.
 	*/
 	function renderDashboardPage(content, request) {
-		console.log(content);
-		console.log(request);
-
+		// console.log(content);
+		// console.log(request);
 
 		elems.dashboardSecPage.dataset.processing = false;
 	}
