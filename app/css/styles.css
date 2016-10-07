@@ -2431,13 +2431,15 @@ a {
       border-bottom: 1px solid #d9deea; }
     .dashboard-page .menu a.list-group-item:hover {
       background: #e5e5e5; }
-    .dashboard-page .menu a.list-group-item:focus, .dashboard-page .menu a.list-group-item:active, .dashboard-page .menu a.list-group-item.active {
+    .dashboard-page .menu a.list-group-item:active, .dashboard-page .menu a.list-group-item:focus {
+      background: #cbcbcb; }
+    .dashboard-page .menu a.list-group-item.active {
       background: #4F628E;
       border-top: 1px solid #667baa;
       border-bottom: 1px solid #667baa;
       color: #fff; }
     .dashboard-page .menu a.list-group-item.active:hover {
-      background: #3d4b6d; }
+      background: #4d608b; }
   .dashboard-page .logout {
     position: absolute;
     right: 20px;

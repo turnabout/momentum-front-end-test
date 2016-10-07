@@ -64,7 +64,11 @@ $db-borders-col: lighten($primary-light, 45%);
 				background: darken($white, 10%);
 			}
 
-			&:focus, &:active, &.active {
+			&:active, &:focus {
+				background: darken($white, 20%);
+			}
+
+			&.active {
 				background: $primary-light;
 				border-top: 1px solid lighten($primary-light, 10%);
 				border-bottom: 1px solid lighten($primary-light, 10%);
@@ -72,7 +76,7 @@ $db-borders-col: lighten($primary-light, 45%);
 			}
 
 			&.active:hover {
-				background: darken($primary-light, 10%);
+				background: darken($primary-light, 1%);
 			}
 		}
 	}

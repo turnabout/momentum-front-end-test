@@ -56,11 +56,13 @@ var momentumModule = (function momentumModule(helper) {
 			return;
 		}
 
-		// If button clicked already active, slide page back in and do nothing else
+		// If button clicked already active, slide page back in
 		if (this.getAttribute('id') === 'active-dbp-btn') {
 			transitionDashboardPage('slideIn');
 			elems.dashboardSecPage.dataset.active = false;
+			this.classList.remove('active');
 			this.setAttribute('id', '');
+			this.blur();
 			return;
 		}
 
@@ -72,6 +74,7 @@ var momentumModule = (function momentumModule(helper) {
 		}
 
 		this.setAttribute('id', 'active-dbp-btn');
+		this.classList.add('active');
 
 		// Get request attached to this menu item
 		var request = requests[this.dataset.req](user.id);
@@ -225,15 +228,14 @@ var momentumModule = (function momentumModule(helper) {
 	* @param {String} request - The type of request, so we know what content should be rendered, how.
 	*/
 	function renderDashboardPage(content, request) {
-		// console.log(content);
-		// console.log(request);
+		console.log(content);
+		console.log(request);
 
 		elems.dashboardSecPage.dataset.processing = false;
 	}
 
 	return {
-		'init' : init,
-		'login' : login
+		'init' : init
 	};
 
 })(momentumHelperModule);
