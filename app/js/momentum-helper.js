@@ -4,17 +4,36 @@
  */
 var momentumHelperModule = (function momentumHelperModule() {
 
+	// Variable holding previously fetched data. Used to avoid doing a GET request more than once
+	var data = {};
+
 	/**
-	 * Get JSON data from API.
+	 * Get data from API.
 	 * @param {String} baseUrl - The base url for the request.
 	 * @param {String} request - The API request.
 	 * @param {Function} callback - The function to call once the JSON data is fetched.
 	 */
-	function getJSON(baseUrl, request, callback) {
+	function getApiData(baseUrl, request, callback) {
+
+		// If data already stored, skip sending GET request and just execute the callback with it directly
+		if(request in data) {
+			console.log(data);
+			callback(data[request]);
+			return;
+		}
+
+		// Data does not already exist, launch GET request to API
 		var oReq = new XMLHttpRequest();
 
 		addEvent(oReq, 'load', function returnParsedJSON() {
-			callback( JSON.parse(this.responseText) );
+			var result = JSON.parse(this.responseText);
+
+			// Store data in global data object to more easily fetch again later
+			if(result.length > 0 && !(request in data)) {
+				data[request] = result;
+			}
+
+			callback(result);
 		});
 
 		oReq.open('GET', `${baseUrl}/${request}`);
@@ -83,7 +102,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	}
 
 	return {
-		'getJSON' : getJSON,
+		'getApiData' : getApiData,
 		'animateElem' : animateElem,
 		'addEvent' : addEvent,
 		'removeEvent' : removeEvent

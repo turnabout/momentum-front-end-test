@@ -54,7 +54,7 @@ var momentumModule = (function momentumModule(helper) {
 		var request = requests[this.dataset.req](user.id);
 
 		// Request the content and render page with it
-		helper.getJSON(apiUrl, request, function (result) {
+		helper.getApiData(apiUrl, request, function (result) {
 			renderDashboardPage(result, request);
 		});
 	}
@@ -72,7 +72,7 @@ var momentumModule = (function momentumModule(helper) {
 			elems.loginField.setAttribute('disabled', 'disabled');
 			elems.loginBtn.setAttribute('disabled', 'disabled');
 
-			helper.getJSON(apiUrl, `users?username=${username}`, function processResult(result) {
+			helper.getApiData(apiUrl, `users?username=${username}`, function processResult(result) {
 
 				if(result.length > 0) {
 					// Username exists, clear any previous error and show the "dashboard"
