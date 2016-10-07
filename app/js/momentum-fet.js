@@ -175,14 +175,14 @@ var momentumModule = (function momentumModule() {
 
 		/**
 		 * Add a one-time event listener.
-		 * @param {Object} target - The target element.
+		 * @param {Object} element - The target element.
 		 * @param {String} type - The type of the event.
-		 * @param {Function} listener - The listener to attach to the event.
+		 * @param {Function} callback - The callback to attach to the event.
 		 */
-		function addEventOnce(target, type, listener) {
-			addEvent(target, type, function fn(event) {
-				target.removeEventListener(type, fn);
-				listener(event);
+		function addEventOnce(element, type, callback) {
+			addEvent(element, type, function fn(event) {
+				removeEvent(element, type, fn);
+				callback(event);
 			});
 		}
 	}
@@ -190,14 +190,32 @@ var momentumModule = (function momentumModule() {
 	/**
 	 * 'addEventListener' polyfill.
 	 * @param {Object} element - The element to add the event listener to.
-	 * @param {Event} event - The event type.
+	 * @param {Event} type - The event type.
 	 * @param {Function} callback - The event listener function callback.
 	 */
-	function addEvent(element, event, callback) {
+	function addEvent(element, type, callback) {
 		if (element.addEventListener) {
-			element.addEventListener(event, callback, false);
+			element.addEventListener(type, callback, false);
+		} else if (element.attachEvent) {
+			element.attachEvent("on" + type, callback);
 		} else {
-			element.attachEvent('on'+event, callback);
+			element["on" + type] = callback;
+		}
+	}
+
+	/**
+	 * 'removeEventListener' polyfill.
+	 * @param {Object} element - The element to add the event listener to.
+	 * @param {Event} type - The event type.
+	 * @param {Function} callback - The event listener function callback.
+	 */
+	function removeEvent(element, type, callback) {
+		if (element.removeEventListener) {
+			element.removeEventListener(type, callback, false);
+		} else if (element.detachEvent) {
+			element.detachEvent("on" + type, callback);
+		} else {
+			element["on" + type] = null;
 		}
 	}
 
