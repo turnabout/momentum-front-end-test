@@ -48,11 +48,14 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 */
 	function animateElem(element, animationNames, callback) {
 		callback = callback || function() {};
+
+		element.dataset.animating = true;
 		animationNames.push('animated');
 		DOMTokenList.prototype.add.apply(element.classList, animationNames);
 
 		addEventOnce(element, 'animationend', function afterAnimationEnd(e) {
 			DOMTokenList.prototype.remove.apply(element.classList, animationNames);
+			element.dataset.animating = false;
 			callback();
 		});
 
