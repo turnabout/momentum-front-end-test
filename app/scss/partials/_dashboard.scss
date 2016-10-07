@@ -12,6 +12,7 @@
 	.main-title {
 		text-align: left;
 		padding: $list-group-item-padding-y $list-group-item-padding-x;
+		color: $primary;
 
 		.line:first-child {font-size: 22px;}
 		.line:last-child  {font-size: 17px;}
@@ -20,13 +21,23 @@
 	// Menus
 	.menu {
 		.title {
-			color: #ddd;
+			color: #efefef;
 			background: $primary;
+			border: 1px solid $primary;
 		}
 
 		a.list-group-item {
-			@include hover-focus-active {
+			border: 1px solid transparent;
+			border-top: 1px solid lighten($primary-light, 45%);
+
+			&:last-child {
+				border-bottom: 1px solid lighten($primary-light, 45%);
+			}
+
+			&:hover, &:focus, &:active, &.active {
 				background: $primary-light;
+				border-top: 1px solid lighten($primary-light, 10%);
+				border-bottom: 1px solid lighten($primary-light, 10%);
 				color: #fff;
 			}
 		}

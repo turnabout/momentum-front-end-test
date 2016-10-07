@@ -1431,13 +1431,8 @@ table {
   margin-bottom: -1px;
   background-color: #fff;
   border: 1px solid #ddd; }
-  .list-group-item:first-child {
-    border-top-right-radius: 6.4px;
-    border-top-left-radius: 6.4px; }
   .list-group-item:last-child {
-    margin-bottom: 0;
-    border-bottom-right-radius: 6.4px;
-    border-bottom-left-radius: 6.4px; }
+    margin-bottom: 0; }
   .list-group-item.disabled, .list-group-item.disabled:focus, .list-group-item.disabled:hover {
     color: #818a91;
     cursor: not-allowed;
@@ -1450,8 +1445,8 @@ table {
     z-index: 2;
     color: #fff;
     text-decoration: none;
-    background-color: #0275d8;
-    border-color: #0275d8; }
+    background-color: #4F628E;
+    border-color: #4F628E; }
     .list-group-item.active .list-group-item-heading,
     .list-group-item.active .list-group-item-heading > small,
     .list-group-item.active .list-group-item-heading > .small, .list-group-item.active:focus .list-group-item-heading,
@@ -1461,7 +1456,7 @@ table {
     .list-group-item.active:hover .list-group-item-heading > .small {
       color: inherit; }
     .list-group-item.active .list-group-item-text, .list-group-item.active:focus .list-group-item-text, .list-group-item.active:hover .list-group-item-text {
-      color: #a8d6fe; }
+      color: #c8d0e1; }
 
 .list-group-flush .list-group-item {
   border-radius: 0; }
@@ -2376,17 +2371,26 @@ a {
   max-width: 500px; }
   .dashboard.page .main-title {
     text-align: left;
-    padding: 12px 20px; }
+    padding: 12px 20px;
+    color: #2E4172; }
     .dashboard.page .main-title .line:first-child {
       font-size: 22px; }
     .dashboard.page .main-title .line:last-child {
       font-size: 17px; }
   .dashboard.page .menu .title {
-    color: #ddd;
-    background: #2E4172; }
-  .dashboard.page .menu a.list-group-item:focus, .dashboard.page .menu a.list-group-item:active, .dashboard.page .menu a.list-group-item:hover {
-    background: #4F628E;
-    color: #fff; }
+    color: #efefef;
+    background: #2E4172;
+    border: 1px solid #2E4172; }
+  .dashboard.page .menu a.list-group-item {
+    border: 1px solid transparent;
+    border-top: 1px solid #d9deea; }
+    .dashboard.page .menu a.list-group-item:last-child {
+      border-bottom: 1px solid #d9deea; }
+    .dashboard.page .menu a.list-group-item:hover, .dashboard.page .menu a.list-group-item:focus, .dashboard.page .menu a.list-group-item:active, .dashboard.page .menu a.list-group-item.active {
+      background: #4F628E;
+      border-top: 1px solid #667baa;
+      border-bottom: 1px solid #667baa;
+      color: #fff; }
   .dashboard.page .logout {
     position: absolute;
     right: 20px;
