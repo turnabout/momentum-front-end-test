@@ -1,4 +1,6 @@
+// 
 // Fade in
+// 
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -13,7 +15,9 @@
   animation-name: fadeIn;
 }
 
+// 
 // Fade in from left
+// 
 @keyframes fadeInLeft {
   from {
     opacity: 0;

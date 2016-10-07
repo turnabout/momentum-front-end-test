@@ -2293,9 +2293,31 @@ a {
 .fadeInLeft {
   animation-name: fadeInLeft; }
 
+@keyframes slideOutLeft {
+  from {
+    transform: translate3d(0, 0, 0); }
+  to {
+    visibility: hidden;
+    transform: translate3d(-100%, 0, 0); } }
+
+.slideOutLeft {
+  animation-name: slideOutLeft; }
+
+@keyframes slideInLeft {
+  from {
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible; }
+  to {
+    transform: translate3d(0, 0, 0); } }
+
+.slideInLeft {
+  animation-name: slideInLeft; }
+
 .animated {
   animation-duration: 0.75s;
   animation-fill-mode: both; }
+  .animated.fast {
+    animation-duration: 0.5s; }
 
 .main-title {
   font-size: 32px;
@@ -2365,38 +2387,57 @@ a {
       border-color: #4F628E; }
 
 .dashboard.page {
+  height: 100%; }
+
+.dashboard-page {
   background: #fefefd;
   height: 100%;
   position: relative;
-  max-width: 500px; }
-  .dashboard.page .main-title {
+  max-width: 500px;
+  width: 100%;
+  border-right: 1px solid #d9deea;
+  float: left;
+  display: none; }
+  .dashboard-page.active {
+    display: block; }
+  .dashboard-page.dbp-1 {
+    z-index: 5; }
+  .dashboard-page.dbp-2 {
+    z-index: 3; }
+  .dashboard-page .main-title {
     text-align: left;
     padding: 12px 20px;
-    color: #2E4172; }
-    .dashboard.page .main-title .line:first-child {
+    color: #2E4172;
+    border-bottom: 1px solid #d9deea;
+    height: 64px; }
+    .dashboard-page .main-title.single-line {
+      font-size: 18px;
+      padding-top: 22px;
+      padding-bottom: 24px; }
+    .dashboard-page .main-title .line:first-child {
       font-size: 22px; }
-    .dashboard.page .main-title .line:last-child {
+    .dashboard-page .main-title .line:last-child {
       font-size: 17px; }
-  .dashboard.page .menu .title {
+  .dashboard-page .menu .title {
     color: #efefef;
     background: #2E4172;
     border: 1px solid #2E4172; }
-  .dashboard.page .menu a.list-group-item {
+  .dashboard-page .menu a.list-group-item {
     border: 1px solid transparent;
     border-top: 1px solid #d9deea; }
-    .dashboard.page .menu a.list-group-item:last-child {
+    .dashboard-page .menu a.list-group-item:last-child {
       border-bottom: 1px solid #d9deea; }
-    .dashboard.page .menu a.list-group-item:hover, .dashboard.page .menu a.list-group-item:focus, .dashboard.page .menu a.list-group-item:active, .dashboard.page .menu a.list-group-item.active {
+    .dashboard-page .menu a.list-group-item:hover, .dashboard-page .menu a.list-group-item:focus, .dashboard-page .menu a.list-group-item:active, .dashboard-page .menu a.list-group-item.active {
       background: #4F628E;
       border-top: 1px solid #667baa;
       border-bottom: 1px solid #667baa;
       color: #fff; }
-  .dashboard.page .logout {
+  .dashboard-page .logout {
     position: absolute;
     right: 20px;
     top: 20px;
     color: #2E4172; }
-    .dashboard.page .logout:focus, .dashboard.page .logout:active, .dashboard.page .logout:hover {
+    .dashboard-page .logout:focus, .dashboard-page .logout:active, .dashboard-page .logout:hover {
       color: #4F628E;
       cursor: pointer; }
 
