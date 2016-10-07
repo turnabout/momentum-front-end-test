@@ -16,6 +16,8 @@ var momentumModule = (function momentumModule(helper) {
 		dashboardMenuItems:document.querySelectorAll('.dashboard-menu-item'),
 		dashboardSecPage: document.getElementById('secondary-dbp'),
 		dashboardSecPageTitle: document.getElementById('dbp-2-title'),
+		dbp2Content: document.getElementById('dbp2-content-1'),
+		dbp2ContentInner: document.getElementById('dbp2-content-1-inner'),
 	};
 
 	// Store all different requests to use to different pages
@@ -268,17 +270,29 @@ var momentumModule = (function momentumModule(helper) {
 		function renderPosts(content, request) {
 			console.log(content);
 			console.log(request);
+			elems.dbp2ContentInner.innerHTML = request;
+
+			afterRender();
 		}
 
 		function renderAlbum(content, request) {
 			console.log(content);
 			console.log(request);
+
+			afterRender();
 		}
 
 		function renderPost(content, request) {
 			console.log(content);
 			console.log(request);
+
+			afterRender();
 		}
+
+		function afterRender() {
+			elems.dbp2ContentInner.classList.add('active');
+		}
+
 	}
 
 	return {
