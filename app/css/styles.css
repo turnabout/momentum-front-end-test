@@ -2305,7 +2305,8 @@ a {
 .main-title {
   font-size: 32px;
   text-align: center;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  font-family: Georgia, Times, "Times New Roman", serif; }
   .main-title .line {
     display: block; }
     .main-title .line:first-child {
@@ -2377,7 +2378,7 @@ a {
     text-align: left;
     padding: 12px 20px; }
     .dashboard.page .main-title .line:first-child {
-      font-size: 23px; }
+      font-size: 22px; }
     .dashboard.page .main-title .line:last-child {
       font-size: 17px; }
   .dashboard.page .menu .title {
