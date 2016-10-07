@@ -74,6 +74,11 @@ var momentumModule = (function momentumModule(helper) {
 
 	 	// Secondary dbp back button
 	 	helper.addEvent(elems.dbp2Back, 'click', handleDbpBackClick);
+
+	 	// Handle clicks on elements inside of secondary dbps
+	 	for (var elem of document.getElementsByClassName('inner-content')) {
+	 		helper.addEvent(elem, 'click', handleSecondaryDbpElemClicks);
+	 	}
 	 }
 
 	/**
@@ -294,14 +299,17 @@ var momentumModule = (function momentumModule(helper) {
 	* Render a dashboard page with some passed-in content.
 	* @param {Array} content - Content to render in the page.
 	* @param {String} request - The type of request, so we know what content should be rendered, how.
+	* @param {Object} parent - The parent element in which the dashboard page should be rendered.
 	*/
-	function renderDashboardPage(content, request) {
+	function renderDashboardPage(content, request, parent) {
 
 		var render = {
 			'posts' : renderPosts,
 			'album' : renderAlbum,
 			'post' : renderPost
 		};
+
+		parent = parent || elems.dbp2ContentInner;
 
 		elems.dashboardSecPageTitle.innerHTML = request.name;
 		elems.dashboardSecPage.dataset.processing = false;
@@ -310,7 +318,7 @@ var momentumModule = (function momentumModule(helper) {
 
 		function renderPosts(content, request) {
 			var markup = [],
-				beforePost = '<a href="#" class="list-group-item list-group-item-action">',
+				beforePost = '<a href="#" class="list-group-item list-group-item-action" onclick="renderNewPage">',
 				afterPost = '</a>';
 
 			for (var post of content) {
@@ -323,7 +331,7 @@ var momentumModule = (function momentumModule(helper) {
 				markup.push(markupLoop);
 			}
 
-			elems.dbp2ContentInner.innerHTML = markup.join('');
+			parent.innerHTML = markup.join('');
 			afterRender();
 		}
 
@@ -345,6 +353,50 @@ var momentumModule = (function momentumModule(helper) {
 			elems.dbp2ContentInner.classList.add('active');
 		}
 
+	}
+
+	/**
+	 * Render a new page.
+	 */
+	function renderNewPage() {
+		console.log(this);
+	}
+
+	/**
+	 * Handle clicks on elements inside of secondary dbp.
+	 */
+	function handleSecondaryDbpElemClicks(elem) {
+
+		console.log(event);
+		console.log(event.target);
+
+
+	}
+
+	/**
+	 * Change the content page.
+	 * @param {String} direction - 'prev' or 'next'.
+	 * @param {Function} callback - Functions to call after page is changed.
+	 */
+	function dbpChangePage(direction, callback) {
+		var currentContentElem = getCurrentlyShownDbpContent();
+
+		switch (direction) {
+			case 'prev':
+				var previousPage = currentContentElem.previousSibling;
+				console.log('going to previous page:');
+				console.log(previousPage);
+				callback();
+				break;
+			case 'next':
+				var nextPage = currentContentElem.nextSibling;
+				console.log('going to next page:');
+				console.log(nextPage);
+				callback();
+				break;
+			default:
+				break;
+		}
 	}
 
 	return {
