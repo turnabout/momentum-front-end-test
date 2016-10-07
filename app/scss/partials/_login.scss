@@ -3,6 +3,9 @@
 // 
 
 .login.page  {
+	
+	// Ensure enough space at bottom for phone to correctly see the field on focus
+	margin-bottom: 10%;
 
 	// While animating
 	&.animated {
