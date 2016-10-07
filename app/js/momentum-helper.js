@@ -6,18 +6,18 @@ var momentumHelperModule = (function momentumHelperModule() {
 
 	// Variable holding previously fetched data. Used to avoid doing a GET request more than once
 	var data = {};
+	var apiUrl = '';
+
 
 	/**
 	 * Get data from API.
-	 * @param {String} baseUrl - The base url for the request.
 	 * @param {String} request - The API request.
 	 * @param {Function} callback - The function to call once the JSON data is fetched.
 	 */
-	function getApiData(baseUrl, request, callback) {
+	function getApiData(request, callback) {
 
 		// If data already stored, skip sending GET request and just execute the callback with it directly
 		if(request in data) {
-			console.log(data);
 			callback(data[request]);
 			return;
 		}
@@ -32,11 +32,11 @@ var momentumHelperModule = (function momentumHelperModule() {
 			if(result.length > 0 && !(request in data)) {
 				data[request] = result;
 			}
-
+			
 			callback(result);
 		});
 
-		oReq.open('GET', `${baseUrl}/${request}`);
+		oReq.open('GET', `${apiUrl}/${request}`);
 		oReq.send();
 	}
 
@@ -101,11 +101,21 @@ var momentumHelperModule = (function momentumHelperModule() {
 		}
 	}
 
+	/**
+	 * Set the module's apiUrl variable.
+	 * @param {String} url - The base api url.
+	 */
+	 function setApiUrl(url) {
+	 	apiUrl = (apiUrl) ? apiUrl : url;
+	 }
+
+
 	return {
 		'getApiData' : getApiData,
 		'animateElem' : animateElem,
 		'addEvent' : addEvent,
-		'removeEvent' : removeEvent
+		'removeEvent' : removeEvent,
+		'setApiUrl' : setApiUrl
 	};
 	
 })();

@@ -6,7 +6,6 @@
 var momentumModule = (function momentumModule(helper) {
 
 	var user = {};
-	var apiUrl = '';
 
 	// Store references to frequently reused dom elements
 	var elems = {
@@ -33,7 +32,8 @@ var momentumModule = (function momentumModule(helper) {
 	 */
 	 function init(url) {
 	 	var dashboardMenuItems = document.querySelectorAll('.dashboard-menu-item');
-	 	apiUrl = url;
+
+	 	helper.setApiUrl(url);
 
 	 	// Add events to each dashboard menu items which request appropriate content and renders a page with it
 	 	for (var i = 0; i < dashboardMenuItems.length; i++) {
@@ -54,7 +54,7 @@ var momentumModule = (function momentumModule(helper) {
 		var request = requests[this.dataset.req](user.id);
 
 		// Request the content and render page with it
-		helper.getApiData(apiUrl, request, function (result) {
+		helper.getApiData(request, function (result) {
 			renderDashboardPage(result, request);
 		});
 	}
@@ -72,8 +72,8 @@ var momentumModule = (function momentumModule(helper) {
 			elems.loginField.setAttribute('disabled', 'disabled');
 			elems.loginBtn.setAttribute('disabled', 'disabled');
 
-			helper.getApiData(apiUrl, `users?username=${username}`, function processResult(result) {
-
+			helper.getApiData(`users?username=${username}`, function processResult(result) {
+				
 				if(result.length > 0) {
 					// Username exists, clear any previous error and show the "dashboard"
 					user = result[0];
