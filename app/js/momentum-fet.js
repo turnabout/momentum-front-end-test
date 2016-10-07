@@ -94,10 +94,12 @@ var momentumModule = (function momentumModule(helper) {
 	/**
 	 * Transition the dashboard page.
 	 * @param {String} type - The type of transition.
+	 * @param {Function} callback - Function to call after transition is over.
 	 */
-	function transitionDashboardPage(type) {
+	function transitionDashboardPage(type, callback) {
 		elems.dashboardSecPage.dataset.animating = true;
 		elems.dashboardSecPage.classList.add('active');
+		callback = callback || function(){};
 
 		switch (type) {
 			case 'slideIn':
@@ -105,6 +107,7 @@ var momentumModule = (function momentumModule(helper) {
 					elems.dashboardSecPage.dataset.animating = false;
 					elems.dashboardSecPage.dataset.active = false;
 					elems.dashboardSecPage.classList.remove('active');
+					callback();
 				});
 				break;
 
@@ -112,6 +115,7 @@ var momentumModule = (function momentumModule(helper) {
 				helper.animateElem(elems.dashboardSecPage, ['fadeInLeft'], function () {
 					elems.dashboardSecPage.dataset.animating = false;
 					elems.dashboardSecPage.dataset.active = true;
+					callback();
 				});
 				break;
 
@@ -119,6 +123,7 @@ var momentumModule = (function momentumModule(helper) {
 				helper.animateElem(elems.dashboardSecPage, ['slideOutLeft', 'fast'], function () {
 					helper.animateElem(elems.dashboardSecPage, ['slideInLeft'], function () {
 						elems.dashboardSecPage.dataset.animating = false;
+						callback();
 					});
 				});
 				break;
@@ -187,9 +192,19 @@ var momentumModule = (function momentumModule(helper) {
 		elems.loginField.value = '';
 
 		// Fade dashboard out
-		helper.animateElem(elems.dashboard, ['fadeOutLeft'], function () {
-			elems.dashboard.classList.remove('active');
-		});
+		if (elems.dashboardSecPage.dataset.active === 'true') {
+			transitionDashboardPage('slideIn');
+			document.getElementById('active-dbp-btn').setAttribute('id', '');
+			
+			helper.animateElem(elems.dashboard, ['fadeOutLeft'], function () {
+				elems.dashboard.classList.remove('active');
+			});
+		} else {
+			helper.animateElem(elems.dashboard, ['fadeOutLeft'], function () {
+				elems.dashboard.classList.remove('active');
+			});
+		}
+
 
 		// Fade login page in
 		elems.loginPage.classList.add('active');
