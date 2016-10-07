@@ -41,7 +41,7 @@ var momentumModule = (function momentumModule(helper) {
 	 	}
 
 	 	// Add login/out events
-	 	helper.addEvent(document.getElementById('login'), 'submit', login);
+	 	helper.addEvent(document.getElementById('login'), 'submit', authenticate);
 	 	helper.addEvent(document.getElementById('logout'), 'click', logout);
 	 }
 
@@ -106,7 +106,7 @@ var momentumModule = (function momentumModule(helper) {
 				helper.animateElem(elems.dashboardSecPage, ['slideOutLeft'], function () {
 					elems.dashboardSecPage.dataset.animating = false;
 					elems.dashboardSecPage.dataset.active = false;
-					elems.dashboardSecPage.classList.remove('active');
+					resetStateIfLoggingOut();
 					callback();
 				});
 				break;
@@ -132,10 +132,10 @@ var momentumModule = (function momentumModule(helper) {
 
 
 	/**
-	 * Attempt to log in user on form submit.
+	 * Authenticate user on form submit.
 	 * @param {Event} event - The event.
 	 */
-	function login(event) {
+	function authenticate(event) {
 
 		var username = elems.loginField.value;
 
@@ -147,21 +147,8 @@ var momentumModule = (function momentumModule(helper) {
 			helper.getApiData(`users?username=${username}`, function processResult(result) {
 
 				if(result.length > 0) {
-					// Username exists, clear any previous error and show the "dashboard"
 					user = result[0];
-					elems.loginAlert.classList.remove('active');
-					elems.loginBox.classList.remove('error');
-					
-					// Fade dashboard in
-					elems.dashboard.classList.add('active');
-					helper.animateElem(elems.dashboard, ['fadeInLeft']);
-
-					// Fade login page out
-					helper.animateElem(elems.loginPage, ['fadeOut'], function () {
-						elems.loginPage.classList.remove('active');
-						elems.dashboard.classList.add('active');
-					});
-
+					login();
 				} else {
 					// Username does not exist, display error message
 					elems.loginAlert.innerHTML = `Username "${username}" does not exist.`;
@@ -177,6 +164,33 @@ var momentumModule = (function momentumModule(helper) {
 			});
 		}
 		event.preventDefault();
+
+		/**
+		 * Log user in.
+		 */
+		function login() {
+			// Username exists, clear any previous error and show the "dashboard"
+			elems.loginAlert.classList.remove('active');
+			elems.loginBox.classList.remove('error');
+			
+			// Make sure db is set to default state
+			if(document.getElementById('active-dbp-btn')) {
+				document.getElementById('active-dbp-btn').setAttribute('id', '');
+			}
+			
+			elems.dashboardSecPage.dataset.active = false;
+			elems.dashboardSecPage.classList.remove('active');
+
+			// Fade dashboard in
+			elems.dashboard.classList.add('active');
+			helper.animateElem(elems.dashboard, ['fadeInLeft']);
+
+			// Fade login page out
+			helper.animateElem(elems.loginPage, ['fadeOut'], function () {
+				elems.loginPage.classList.remove('active');
+				elems.dashboard.classList.add('active');
+			});
+		}
 	}
 
 	/**
@@ -192,19 +206,9 @@ var momentumModule = (function momentumModule(helper) {
 		elems.loginField.value = '';
 
 		// Fade dashboard out
-		if (elems.dashboardSecPage.dataset.active === 'true') {
-			transitionDashboardPage('slideIn');
-			document.getElementById('active-dbp-btn').setAttribute('id', '');
-			
-			helper.animateElem(elems.dashboard, ['fadeOutLeft'], function () {
-				elems.dashboard.classList.remove('active');
-			});
-		} else {
-			helper.animateElem(elems.dashboard, ['fadeOutLeft'], function () {
-				elems.dashboard.classList.remove('active');
-			});
-		}
-
+		helper.animateElem(elems.dashboard, ['fadeOutLeft'], function () {
+			elems.dashboard.classList.remove('active');
+		});
 
 		// Fade login page in
 		elems.loginPage.classList.add('active');
