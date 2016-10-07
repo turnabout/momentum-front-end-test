@@ -2465,7 +2465,10 @@ a {
 .dbp .inner-content {
   max-height: 100%;
   height: 100%;
-  overflow-y: scroll; }
+  overflow-y: scroll;
+  display: none; }
+  .dbp .inner-content.active {
+    display: block; }
 
 .dbp .list-group-item-heading::first-letter {
   text-transform: uppercase; }

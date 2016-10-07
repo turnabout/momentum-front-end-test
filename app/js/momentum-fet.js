@@ -18,6 +18,7 @@ var momentumModule = (function momentumModule(helper) {
 		dashboardSecPageTitle: document.getElementById('dbp-2-title'),
 		dbp2Content: document.getElementById('dbp2-content-1'),
 		dbp2ContentInner: document.getElementById('dbp2-content-1-inner'),
+		dbp2Back: document.getElementById('dbp2-back'),
 	};
 
 	// Store all different requests to use to different pages
@@ -70,6 +71,9 @@ var momentumModule = (function momentumModule(helper) {
 	 	// Add login/out events
 	 	helper.addEvent(document.getElementById('login'), 'submit', authenticate);
 	 	helper.addEvent(document.getElementById('logout'), 'click', logout);
+
+	 	// Secondary dbp back button
+	 	helper.addEvent(elems.dbp2Back, 'click', handleDbpBackClick);
 	 }
 
 	/**
@@ -158,6 +162,43 @@ var momentumModule = (function momentumModule(helper) {
 				});
 				break;
 		}
+	}
+
+	/**
+	 * Handle click on secondary DBP back button.
+	 * @param {Event} event - The event.
+	 */
+	function handleDbpBackClick(event) {
+		var currentContentElem = getCurrentlyShownDbpContent();
+
+		// First page, so slide dbp back in
+		if (currentContentElem.dataset.pagenum === '1') {
+			transitionDashboardPage('slideIn');
+			elems.dashboardSecPage.dataset.active = false;
+
+			if (document.getElementById('active-dbp-btn')) {
+				var activeMenuBtn = document.getElementById('active-dbp-btn');
+				activeMenuBtn.classList.remove('active');
+				activeMenuBtn.setAttribute('id', '');
+				activeMenuBtn.blur();
+			}
+
+			return;
+		}
+
+	}
+
+	/**
+	 * Get the element of the currently displayed dbp content.
+	 * @return {Object||Boolean} element - The element if one is shown, or false.
+	 */
+	function getCurrentlyShownDbpContent() {
+		for (var elem of helper.getElemsWithAttr('data-currentcontent')) {
+			if (helper.isElement(elem, 'currentcontent')) {
+				return elem;
+			}
+		}
+		return false;
 	}
 
 	/**

@@ -121,18 +121,23 @@ $db-borders-col: lighten($primary-light, 45%);
 			}
 		}
 	}
-
-
-
+	
+	// Wrapper around dbp content "pages"
 	.dbp-content {
 		max-height: 100%;
 		height: 88%;
 	}
-
+	
+	// Dbp content "pages"
 	.inner-content {
 		max-height: 100%;
 		height: 100%;
 		overflow-y: scroll;
+		display: none;
+		
+		&.active {
+			display: block;
+		}
 	}
 
 	.list-group-item-heading {

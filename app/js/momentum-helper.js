@@ -120,17 +120,34 @@ var momentumHelperModule = (function momentumHelperModule() {
 			}
 			return false;
 		}
-
 		return (element.dataset[data] === 'true');
 	}
 
 	/**
-	 * Set the module's apiUrl variable.
-	 * @param {String} url - The base api url.
+	* Set the module's apiUrl variable.
+	* @param {String} url - The base api url.
+	*/
+	function setApiUrl(url) {
+		apiUrl = (apiUrl) ? apiUrl : url;
+	}
+
+	/**
+	 * Get all elements that have an attribute.
+	 * @param {String} attribute - The attribute to filter elements by.
+	 * @return {Array} elements - All elements with that attribute.
 	 */
-	 function setApiUrl(url) {
-	 	apiUrl = (apiUrl) ? apiUrl : url;
-	 }
+	function getElemsWithAttr(attribute) {
+		var matchingElements = [];
+		var allElements = document.getElementsByTagName('*');
+		for (var i = 0, n = allElements.length; i < n; i++) {
+			if (allElements[i].getAttribute(attribute) !== null) {
+				// Element exists with attribute. Add to array.
+				matchingElements.push(allElements[i]);
+			}
+		}
+
+		return matchingElements;
+	}
 
 
 	return {
@@ -139,7 +156,8 @@ var momentumHelperModule = (function momentumHelperModule() {
 		'addEvent' : addEvent,
 		'removeEvent' : removeEvent,
 		'isElement' : isElement,
-		'setApiUrl' : setApiUrl
+		'setApiUrl' : setApiUrl,
+		'getElemsWithAttr' : getElemsWithAttr
 	};
 	
 })();
