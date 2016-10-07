@@ -268,10 +268,21 @@ var momentumModule = (function momentumModule(helper) {
 
 
 		function renderPosts(content, request) {
-			console.log(content);
-			console.log(request);
-			elems.dbp2ContentInner.innerHTML = request;
+			var markup = [],
+				beforePost = '<a href="#" class="list-group-item list-group-item-action">',
+				afterPost = '</a>';
 
+			for (var post of content) {
+				let markupLoop = [
+					beforePost,
+					`<h5 class="list-group-item-heading">${post.title}</h5>`,
+					`<p class="list-group-item-text">${post.body}</p>`,
+					afterPost
+				].join('');
+				markup.push(markupLoop);
+			}
+
+			elems.dbp2ContentInner.innerHTML = markup.join('');
 			afterRender();
 		}
 

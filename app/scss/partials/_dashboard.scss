@@ -14,7 +14,7 @@ $db-borders-col: lighten($primary-light, 45%);
 	position: relative;
 	max-width: 470px;
 	width: 100%;
-	border-right: 1px solid $db-borders-col;
+	border-right: 1px solid rgba($db-borders-col, 0.01);
 	float: left;
 	box-shadow: 2px 0px 5px 0px rgba(60, 60, 60, 0.1);
 	display: none;
@@ -32,7 +32,7 @@ $db-borders-col: lighten($primary-light, 45%);
 		padding: $list-group-item-padding-y $list-group-item-padding-x;
 		color: $primary;
 		border-bottom: 1px solid $db-borders-col;
-		height: 64px;
+		// height: 64px;
 
 		&.single-line {
 			font-size: 18px;
@@ -92,5 +92,47 @@ $db-borders-col: lighten($primary-light, 45%);
 			color: $primary-light;
 			cursor: pointer;
 		}
+	}
+}
+
+// 
+// Dashboard pages
+// 
+.dbp {
+	
+	.main-title {
+		height: 7%;
+	}
+
+	.dbp-content {
+		max-height: 100%;
+		height: 88%;
+	}
+
+	.inner-content {
+		max-height: 100%;
+		height: 100%;
+		overflow-y: scroll;
+	}
+
+	.list-group-item-heading {
+		&::first-letter {
+			text-transform: uppercase;
+		}
+	}
+
+	.list-group-item-text {
+		&::first-letter {
+			text-transform: uppercase;
+		}
+	}
+
+	// Bottom back/logout button
+	.btn-back {
+		height: 5%;
+		display: block;
+		width: 100%;
+		text-align: left;
+		border-radius: 0;
 	}
 }
