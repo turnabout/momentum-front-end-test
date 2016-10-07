@@ -46,30 +46,39 @@ var momentumModule = (function momentumModule(helper) {
 	 }
 
 	/**
-	* Function fired when a dashboard menu item is clicked.
-	* @param {Event} event
-	*/
+	 * Function fired when a dashboard menu item is clicked.
+	 * @param {Event} event
+	 */
 	function handleDashboardMenuClick (event) {
 		// Get request attached to this menu item
+		if ( !(this.dataset.req in requests) ) {
+			return;
+		}
+
 		var request = requests[this.dataset.req](user.id);
 
+		// If dbp page is already busy being processed or animated, don't do anything
+		if (helper.isElement(elems.dashboardSecPage, ['processing', 'animating'])) {
+			console.log('byebye');
+			return;
+		}
 
 		// Slide the second page in
+		elems.dashboardSecPage.dataset.processing = true;
+		elems.dashboardSecPage.dataset.animating = true;
 		elems.dashboardSecPage.classList.add('active');
 
 		if (elems.dashboardSecPage.dataset.active) {
 			helper.animateElem(elems.dashboardSecPage, ['slideOutLeft', 'fast'], function () {
 				helper.animateElem(elems.dashboardSecPage, ['slideInLeft'], function () {
-					
+					elems.dashboardSecPage.dataset.animating = false;
 				});
 			});
 		} else {
 			helper.animateElem(elems.dashboardSecPage, ['fadeInLeft'], function () {
-				
+				elems.dashboardSecPage.dataset.animating = false;
 			});
 		}
-
-		elems.dashboardSecPage.dataset.active = true;
 
 		// Request the content and render page with it
 		helper.getApiData(request, function (result) {
@@ -159,6 +168,9 @@ var momentumModule = (function momentumModule(helper) {
 	function renderDashboardPage(content, request) {
 		console.log(content);
 		console.log(request);
+
+
+		elems.dashboardSecPage.dataset.processing = false;
 	}
 
 	return {

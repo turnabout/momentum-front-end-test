@@ -106,6 +106,26 @@ var momentumHelperModule = (function momentumHelperModule() {
 	}
 
 	/**
+	 * Returns the boolean value of an element's data attribute(s).
+	 * @param {Object} element - The element.
+	 * @param {String|Array} data - String of data attribute, or array of all data attributes to check.
+	 * @param {Boolean} dataTruth - Whether the data attribute evaluates to true.
+	 */
+	function isElement(element, data) {
+		if(data.constructor === Array) {
+			for (var d of data) {
+				if (element.dataset[d] === 'true') {
+					return true;
+				}
+			}
+			console.log('returning false');
+			return false;
+		}
+
+		return (element.dataset[data] === 'true');
+	}
+
+	/**
 	 * Set the module's apiUrl variable.
 	 * @param {String} url - The base api url.
 	 */
@@ -119,6 +139,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		'animateElem' : animateElem,
 		'addEvent' : addEvent,
 		'removeEvent' : removeEvent,
+		'isElement' : isElement,
 		'setApiUrl' : setApiUrl
 	};
 	
