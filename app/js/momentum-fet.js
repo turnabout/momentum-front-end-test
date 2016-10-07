@@ -13,16 +13,41 @@ var momentumModule = (function momentumModule(helper) {
 		loginBtn: document.getElementById('login-btn'),
 		loginPage: document.getElementById('login-page'),
 		dashboard: document.getElementById('dashboard'),
+		dashboardMenuItems:document.querySelectorAll('.dashboard-menu-item'),
 		dashboardSecPage: document.getElementById('secondary-dbp'),
-		dashboardMenuItems:document.querySelectorAll('.dashboard-menu-item')
+		dashboardSecPageTitle: document.getElementById('dbp-2-title'),
 	};
 
 	// Store all different requests to use to different pages
 	var requests = {
-		'userPosts': function (userId) { return `posts?userId=${userId}`; },
-		'userAlbums': function (userId) { return `albums?userId=${userId}`; },
-		'allPosts': function () { return `posts`; },
-		'postComments': function (postId) { return `comments?postId=${postId}`; },
+		'userPosts': function (userId) { 
+			return {
+				'query' : `posts?userId=${userId}`,
+				'name' : 'Your Posts',
+				'type' : 'posts',
+			};
+		},
+		'userAlbums': function (userId) { 
+			return {
+				'query' : `albums?userId=${userId}`,
+				'name' : 'Your Album',
+				'type' : 'album',
+			};
+		},
+		'allPosts': function (userId) { 
+			return {
+				'query' : `posts`,
+				'name' : 'All Posts',
+				'type' : 'posts',
+			};
+		},
+		'post': function (postId) { 
+			return {
+				'query' : `posts?id=${postId}`,
+				'name' : 'Post',
+				'type' : 'post',
+			};
+		},
 	};
 
 	var user = {};
@@ -89,7 +114,7 @@ var momentumModule = (function momentumModule(helper) {
 		}
 
 		// Request the content and render page with it
-		helper.getApiData(request, function (result) {
+		helper.getApiData(request.query, function (result) {
 			renderDashboardPage(result, request);
 		});
 	}
@@ -132,7 +157,6 @@ var momentumModule = (function momentumModule(helper) {
 				break;
 		}
 	}
-
 
 	/**
 	 * Authenticate user on form submit.
@@ -229,10 +253,32 @@ var momentumModule = (function momentumModule(helper) {
 	* @param {String} request - The type of request, so we know what content should be rendered, how.
 	*/
 	function renderDashboardPage(content, request) {
-		console.log(content);
-		console.log(request);
 
+		var render = {
+			'posts' : renderPosts,
+			'album' : renderAlbum,
+			'post' : renderPost
+		};
+
+		elems.dashboardSecPageTitle.innerHTML = request.name;
 		elems.dashboardSecPage.dataset.processing = false;
+		render[request.type](content, request);
+
+
+		function renderPosts(content, request) {
+			console.log(content);
+			console.log(request);
+		}
+
+		function renderAlbum(content, request) {
+			console.log(content);
+			console.log(request);
+		}
+
+		function renderPost(content, request) {
+			console.log(content);
+			console.log(request);
+		}
 	}
 
 	return {
