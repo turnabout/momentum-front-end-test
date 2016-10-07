@@ -43,15 +43,16 @@ var momentumHelperModule = (function momentumHelperModule() {
 	/**
 	 * Animate an element.
 	 * @param {Object} element - The element to fade.
-	 * @param {String} animationName - The name of the animation. Translates to a css class.
+	 * @param {Array} animationNames - Array containing the class(es) to add for the animation.
 	 * @param {Function} callback - Function to call once fade is done.
 	 */
-	function animateElem(element, transitionName, callback) {
+	function animateElem(element, animationNames, callback) {
 		callback = callback || function() {};
-		element.classList.add(transitionName, 'animated');
+		animationNames.push('animated');
+		DOMTokenList.prototype.add.apply(element.classList, animationNames);
 
 		addEventOnce(element, 'animationend', function afterAnimationEnd(e) {
-			element.classList.remove(transitionName, 'animated');
+			DOMTokenList.prototype.remove.apply(element.classList, animationNames);
 			callback();
 		});
 
