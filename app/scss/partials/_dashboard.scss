@@ -12,15 +12,19 @@ $db-borders-col: lighten($primary-light, 45%);
 	background: $white;
 	height: 100%;
 	position: relative;
-	max-width: 500px;
+	max-width: 470px;
 	width: 100%;
 	border-right: 1px solid $db-borders-col;
 	float: left;
+	box-shadow: 2px 0px 5px 0px rgba(60, 60, 60, 0.1);
 	display: none;
 
 	&.active {display: block}
-	&.dbp-1 {z-index: 5;}
-	&.dbp-2 {z-index: 3;}
+	&.dbp-1  {z-index: 5;}
+	&.dbp-2  {
+		z-index: 3;
+		background: darken($white, 5%);
+	}
 
 	// Top title
 	.main-title {

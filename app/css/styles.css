@@ -2390,20 +2390,22 @@ a {
   height: 100%; }
 
 .dashboard-page {
-  background: #fefefd;
+  background: #fefefe;
   height: 100%;
   position: relative;
-  max-width: 500px;
+  max-width: 470px;
   width: 100%;
   border-right: 1px solid #d9deea;
   float: left;
+  box-shadow: 2px 0px 5px 0px rgba(60, 60, 60, 0.1);
   display: none; }
   .dashboard-page.active {
     display: block; }
   .dashboard-page.dbp-1 {
     z-index: 5; }
   .dashboard-page.dbp-2 {
-    z-index: 3; }
+    z-index: 3;
+    background: #f1f1f1; }
   .dashboard-page .main-title {
     text-align: left;
     padding: 12px 20px;
