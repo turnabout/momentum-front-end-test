@@ -106,7 +106,7 @@ var momentumModule = (function momentumModule(helper) {
 				helper.animateElem(elems.dashboardSecPage, ['slideOutLeft'], function () {
 					elems.dashboardSecPage.dataset.animating = false;
 					elems.dashboardSecPage.dataset.active = false;
-					resetStateIfLoggingOut();
+					elems.dashboardSecPage.classList.remove('active');
 					callback();
 				});
 				break;
@@ -177,7 +177,7 @@ var momentumModule = (function momentumModule(helper) {
 			if(document.getElementById('active-dbp-btn')) {
 				document.getElementById('active-dbp-btn').setAttribute('id', '');
 			}
-			
+
 			elems.dashboardSecPage.dataset.active = false;
 			elems.dashboardSecPage.classList.remove('active');
 
