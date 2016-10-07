@@ -77,6 +77,9 @@ var momentumModule = (function momentumModule(helper) {
 			});
 		}
 
+		// For knowing which animation to use
+		elems.dashboardSecPage.dataset.active = true;
+
 		// Request the content and render page with it
 		helper.getApiData(request, function (result) {
 			renderDashboardPage(result, request);
