@@ -50,7 +50,7 @@ var momentumModule = (function momentumModule(helper) {
 	 * @param {Event} event
 	 */
 	function handleDashboardMenuClick (event) {
-		console.log(this);
+
 		// If page is already busy being processed/animated or request doesn't exist, don't do anything
 		if (helper.isElement(elems.dashboardSecPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
 			return;
@@ -59,6 +59,8 @@ var momentumModule = (function momentumModule(helper) {
 		// If button clicked already active, slide page back in and do nothing else
 		if (this.getAttribute('id') === 'active-dbp-btn') {
 			transitionDashboardPage('slideIn');
+			elems.dashboardSecPage.dataset.active = false;
+			this.setAttribute('id', '');
 			return;
 		}
 
@@ -77,14 +79,11 @@ var momentumModule = (function momentumModule(helper) {
 		// Slide the second page in
 		elems.dashboardSecPage.dataset.processing = true;
 
-		if (elems.dashboardSecPage.dataset.active) {
+		if (elems.dashboardSecPage.dataset.active === 'true') {
 			transitionDashboardPage('slideInOut');
 		} else {
 			transitionDashboardPage('slideOut');
 		}
-
-		// For knowing which animation to use
-		elems.dashboardSecPage.dataset.active = true;
 
 		// Request the content and render page with it
 		helper.getApiData(request, function (result) {
@@ -102,12 +101,17 @@ var momentumModule = (function momentumModule(helper) {
 
 		switch (type) {
 			case 'slideIn':
-				elems.dashboardSecPage.dataset.animating = false;
+				helper.animateElem(elems.dashboardSecPage, ['slideOutLeft'], function () {
+					elems.dashboardSecPage.dataset.animating = false;
+					elems.dashboardSecPage.dataset.active = false;
+					elems.dashboardSecPage.classList.remove('active');
+				});
 				break;
 
 			case 'slideOut':
 				helper.animateElem(elems.dashboardSecPage, ['fadeInLeft'], function () {
 					elems.dashboardSecPage.dataset.animating = false;
+					elems.dashboardSecPage.dataset.active = true;
 				});
 				break;
 
