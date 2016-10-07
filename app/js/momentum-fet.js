@@ -5,8 +5,6 @@
  */
 var momentumModule = (function momentumModule(helper) {
 
-	var user = {};
-
 	// Store references to frequently reused dom elements
 	var elems = {
 		loginField: document.getElementById('login-field'),
@@ -15,6 +13,7 @@ var momentumModule = (function momentumModule(helper) {
 		loginBtn: document.getElementById('login-btn'),
 		loginPage: document.getElementById('login-page'),
 		dashboard: document.getElementById('dashboard'),
+		dashboardMenuItems:document.querySelectorAll('.dashboard-menu-item')
 	};
 
 	// Store all different requests to use to different pages
@@ -25,19 +24,19 @@ var momentumModule = (function momentumModule(helper) {
 		'postComments': function (postId) { return `comments?postId=${postId}`; },
 	};
 
+	var user = {};
 
 	/**
-	 * Initialize everything.
-	 * @param {String} url - Base URL from which the API info is fetched.
+	 * Initialize all the things!
+	 * @param {String} url - Base URL from which the API data is fetched.
 	 */
 	 function init(url) {
-	 	var dashboardMenuItems = document.querySelectorAll('.dashboard-menu-item');
-
+	 	// Set the api url
 	 	helper.setApiUrl(url);
 
 	 	// Add events to each dashboard menu items which request appropriate content and renders a page with it
-	 	for (var i = 0; i < dashboardMenuItems.length; i++) {
-	 		helper.addEvent(dashboardMenuItems[i], 'click', handleDashboardMenuClick);
+	 	for (var i = 0; i < elems.dashboardMenuItems.length; i++) {
+	 		helper.addEvent(elems.dashboardMenuItems[i], 'click', handleDashboardMenuClick);
 	 	}
 
 	 	// Add login/out events
@@ -73,7 +72,7 @@ var momentumModule = (function momentumModule(helper) {
 			elems.loginBtn.setAttribute('disabled', 'disabled');
 
 			helper.getApiData(`users?username=${username}`, function processResult(result) {
-				
+
 				if(result.length > 0) {
 					// Username exists, clear any previous error and show the "dashboard"
 					user = result[0];
