@@ -178,6 +178,7 @@ var momentumModule = (function momentumModule(helper) {
 			
 			// Make sure db is set to default state
 			if(document.getElementById('active-dbp-btn')) {
+				document.getElementById('active-dbp-btn').classList.remove('active');
 				document.getElementById('active-dbp-btn').setAttribute('id', '');
 			}
 
