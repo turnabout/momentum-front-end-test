@@ -51,14 +51,17 @@ $db-borders-col: lighten($primary-light, 45%);
 			background: $primary;
 			border: 1px solid $primary;
 		}
-
-		a.list-group-item {
-			border: 1px solid transparent;
+		
+		.list-group-item {
 			border-top: 1px solid $db-borders-col;
 
-			&:last-child {
-				border-bottom: 1px solid $db-borders-col;
-			}
+			&:first-child { border-top: none; }
+			&:last-child { border-bottom: 1px solid $db-borders-col; }
+		}
+
+		a.list-group-item {
+
+
 			
 			&:hover {
 				background: darken($white, 10%);
@@ -70,8 +73,6 @@ $db-borders-col: lighten($primary-light, 45%);
 
 			&.active {
 				background: $primary-light;
-				border-top: 1px solid lighten($primary-light, 10%);
-				border-bottom: 1px solid lighten($primary-light, 10%);
 				color: #fff;
 			}
 

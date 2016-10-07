@@ -2425,22 +2425,21 @@ a {
     color: #efefef;
     background: #2E4172;
     border: 1px solid #2E4172; }
-  .dashboard-page .menu a.list-group-item {
-    border: 1px solid transparent;
+  .dashboard-page .menu .list-group-item {
     border-top: 1px solid #d9deea; }
-    .dashboard-page .menu a.list-group-item:last-child {
+    .dashboard-page .menu .list-group-item:first-child {
+      border-top: none; }
+    .dashboard-page .menu .list-group-item:last-child {
       border-bottom: 1px solid #d9deea; }
-    .dashboard-page .menu a.list-group-item:hover {
-      background: #e5e5e5; }
-    .dashboard-page .menu a.list-group-item:active, .dashboard-page .menu a.list-group-item:focus {
-      background: #cbcbcb; }
-    .dashboard-page .menu a.list-group-item.active {
-      background: #4F628E;
-      border-top: 1px solid #667baa;
-      border-bottom: 1px solid #667baa;
-      color: #fff; }
-    .dashboard-page .menu a.list-group-item.active:hover {
-      background: #4d608b; }
+  .dashboard-page .menu a.list-group-item:hover {
+    background: #e5e5e5; }
+  .dashboard-page .menu a.list-group-item:active, .dashboard-page .menu a.list-group-item:focus {
+    background: #cbcbcb; }
+  .dashboard-page .menu a.list-group-item.active {
+    background: #4F628E;
+    color: #fff; }
+  .dashboard-page .menu a.list-group-item.active:hover {
+    background: #4d608b; }
   .dashboard-page .logout {
     position: absolute;
     right: 20px;
