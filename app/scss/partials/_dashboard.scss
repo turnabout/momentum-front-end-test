@@ -26,23 +26,7 @@ $db-borders-col: lighten($primary-light, 45%);
 		background: darken($white, 5%);
 	}
 
-	// Top title
-	.main-title {
-		text-align: left;
-		padding: $list-group-item-padding-y $list-group-item-padding-x;
-		color: $primary;
-		border-bottom: 1px solid $db-borders-col;
-		// height: 64px;
 
-		&.single-line {
-			font-size: 18px;
-			padding-top: 22px;
-			padding-bottom: 24px;
-		}
-
-		.line:first-child {font-size: 22px;}
-		.line:last-child  {font-size: 17px;}
-	}
 
 	// Menus
 	.menu {
@@ -99,10 +83,46 @@ $db-borders-col: lighten($primary-light, 45%);
 // Dashboard pages
 // 
 .dbp {
-	
+
+	// Top title
 	.main-title {
+		text-align: left;
+		padding: $list-group-item-padding-y $list-group-item-padding-x;
+		color: $primary;
+		border-bottom: 1px solid $db-borders-col;
 		height: 7%;
+
+		&.single-line {
+			font-size: 18px;
+			padding-top: 22px;
+			padding-bottom: 24px;
+		}
+		
+		.line {
+			float: left;
+
+			&:first-child {
+				font-size: 22px;
+			}
+
+			&:last-child {
+				font-size: 17px;
+				margin: 4px 0 0 4px;
+			}
+		}
+
+		@include media-breakpoint-up('lg') {
+			.line {
+				float: none;
+
+				&:last-child {
+					margin: 0;
+				}
+			}
+		}
 	}
+
+
 
 	.dbp-content {
 		max-height: 100%;

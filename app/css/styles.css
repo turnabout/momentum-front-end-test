@@ -2407,19 +2407,6 @@ a {
   .dashboard-page.dbp-2 {
     z-index: 3;
     background: #f1f1f1; }
-  .dashboard-page .main-title {
-    text-align: left;
-    padding: 12px 20px;
-    color: #2E4172;
-    border-bottom: 1px solid #d9deea; }
-    .dashboard-page .main-title.single-line {
-      font-size: 18px;
-      padding-top: 22px;
-      padding-bottom: 24px; }
-    .dashboard-page .main-title .line:first-child {
-      font-size: 22px; }
-    .dashboard-page .main-title .line:last-child {
-      font-size: 17px; }
   .dashboard-page .menu .title {
     color: #efefef;
     background: #2E4172;
@@ -2449,7 +2436,27 @@ a {
       cursor: pointer; }
 
 .dbp .main-title {
+  text-align: left;
+  padding: 12px 20px;
+  color: #2E4172;
+  border-bottom: 1px solid #d9deea;
   height: 7%; }
+  .dbp .main-title.single-line {
+    font-size: 18px;
+    padding-top: 22px;
+    padding-bottom: 24px; }
+  .dbp .main-title .line {
+    float: left; }
+    .dbp .main-title .line:first-child {
+      font-size: 22px; }
+    .dbp .main-title .line:last-child {
+      font-size: 17px;
+      margin: 4px 0 0 4px; }
+  @media (min-width: 992px) {
+    .dbp .main-title .line {
+      float: none; }
+      .dbp .main-title .line:last-child {
+        margin: 0; } }
 
 .dbp .dbp-content {
   max-height: 100%;
