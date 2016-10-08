@@ -149,6 +149,38 @@ var momentumHelperModule = (function momentumHelperModule() {
 		return matchingElements;
 	}
 
+	/**
+	 * Get next non-text element.
+	 * @param {Object} element - The element from which to start.
+	 * @return {Object} next - The element next of the starting one.
+	 */
+	 function getElementNextOf(element) {
+		var nextSibling = element.nextSibling;
+
+		// Skip text nodes
+		while(nextSibling != null && nextSibling.nodeType == 3) {
+			nextSibling = nextSibling.nextSibling;
+		}
+
+		return nextSibling;
+	}
+
+	/**
+	 * Get previous non-text element.
+	 * @param {Object} element - The element from which to start.
+	 * @return {Object} next - The element next of the starting one.
+	 */
+	 function getElementPreviousOf(element) {
+		var previousSibling = element.previousSibling;
+
+		// Skip text nodes
+		while(previousSibling != null && previousSibling.nodeType == 3) {
+			previousSibling = previousSibling.previousSibling;
+		}
+
+		return previousSibling;
+	}
+
 
 	return {
 		'getApiData' : getApiData,
@@ -157,7 +189,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 		'removeEvent' : removeEvent,
 		'isElement' : isElement,
 		'setApiUrl' : setApiUrl,
-		'getElemsWithAttr' : getElemsWithAttr
+		'getElemsWithAttr' : getElemsWithAttr,
+		'getElementNextOf' : getElementNextOf,
+		'getElementPreviousOf' : getElementPreviousOf
 	};
 	
 })();

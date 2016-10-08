@@ -121,7 +121,7 @@ var momentumModule = (function momentumModule(helper) {
 
 		// Request the content and render page with it
 		helper.getApiData(request.query, function (result) {
-			renderDashboardPage(result, request);
+			renderDashboardPage(result, request, elems.dbp2ContentInner);
 		});
 	}
 
@@ -182,9 +182,10 @@ var momentumModule = (function momentumModule(helper) {
 				activeMenuBtn.setAttribute('id', '');
 				activeMenuBtn.blur();
 			}
-
 			return;
 		}
+
+		dbpChangePage('previous');
 
 	}
 
@@ -303,8 +304,9 @@ var momentumModule = (function momentumModule(helper) {
 	* @param {Array} content - Content to render in the page.
 	* @param {String} request - Info on the request, including the type, used to select the correct render.
 	* @param {Object} parent - The parent element in which the dashboard page should be rendered.
+	* @param {Function} callback - Function to call once page is finished rendering.
 	*/
-	function renderDashboardPage(content, request, parent) {
+	function renderDashboardPage(content, request, parent, callback) {
 
 		var render = {
 			'posts' : renderPosts,
@@ -312,16 +314,18 @@ var momentumModule = (function momentumModule(helper) {
 			'post' : renderPost
 		};
 
-		parent = parent || elems.dbp2ContentInner;
-		parent.innerHTML = '';
+		callback = callback || function(){};
 
-		// Empty parent
+		// Empty the parent
 		while (parent.firstChild) {
 			parent.removeChild(parent.firstChild);
 		}
 
+		// Place the title
 		elems.dashboardSecPageTitle.innerHTML = request.name;
 		elems.dashboardSecPage.dataset.processing = false;
+
+		// Use the correct rendering function
 		render[request.type](content, request);
 
 		function renderPosts(content, request) {
@@ -376,9 +380,9 @@ var momentumModule = (function momentumModule(helper) {
 		}
 
 		function afterRender() {
-			elems.dbp2ContentInner.classList.add('active');
+			parent.classList.add('active');
+			callback();
 		}
-
 	}
 
 	/**
@@ -386,12 +390,14 @@ var momentumModule = (function momentumModule(helper) {
 	 */
 	function renderNewPage() {
 		var currentContentElem = getCurrentlyShownDbpContent(),
-			nextContentElem = currentContentElem.nextSibling,
+			nextContentElem = helper.getElementNextOf(currentContentElem),
 			request = requests[this.dataset.req](this.dataset.id);
 
 		// Request the content and render page with it
 		helper.getApiData(request.query, function (result) {
-			renderDashboardPage(result, request, nextContentElem);
+			renderDashboardPage(result, request, nextContentElem, function () {
+				dbpChangePage('next');
+			});
 		});
 	}
 
@@ -402,20 +408,28 @@ var momentumModule = (function momentumModule(helper) {
 	 */
 	function dbpChangePage(direction, callback) {
 		var currentContentElem = getCurrentlyShownDbpContent();
+		callback = callback || function(){};
+
+		// Make current page inactive
+		currentContentElem.classList.remove('active');
+		currentContentElem.dataset.currentcontent = false;
+
 
 		switch (direction) {
-			case 'prev':
-				var previousPage = currentContentElem.previousSibling;
-				console.log('going to previous page:');
-				console.log(previousPage);
+			case 'previous':
+				var previousPage = helper.getElementPreviousOf(currentContentElem);
+				previousPage.classList.add('active');
+				previousPage.dataset.currentcontent = true;
 				callback();
 				break;
+
 			case 'next':
-				var nextPage = currentContentElem.nextSibling;
-				console.log('going to next page:');
-				console.log(nextPage);
+				var nextPage = helper.getElementNextOf(currentContentElem);
+				nextPage.classList.add('active');
+				nextPage.dataset.currentcontent = true;
 				callback();
 				break;
+
 			default:
 				break;
 		}
