@@ -161,11 +161,46 @@ $db-borders-col: lighten($primary-light, 45%);
 	}
 
 	// Bottom back/logout button
-	.btn-back {
+	.btn-back, .btn-bottom {
 		height: 5%;
 		display: block;
 		width: 100%;
 		text-align: left;
 		border-radius: 0;
+	}
+
+	.bottom-btns {
+		height: 5%;
+		overflow: hidden;
+
+		.btn-bottom {
+			width: 50%;
+			text-align: center;
+			float: left;
+			height: 100%;
+			// background: darken($btn-secondary-bg, 5%);
+			// border: 1px solid darken($btn-secondary-bg, 5%);
+
+			// &:hover {
+			// 	background: darken($btn-secondary-bg, 10%);
+			// }
+
+   //  		&:focus, &:active {
+			// 	background: darken($btn-secondary-bg, 15%);
+   //  		}
+
+			// &:first-child {
+			// 	border-right: 1px solid $db-borders-col;
+			// }
+
+			// &:disabled {
+			// 	cursor: not-allowed;
+			// 	opacity: .65;
+
+			// 	&:hover {
+			// 		background: darken($btn-secondary-bg, 5%);
+			// 	}
+			// }
+		}
 	}
 }

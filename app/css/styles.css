@@ -2481,12 +2481,21 @@ a {
 .dbp .list-group-item-text::first-letter {
   text-transform: uppercase; }
 
-.dbp .btn-back {
+.dbp .btn-back, .dbp .btn-bottom {
   height: 5%;
   display: block;
   width: 100%;
   text-align: left;
   border-radius: 0; }
+
+.dbp .bottom-btns {
+  height: 5%;
+  overflow: hidden; }
+  .dbp .bottom-btns .btn-bottom {
+    width: 50%;
+    text-align: center;
+    float: left;
+    height: 100%; }
 
 body {
   color: #201f1f;

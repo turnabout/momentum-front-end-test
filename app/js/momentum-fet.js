@@ -18,7 +18,8 @@ var momentumModule = (function momentumModule(helper) {
 		dashboardSecPageTitle: document.getElementById('dbp-2-title'),
 		dbp2Content: document.getElementById('dbp2-content-1'),
 		dbp2ContentInner: document.getElementById('dbp2-content-1-inner'),
-		dbp2Back: document.getElementById('dbp2-back'),
+		dbp2Previous: document.getElementById('dbp2-previous'),
+		dbp2Next: document.getElementById('dbp2-next')
 	};
 
 	// Store all different requests to use to different pages
@@ -73,7 +74,8 @@ var momentumModule = (function momentumModule(helper) {
 	 	helper.addEvent(document.getElementById('logout'), 'click', logout);
 
 	 	// Secondary dbp previous/next buttons
-	 	helper.addEvent(elems.dbp2Back, 'click', handleDbpBackClick);
+	 	helper.addEvent(elems.dbp2Previous, 'click', dbpPreviousClick);
+	 	helper.addEvent(elems.dbp2Next, 'click', dbpNextClick);
 	 }
 
 	/**
@@ -168,7 +170,7 @@ var momentumModule = (function momentumModule(helper) {
 	 * Handle click on secondary DBP back button.
 	 * @param {Event} event - The event.
 	 */
-	function handleDbpBackClick(event) {
+	function dbpPreviousClick(event) {
 		var currentContentElem = getCurrentlyShownDbpContent();
 
 		// First page, so slide dbp back in
@@ -186,7 +188,14 @@ var momentumModule = (function momentumModule(helper) {
 		}
 
 		dbpChangePage('previous');
+	}
 
+	/**
+	 * Handle click on secondary DBP next button.
+	 * @param {Event} event - The event.
+	 */
+	function dbpNextClick(event) {
+		console.log('we in there');
 	}
 
 	/**
