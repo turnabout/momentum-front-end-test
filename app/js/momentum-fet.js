@@ -246,10 +246,9 @@ var momentumModule = (function momentumModule(helper) {
 			elems.loginAlert.classList.remove('active');
 			elems.loginBox.classList.remove('error');
 			
-			// Make sure db is set to default state
+			// Make sure dashboard is set to default state
 			if(document.getElementById('active-dbp-btn')) {
-				document.getElementById('active-dbp-btn').classList.remove('active');
-				document.getElementById('active-dbp-btn').setAttribute('id', '');
+				resetDashboardState();
 			}
 
 			elems.dashboardSecPage.dataset.active = false;
@@ -308,11 +307,45 @@ var momentumModule = (function momentumModule(helper) {
 		event.preventDefault();
 	}
 
+	// Reset active dbp and bottom nav buttons state (TODO)
+	/**
+	 * Reset the entire dashboard state and remove all content from it.
+	 */
+	function resetDashboardState() {
+
+		// Reset active db button
+		if(document.getElementById('active-dbp-btn')) {
+			document.getElementById('active-dbp-btn').classList.remove('active');
+			document.getElementById('active-dbp-btn').setAttribute('id', '');
+		}
+
+		// Remove any dbps that were generated after the base one
+		while (helper.getElementNextOf(elems.dbp2ContentInner) != null) {
+			console.log('we removin one');
+			let nextElem = helper.getElementNextOf(elems.dbp2ContentInner);
+			nextElem.parentElement.removeChild(nextElem);
+		}
+
+		// Reset bottom btns states
+		elems.dbp2Next.disabled = true;
+
+		// Remove all contents from first dbp
+		elems.dashboardSecPageTitle.innerHTML = '';
+		
+		// Empty the first page
+		while (elems.dbp2ContentInner.firstChild) {
+			elems.dbp2ContentInner.removeChild(elems.dbp2ContentInner.firstChild);
+		}
+
+		// Make first page active
+		elems.dbp2ContentInner.dataset.currentcontent = true;
+	}
+
 	/**
 	* Render a dashboard page with some passed-in content.
 	* @param {Array} content - Content to render in the page.
 	* @param {String} request - Info on the request, including the type, used to select the correct render.
-	* @param {Object} parent - The parent element in which the dashboard page should be rendered.
+	* @param {Object} parent - The dashboard page in which the content should be rendered.
 	* @param {Function} callback - Function to call once page is finished rendering.
 	*/
 	function renderDashboardPage(content, request, parent, callback) {
@@ -390,6 +423,14 @@ var momentumModule = (function momentumModule(helper) {
 
 		function afterRender() {
 			parent.classList.add('active');
+
+			// Remove any dbp that come after the new, current dashboard page. To avoid having the 'next' option available to irrelevent pages.
+			while (helper.getElementNextOf(parent) != null) {
+				console.log('we removin one');
+				let nextElem = helper.getElementNextOf(parent);
+				nextElem.parentElement.removeChild(nextElem);
+			}
+
 			callback();
 		}
 	}

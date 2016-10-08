@@ -178,6 +178,11 @@ $db-borders-col: lighten($primary-light, 45%);
 			text-align: center;
 			float: left;
 			height: 100%;
+
+			&:first-child {
+				border-right: 1px solid $db-borders-col;
+			}
+			
 			// background: darken($btn-secondary-bg, 5%);
 			// border: 1px solid darken($btn-secondary-bg, 5%);
 
@@ -188,11 +193,6 @@ $db-borders-col: lighten($primary-light, 45%);
    //  		&:focus, &:active {
 			// 	background: darken($btn-secondary-bg, 15%);
    //  		}
-
-			// &:first-child {
-			// 	border-right: 1px solid $db-borders-col;
-			// }
-
 			// &:disabled {
 			// 	cursor: not-allowed;
 			// 	opacity: .65;

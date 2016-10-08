@@ -2496,6 +2496,8 @@ a {
     text-align: center;
     float: left;
     height: 100%; }
+    .dbp .bottom-btns .btn-bottom:first-child {
+      border-right: 1px solid #d9deea; }
 
 body {
   color: #201f1f;
