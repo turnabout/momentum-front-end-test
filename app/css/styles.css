@@ -2470,8 +2470,13 @@ a {
   .dbp .inner-content.active {
     display: block; }
 
-.dbp .list-group-item-heading::first-letter {
-  text-transform: uppercase; }
+.dbp .list-group-item:first-child {
+  border-top: none; }
+
+.dbp .list-group-item-heading {
+  font-weight: 700; }
+  .dbp .list-group-item-heading::first-letter {
+    text-transform: uppercase; }
 
 .dbp .list-group-item-text::first-letter {
   text-transform: uppercase; }

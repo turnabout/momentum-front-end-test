@@ -76,11 +76,11 @@ var momentumModule = (function momentumModule(helper) {
 	 	helper.addEvent(elems.dbp2Back, 'click', handleDbpBackClick);
 
 	 	// Handle clicks on elements inside of secondary dbps
-	 	for (var elem of document.getElementsByClassName('inner-content')) {
+	 	for (var elem of document.querySelectorAll('.inner-content')) {
 	 		helper.addEvent(elem, 'click', handleSecondaryDbpElemClicks);
 	 	}
 	 }
-
+	 
 	/**
 	 * Function fired when a dashboard menu item is clicked.
 	 * @param {Event} event
@@ -342,6 +342,8 @@ var momentumModule = (function momentumModule(helper) {
 				newElem.appendChild(newElemTitle);
 				newElem.appendChild(newElemP);
 
+				helper.addEvent(newElem, 'click', renderNewPage);
+
 				parent.appendChild(newElem);
 			}
 			afterRender();
@@ -368,7 +370,7 @@ var momentumModule = (function momentumModule(helper) {
 	}
 
 	/**
-	 * Render a new page.
+	 * Render a new page. Attached to every clickable navigation links in DBP inner content.
 	 */
 	function renderNewPage() {
 		console.log(this);
@@ -378,10 +380,6 @@ var momentumModule = (function momentumModule(helper) {
 	 * Handle clicks on elements inside of secondary dbp.
 	 */
 	function handleSecondaryDbpElemClicks(elem) {
-
-		console.log(event);
-		console.log(event.target);
-
 
 	}
 

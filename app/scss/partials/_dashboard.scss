@@ -140,7 +140,15 @@ $db-borders-col: lighten($primary-light, 45%);
 		}
 	}
 
+	.list-group-item {
+		&:first-child {
+			border-top: none;
+		}
+	}
+
 	.list-group-item-heading {
+		font-weight: 700;
+
 		&::first-letter {
 			text-transform: uppercase;
 		}
