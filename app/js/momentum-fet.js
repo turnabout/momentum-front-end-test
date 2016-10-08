@@ -74,11 +74,6 @@ var momentumModule = (function momentumModule(helper) {
 
 	 	// Secondary dbp back button
 	 	helper.addEvent(elems.dbp2Back, 'click', handleDbpBackClick);
-
-	 	// Handle clicks on elements inside of secondary dbps
-	 	for (var elem of document.querySelectorAll('.inner-content')) {
-	 		helper.addEvent(elem, 'click', handleSecondaryDbpElemClicks);
-	 	}
 	 }
 
 	/**
@@ -226,14 +221,7 @@ var momentumModule = (function momentumModule(helper) {
 					login();
 				} else {
 					// Username does not exist, display error message
-					elems.loginAlert.innerHTML = `Username "${username}" does not exist.`;
-					elems.loginAlert.classList.add('active');
-					elems.loginBox.classList.add('error');
-
-					// Enable form and focus back on field
-					elems.loginField.removeAttribute('disabled', 'disabled');
-					elems.loginBtn.removeAttribute('disabled', 'disabled');
-					elems.loginField.focus();
+					displayError(`Username "${username}" does not exist.`);
 				}
 				
 			});
@@ -267,6 +255,21 @@ var momentumModule = (function momentumModule(helper) {
 				elems.dashboard.classList.add('active');
 			});
 		}
+
+		/**
+		 * Display an error message on the login page after trying to authenticate the user.
+		 * @param {String} message - The message to display.
+		 */
+		 function displayError(message) {
+			elems.loginAlert.innerHTML = `Username "${username}" does not exist.`;
+			elems.loginAlert.classList.add('active');
+			elems.loginBox.classList.add('error');
+
+			// Enable form and focus back on field
+			elems.loginField.removeAttribute('disabled', 'disabled');
+			elems.loginBtn.removeAttribute('disabled', 'disabled');
+			elems.loginField.focus();
+		 }
 	}
 
 	/**
@@ -390,13 +393,6 @@ var momentumModule = (function momentumModule(helper) {
 		helper.getApiData(request.query, function (result) {
 			renderDashboardPage(result, request, nextContentElem);
 		});
-	}
-
-	/**
-	 * Handle clicks on elements inside of secondary dbp.
-	 */
-	function handleSecondaryDbpElemClicks(elem) {
-
 	}
 
 	/**
