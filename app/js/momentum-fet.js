@@ -148,7 +148,6 @@ var momentumModule = (function momentumModule(helper) {
 					elems.dashboardSecPage.dataset.active = false;
 					elems.dashboardSecPage.classList.remove('active');
 					callback();
-					changeDbpFocus();
 				});
 				break;
 
@@ -157,7 +156,6 @@ var momentumModule = (function momentumModule(helper) {
 					elems.dashboardSecPage.dataset.animating = false;
 					elems.dashboardSecPage.dataset.active = true;
 					callback();
-					changeDbpFocus();
 				});
 				break;
 
@@ -166,7 +164,6 @@ var momentumModule = (function momentumModule(helper) {
 					helper.animateElem(elems.dashboardSecPage, ['slideInLeft'], function () {
 						elems.dashboardSecPage.dataset.animating = false;
 						callback();
-						changeDbpFocus();
 					});
 				});
 				break;
@@ -501,7 +498,6 @@ var momentumModule = (function momentumModule(helper) {
 		}
 	}
 
-
 	/**
 	 * Reset the state of dbp to the original default one. Launch on tab change.
 	 */
@@ -524,14 +520,6 @@ var momentumModule = (function momentumModule(helper) {
 		while (elems.dbp2ContentInner.firstChild) {
 			elems.dbp2ContentInner.removeChild(elems.dbp2ContentInner.firstChild);
 		}
-	}
-
-	/**
-	 * Alternate "focus" between primary and secondary dbp. This is for styling on mobile.
-	 */
-	function changeDbpFocus() {
-		elems.dashboardMainPage.classList.toggle('focus');
-		elems.dashboardSecPage.classList.toggle('focus');
 	}
 
 	return {
