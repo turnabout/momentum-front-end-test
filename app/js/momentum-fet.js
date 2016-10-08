@@ -310,28 +310,40 @@ var momentumModule = (function momentumModule(helper) {
 		};
 
 		parent = parent || elems.dbp2ContentInner;
+		parent.innerHTML = '';
+
+		// Empty parent
+		while (parent.firstChild) {
+			parent.removeChild(parent.firstChild);
+		}
 
 		elems.dashboardSecPageTitle.innerHTML = request.name;
 		elems.dashboardSecPage.dataset.processing = false;
 		render[request.type](content, request);
 
-
 		function renderPosts(content, request) {
-			var markup = [],
-				beforePost = '<a href="#" class="list-group-item list-group-item-action" onclick="renderNewPage">',
-				afterPost = '</a>';
-
+			// Create every single new element and append to page
 			for (var post of content) {
-				let markupLoop = [
-					beforePost,
-					`<h5 class="list-group-item-heading">${post.title}</h5>`,
-					`<p class="list-group-item-text">${post.body}</p>`,
-					afterPost
-				].join('');
-				markup.push(markupLoop);
-			}
+				var newElem = document.createElement('a');
+				newElem.classList.add('list-group-item', 'list-group-item-action');
 
-			parent.innerHTML = markup.join('');
+				var href = document.createAttribute('href');
+				href.value = '#';
+				newElem.setAttributeNode(href);
+
+				var newElemTitle = document.createElement('h5');
+				newElemTitle.classList.add('list-group-item-heading');
+				newElemTitle.innerHTML = post.title;
+
+				var newElemP = document.createElement('p');
+				newElemP.classList.add('list-group-item-text');
+				newElemP.innerHTML = post.body;
+
+				newElem.appendChild(newElemTitle);
+				newElem.appendChild(newElemP);
+
+				parent.appendChild(newElem);
+			}
 			afterRender();
 		}
 
