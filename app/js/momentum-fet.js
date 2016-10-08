@@ -80,7 +80,7 @@ var momentumModule = (function momentumModule(helper) {
 	 		helper.addEvent(elem, 'click', handleSecondaryDbpElemClicks);
 	 	}
 	 }
-	 
+
 	/**
 	 * Function fired when a dashboard menu item is clicked.
 	 * @param {Event} event
@@ -298,7 +298,7 @@ var momentumModule = (function momentumModule(helper) {
 	/**
 	* Render a dashboard page with some passed-in content.
 	* @param {Array} content - Content to render in the page.
-	* @param {String} request - The type of request, so we know what content should be rendered, how.
+	* @param {String} request - Info on the request, including the type, used to select the correct render.
 	* @param {Object} parent - The parent element in which the dashboard page should be rendered.
 	*/
 	function renderDashboardPage(content, request, parent) {
@@ -322,7 +322,7 @@ var momentumModule = (function momentumModule(helper) {
 		render[request.type](content, request);
 
 		function renderPosts(content, request) {
-			// Create every single new element and append to page
+			// Create all new elements and append to page
 			for (var post of content) {
 				var newElem = document.createElement('a');
 				newElem.classList.add('list-group-item', 'list-group-item-action');
@@ -330,6 +330,14 @@ var momentumModule = (function momentumModule(helper) {
 				var href = document.createAttribute('href');
 				href.value = '#';
 				newElem.setAttributeNode(href);
+
+				var dataId = document.createAttribute('data-id');
+				dataId.value = post.id;
+				newElem.setAttributeNode(dataId);
+
+				var dataReq = document.createAttribute('data-req');
+				dataReq.value = 'post';
+				newElem.setAttributeNode(dataReq);
 
 				var newElemTitle = document.createElement('h5');
 				newElemTitle.classList.add('list-group-item-heading');
@@ -357,6 +365,7 @@ var momentumModule = (function momentumModule(helper) {
 		}
 
 		function renderPost(content, request) {
+			console.log('rendering single post');
 			console.log(content);
 			console.log(request);
 
@@ -373,7 +382,14 @@ var momentumModule = (function momentumModule(helper) {
 	 * Render a new page. Attached to every clickable navigation links in DBP inner content.
 	 */
 	function renderNewPage() {
-		console.log(this);
+		var currentContentElem = getCurrentlyShownDbpContent(),
+			nextContentElem = currentContentElem.nextSibling,
+			request = requests[this.dataset.req](this.dataset.id);
+
+		// Request the content and render page with it
+		helper.getApiData(request.query, function (result) {
+			renderDashboardPage(result, request, nextContentElem);
+		});
 	}
 
 	/**
