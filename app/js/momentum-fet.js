@@ -5,7 +5,7 @@
  */
 var momentumModule = (function momentumModule(helper) {
 
-	// Store references to frequently reused dom elements
+	// Store references to static, reused dom elements
 	var elems = {
 		loginField: document.getElementById('login-field'),
 		loginAlert: document.getElementById('login-alert'),
@@ -16,11 +16,11 @@ var momentumModule = (function momentumModule(helper) {
 		dashboardMenuItems:document.querySelectorAll('.dashboard-menu-item'),
 		dashboardMainPage: document.getElementById('main-dbp'),
 		dashboardSecPage: document.getElementById('secondary-dbp'),
-		dashboardSecPageTitle: document.getElementById('dbp-2-title'),
-		dbp2Content: document.getElementById('dbp2-content-1'),
-		dbp2ContentInner: document.getElementById('dbp2-content-1-inner'),
-		dbp2Previous: document.getElementById('dbp2-previous'),
-		dbp2Next: document.getElementById('dbp2-next')
+		dashboardSecPageTitle: document.getElementById('dbp-content-title'),
+		dbpContentContainer: document.getElementById('dbp-content-container'),
+		dbpContentPageOne: document.getElementById('dbp-content-page-1'),
+		contentBack: document.getElementById('content-back'),
+		contentNext: document.getElementById('content-next')
 	};
 
 	// Store all different requests to use to different pages
@@ -75,8 +75,8 @@ var momentumModule = (function momentumModule(helper) {
 	 	helper.addEvent(document.getElementById('logout'), 'click', logout);
 
 	 	// Secondary dbp previous/next buttons
-	 	helper.addEvent(elems.dbp2Previous, 'click', dbpPreviousClick);
-	 	helper.addEvent(elems.dbp2Next, 'click', dbpNextClick);
+	 	helper.addEvent(elems.contentBack, 'click', dbpPreviousClick);
+	 	helper.addEvent(elems.contentNext, 'click', dbpNextClick);
 	 }
 
 	/**
@@ -127,7 +127,7 @@ var momentumModule = (function momentumModule(helper) {
 
 		// Request the content and render page with it
 		helper.getApiData(request.query, function (result) {
-			renderDashboardPage(result, request, elems.dbp2ContentInner);
+			renderDashboardPage(result, request, elems.dbpContentPageOne);
 		});
 	}
 
@@ -442,7 +442,7 @@ var momentumModule = (function momentumModule(helper) {
 			nextElem.setAttributeNode(dataId);
 			nextElem.setAttributeNode(dataPagenum);
 
-			elems.dbp2Content.appendChild(nextElem);
+			elems.dbpContentContainer.appendChild(nextElem);
 			nextContentElem = helper.getElementNextOf(currentContentElem);
 		}
 
@@ -474,7 +474,7 @@ var momentumModule = (function momentumModule(helper) {
 				previousPage.dataset.currentcontent = true;
 
 				// Set next btn to active
-				elems.dbp2Next.removeAttribute('disabled');
+				elems.contentNext.removeAttribute('disabled');
 
 				callback();
 				break;
@@ -487,7 +487,7 @@ var momentumModule = (function momentumModule(helper) {
 
 				// If reached the end, make btn disabled
 				if (helper.getElementNextOf(nextPage) == null) {
-					elems.dbp2Next.setAttribute('disabled', true);
+					elems.contentNext.setAttribute('disabled', true);
 				}
 
 				callback();
@@ -502,23 +502,23 @@ var momentumModule = (function momentumModule(helper) {
 	 * Reset the state of dbp to the original default one. Launch on tab change.
 	 */
 	function resetDbpState() {
-		while (helper.getElementNextOf(elems.dbp2ContentInner) != null) {
-			let nextElem = helper.getElementNextOf(elems.dbp2ContentInner);
+		while (helper.getElementNextOf(elems.dbpContentPageOne) != null) {
+			let nextElem = helper.getElementNextOf(elems.dbpContentPageOne);
 			nextElem.parentElement.removeChild(nextElem);
 		}
 
 		// Make first page active
-		elems.dbp2ContentInner.dataset.currentcontent = true;
+		elems.dbpContentPageOne.dataset.currentcontent = true;
 
 		// Reset bottom btns states
-		elems.dbp2Next.disabled = true;
+		elems.contentNext.disabled = true;
 
 		// Remove all contents from first dbp
 		elems.dashboardSecPageTitle.innerHTML = '';
 		
 		// Empty the first page
-		while (elems.dbp2ContentInner.firstChild) {
-			elems.dbp2ContentInner.removeChild(elems.dbp2ContentInner.firstChild);
+		while (elems.dbpContentPageOne.firstChild) {
+			elems.dbpContentPageOne.removeChild(elems.dbpContentPageOne.firstChild);
 		}
 	}
 
