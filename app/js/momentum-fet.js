@@ -89,6 +89,9 @@ var momentumModule = (function momentumModule(helper) {
 			return;
 		}
 
+		// Reset dbps to their initial state
+		resetDbpState();
+
 		// If button clicked already active, slide page back in
 		if (this.getAttribute('id') === 'active-dbp-btn') {
 			transitionDashboardPage('slideIn');
@@ -198,8 +201,6 @@ var momentumModule = (function momentumModule(helper) {
 		// Only change to next page if it exists
 		if(helper.getElementNextOf(getCurrentlyShownDbpContent()) != null) {
 			dbpChangePage('next');
-		} else {
-			console.log('naw dawg');
 		}
 	}
 
@@ -321,26 +322,8 @@ var momentumModule = (function momentumModule(helper) {
 			document.getElementById('active-dbp-btn').setAttribute('id', '');
 		}
 
-		// Remove any dbps that were generated after the base one
-		while (helper.getElementNextOf(elems.dbp2ContentInner) != null) {
-			console.log('we removin one');
-			let nextElem = helper.getElementNextOf(elems.dbp2ContentInner);
-			nextElem.parentElement.removeChild(nextElem);
-		}
-
-		// Reset bottom btns states
-		elems.dbp2Next.disabled = true;
-
-		// Remove all contents from first dbp
-		elems.dashboardSecPageTitle.innerHTML = '';
-		
-		// Empty the first page
-		while (elems.dbp2ContentInner.firstChild) {
-			elems.dbp2ContentInner.removeChild(elems.dbp2ContentInner.firstChild);
-		}
-
-		// Make first page active
-		elems.dbp2ContentInner.dataset.currentcontent = true;
+		// Reset dbps to their initial state
+		resetDbpState();
 	}
 
 	/**
@@ -428,7 +411,6 @@ var momentumModule = (function momentumModule(helper) {
 
 			// Remove any dbp that come after the new, current dashboard page. To avoid having the 'next' option available to irrelevent pages.
 			while (helper.getElementNextOf(parent) != null) {
-				console.log('we removin one');
 				let nextElem = helper.getElementNextOf(parent);
 				nextElem.parentElement.removeChild(nextElem);
 			}
@@ -446,7 +428,7 @@ var momentumModule = (function momentumModule(helper) {
 			request = requests[this.dataset.req](this.dataset.id);
 
 		// Next page doesn't exist, create it
-		if (nextContentElem == null) {
+		if (typeof(nextContentElem) === 'undefined' || nextContentElem === null) {
 			let nextElem = document.createElement('div');
 			nextElem.classList.add('inner-content', 'list-group-active');
 
@@ -486,7 +468,6 @@ var momentumModule = (function momentumModule(helper) {
 
 		switch (direction) {
 			case 'previous':
-				console.log('back');
 				var previousPage = helper.getElementPreviousOf(currentContentElem);
 				previousPage.classList.add('active');
 				previousPage.dataset.currentcontent = true;
@@ -498,7 +479,6 @@ var momentumModule = (function momentumModule(helper) {
 				break;
 
 			case 'next':
-				console.log('next');
 				var nextPage = helper.getElementNextOf(currentContentElem);
 
 				nextPage.classList.add('active');
@@ -514,6 +494,31 @@ var momentumModule = (function momentumModule(helper) {
 
 			default:
 				break;
+		}
+	}
+
+
+	/**
+	 * Reset the state of dbp to the original default one. Launch on tab change.
+	*/
+	function resetDbpState() {
+		while (helper.getElementNextOf(elems.dbp2ContentInner) != null) {
+			let nextElem = helper.getElementNextOf(elems.dbp2ContentInner);
+			nextElem.parentElement.removeChild(nextElem);
+		}
+
+		// Make first page active
+		elems.dbp2ContentInner.dataset.currentcontent = true;
+
+		// Reset bottom btns states
+		elems.dbp2Next.disabled = true;
+
+		// Remove all contents from first dbp
+		elems.dashboardSecPageTitle.innerHTML = '';
+		
+		// Empty the first page
+		while (elems.dbp2ContentInner.firstChild) {
+			elems.dbp2ContentInner.removeChild(elems.dbp2ContentInner.firstChild);
 		}
 	}
 
