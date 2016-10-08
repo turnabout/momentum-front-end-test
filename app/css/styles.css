@@ -2403,10 +2403,19 @@ a {
   .dashboard-page.active {
     display: block; }
   .dashboard-page.dbp-1 {
-    z-index: 5; }
+    z-index: 10; }
   .dashboard-page.dbp-2 {
-    z-index: 3;
-    background: #f1f1f1; }
+    z-index: 15;
+    background: #f1f1f1;
+    position: absolute;
+    top: 0;
+    left: 0; }
+    @media (min-width: 940px) {
+      .dashboard-page.dbp-2 {
+        z-index: 5;
+        position: static;
+        top: auto;
+        left: auto; } }
   .dashboard-page .menu .title {
     color: #efefef;
     background: #2E4172;
@@ -2439,8 +2448,7 @@ a {
   text-align: left;
   padding: 12px 20px;
   color: #2E4172;
-  border-bottom: 1px solid #d9deea;
-  height: 7%; }
+  border-bottom: 1px solid #d9deea; }
   .dbp .main-title.single-line {
     font-size: 18px;
     padding-top: 22px;
@@ -2459,8 +2467,7 @@ a {
         margin: 0; } }
 
 .dbp .dbp-content {
-  max-height: 100%;
-  height: 88%; }
+  max-height: 100%; }
 
 .dbp .inner-content {
   max-height: 100%;
@@ -2482,14 +2489,12 @@ a {
   text-transform: uppercase; }
 
 .dbp .btn-back, .dbp .btn-bottom {
-  height: 5%;
   display: block;
   width: 100%;
   text-align: left;
   border-radius: 0; }
 
 .dbp .bottom-btns {
-  height: 5%;
   overflow: hidden; }
   .dbp .bottom-btns .btn-bottom {
     width: 50%;
@@ -2498,6 +2503,15 @@ a {
     height: 100%; }
     .dbp .bottom-btns .btn-bottom:first-child {
       border-right: 1px solid #d9deea; }
+
+.dbp .main-title {
+  height: 7%; }
+
+.dbp .dbp-content {
+  height: 88%; }
+
+.dbp .bottom-btns {
+  height: 5%; }
 
 body {
   color: #201f1f;

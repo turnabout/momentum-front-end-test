@@ -3,6 +3,8 @@
 // 
 
 $db-borders-col: lighten($primary-light, 45%);
+$dbp-width: 470px;
+$dbp-breakpoint: ($dbp-width * 2);
 
 .dashboard.page {
 	height: 100%;
@@ -12,22 +14,33 @@ $db-borders-col: lighten($primary-light, 45%);
 	background: $white;
 	height: 100%;
 	position: relative;
-	max-width: 470px;
+	max-width: $dbp-width;
 	width: 100%;
 	border-right: 1px solid rgba($db-borders-col, 0.01);
 	float: left;
 	box-shadow: 2px 0px 5px 0px rgba(60, 60, 60, 0.1);
 	display: none;
 
-	&.active {display: block}
-	&.dbp-1  {z-index: 5;}
-	&.dbp-2  {
-		z-index: 3;
-		background: darken($white, 5%);
+	&.active {
+		display: block;
 	}
 
+	&.dbp-1  {
+		z-index: 10;
+	}
 
+	&.dbp-2  {
+		z-index: 15;
+		background: darken($white, 5%);
+		position: absolute; top: 0; left: 0;
 
+		// As soon as both pages fit on the same screen, display dbp2 to the right of dbp1
+		@media (min-width: $dbp-breakpoint) {
+			z-index: 5;
+			position: static; top: auto; left: auto;
+		}
+	}
+	
 	// Menus
 	.menu {
 		.title {
@@ -90,7 +103,6 @@ $db-borders-col: lighten($primary-light, 45%);
 		padding: $list-group-item-padding-y $list-group-item-padding-x;
 		color: $primary;
 		border-bottom: 1px solid $db-borders-col;
-		height: 7%;
 
 		&.single-line {
 			font-size: 18px;
@@ -125,7 +137,6 @@ $db-borders-col: lighten($primary-light, 45%);
 	// Wrapper around dbp content "pages"
 	.dbp-content {
 		max-height: 100%;
-		height: 88%;
 	}
 	
 	// Dbp content "pages"
@@ -162,7 +173,6 @@ $db-borders-col: lighten($primary-light, 45%);
 
 	// Bottom back/logout button
 	.btn-back, .btn-bottom {
-		height: 5%;
 		display: block;
 		width: 100%;
 		text-align: left;
@@ -170,7 +180,6 @@ $db-borders-col: lighten($primary-light, 45%);
 	}
 
 	.bottom-btns {
-		height: 5%;
 		overflow: hidden;
 
 		.btn-bottom {
@@ -203,4 +212,27 @@ $db-borders-col: lighten($primary-light, 45%);
 			// }
 		}
 	}
+}
+
+// 
+// Dbp elements heights
+// 
+.dbp {
+
+	// Top title
+	.main-title {
+		height: 7%;
+	}
+	
+	.dbp-content {
+		height: 88%;
+	}
+
+	.bottom-btns {
+		height: 5%;
+	}
+}
+
+@include media-breakpoint-up('lg') {
+
 }
