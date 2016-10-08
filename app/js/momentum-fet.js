@@ -245,11 +245,6 @@ var momentumModule = (function momentumModule(helper) {
 			// Username exists, clear any previous error and show the "dashboard"
 			elems.loginAlert.classList.remove('active');
 			elems.loginBox.classList.remove('error');
-			
-			// Make sure dashboard is set to default state
-			if(document.getElementById('active-dbp-btn')) {
-				resetDashboardState();
-			}
 
 			elems.dashboardSecPage.dataset.active = false;
 			elems.dashboardSecPage.classList.remove('active');
@@ -300,6 +295,9 @@ var momentumModule = (function momentumModule(helper) {
 
 		// Fade login page in
 		elems.loginPage.classList.add('active');
+
+		// Reset the dashboard state
+		resetDashboardState();
 
 		helper.animateElem(elems.loginPage, ['fadeIn'], function () {
 			elems.loginField.focus();				
