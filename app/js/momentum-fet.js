@@ -337,7 +337,7 @@ var momentumModule = (function momentumModule(helper) {
 	/**
 	* Render a dashboard page with some passed-in content.
 	* @param {Array} content - Content to render in the page.
-	* @param {String} request - Info on the request, including the type, used to select the correct render.
+	* @param {Object} request - Info on the request, including the type, used to select the correct render.
 	* @param {Object} parent - The dashboard page in which the content should be rendered.
 	* @param {Function} callback - Function to call once page is finished rendering.
 	*/
@@ -361,8 +361,12 @@ var momentumModule = (function momentumModule(helper) {
 		// Use the correct rendering function
 		render[request.type](content, request);
 
+		/**
+		 * Render a list of multiple posts.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 */
 		function renderPosts(content, request) {
-
 			// Set the page title
 			if ('titleQuery' in request) {
 				helper.getApiData(request.titleQuery, function (user) {
@@ -409,6 +413,11 @@ var momentumModule = (function momentumModule(helper) {
 			afterRender();
 		}
 
+		/**
+		 * Render an album page.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 */
 		function renderAlbum(content, request) {
 			console.log(content);
 			console.log(request);
@@ -416,6 +425,11 @@ var momentumModule = (function momentumModule(helper) {
 			afterRender();
 		}
 
+		/**
+		 * Render a single post.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 */
 		function renderPost(content, request) {
 			console.log(content);
 			console.log(request);
