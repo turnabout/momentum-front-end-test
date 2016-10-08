@@ -13,10 +13,10 @@ var momentumModule = (function momentumModule(helper) {
 		loginBtn: document.getElementById('login-btn'),
 		loginPage: document.getElementById('login-page'),
 		dashboard: document.getElementById('dashboard'),
+		dashboardMenuPage: document.getElementById('main-dbp'),
 		dashboardMenuItems:document.querySelectorAll('.dashboard-menu-item'),
-		dashboardMainPage: document.getElementById('main-dbp'),
-		dashboardSecPage: document.getElementById('secondary-dbp'),
-		dashboardSecPageTitle: document.getElementById('dbp-content-title'),
+		dashboardContentPage: document.getElementById('content-dbp'),
+		dashboardContentTitle: document.getElementById('dbp-content-title'),
 		dbpContentContainer: document.getElementById('dbp-content-container'),
 		dbpContentPageOne: document.getElementById('dbp-content-page-1'),
 		contentBack: document.getElementById('content-back'),
@@ -86,7 +86,7 @@ var momentumModule = (function momentumModule(helper) {
 	function handleDashboardMenuClick (event) {
 
 		// If page is already busy being processed/animated or request doesn't exist, don't do anything
-		if (helper.isElement(elems.dashboardSecPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
+		if (helper.isElement(elems.dashboardContentPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
 			return;
 		}
 
@@ -96,7 +96,7 @@ var momentumModule = (function momentumModule(helper) {
 		// If button clicked already active, slide page back in
 		if (this.getAttribute('id') === 'active-dbp-btn') {
 			transitionDashboardPage('slideIn');
-			elems.dashboardSecPage.dataset.active = false;
+			elems.dashboardContentPage.dataset.active = false;
 			this.classList.remove('active');
 			this.setAttribute('id', '');
 			this.blur();
@@ -117,9 +117,9 @@ var momentumModule = (function momentumModule(helper) {
 		var request = requests[this.dataset.req](user.id);
 
 		// Slide the second page in
-		elems.dashboardSecPage.dataset.processing = true;
+		elems.dashboardContentPage.dataset.processing = true;
 
-		if (elems.dashboardSecPage.dataset.active === 'true') {
+		if (elems.dashboardContentPage.dataset.active === 'true') {
 			transitionDashboardPage('slideInOut');
 		} else {
 			transitionDashboardPage('slideOut');
@@ -137,32 +137,32 @@ var momentumModule = (function momentumModule(helper) {
 	 * @param {Function} callback - Function to call after transition is over.
 	 */
 	function transitionDashboardPage(type, callback) {
-		elems.dashboardSecPage.dataset.animating = true;
-		elems.dashboardSecPage.classList.add('active');
+		elems.dashboardContentPage.dataset.animating = true;
+		elems.dashboardContentPage.classList.add('active');
 		callback = callback || function(){};
 
 		switch (type) {
 			case 'slideIn':
-				helper.animateElem(elems.dashboardSecPage, ['slideOutLeft'], function () {
-					elems.dashboardSecPage.dataset.animating = false;
-					elems.dashboardSecPage.dataset.active = false;
-					elems.dashboardSecPage.classList.remove('active');
+				helper.animateElem(elems.dashboardContentPage, ['slideOutLeft'], function () {
+					elems.dashboardContentPage.dataset.animating = false;
+					elems.dashboardContentPage.dataset.active = false;
+					elems.dashboardContentPage.classList.remove('active');
 					callback();
 				});
 				break;
 
 			case 'slideOut':
-				helper.animateElem(elems.dashboardSecPage, ['fadeInLeft'], function () {
-					elems.dashboardSecPage.dataset.animating = false;
-					elems.dashboardSecPage.dataset.active = true;
+				helper.animateElem(elems.dashboardContentPage, ['fadeInLeft'], function () {
+					elems.dashboardContentPage.dataset.animating = false;
+					elems.dashboardContentPage.dataset.active = true;
 					callback();
 				});
 				break;
 
 			case 'slideInOut':
-				helper.animateElem(elems.dashboardSecPage, ['slideOutLeft', 'fast'], function () {
-					helper.animateElem(elems.dashboardSecPage, ['slideInLeft'], function () {
-						elems.dashboardSecPage.dataset.animating = false;
+				helper.animateElem(elems.dashboardContentPage, ['slideOutLeft', 'fast'], function () {
+					helper.animateElem(elems.dashboardContentPage, ['slideInLeft'], function () {
+						elems.dashboardContentPage.dataset.animating = false;
 						callback();
 					});
 				});
@@ -180,7 +180,7 @@ var momentumModule = (function momentumModule(helper) {
 		// First page, so slide dbp back in
 		if (currentContentElem.dataset.pagenum === '1') {
 			transitionDashboardPage('slideIn');
-			elems.dashboardSecPage.dataset.active = false;
+			elems.dashboardContentPage.dataset.active = false;
 
 			if (document.getElementById('active-dbp-btn')) {
 				var activeMenuBtn = document.getElementById('active-dbp-btn');
@@ -253,8 +253,8 @@ var momentumModule = (function momentumModule(helper) {
 			elems.loginAlert.classList.remove('active');
 			elems.loginBox.classList.remove('error');
 
-			elems.dashboardSecPage.dataset.active = false;
-			elems.dashboardSecPage.classList.remove('active');
+			elems.dashboardContentPage.dataset.active = false;
+			elems.dashboardContentPage.classList.remove('active');
 
 			// Fade dashboard in
 			elems.dashboard.classList.add('active');
@@ -350,8 +350,8 @@ var momentumModule = (function momentumModule(helper) {
 		}
 
 		// Place the title
-		elems.dashboardSecPageTitle.innerHTML = request.name;
-		elems.dashboardSecPage.dataset.processing = false;
+		elems.dashboardContentTitle.innerHTML = request.name;
+		elems.dashboardContentPage.dataset.processing = false;
 
 		// Use the correct rendering function
 		render[request.type](content, request);
@@ -514,7 +514,7 @@ var momentumModule = (function momentumModule(helper) {
 		elems.contentNext.disabled = true;
 
 		// Remove all contents from first dbp
-		elems.dashboardSecPageTitle.innerHTML = '';
+		elems.dashboardContentTitle.innerHTML = '';
 		
 		// Empty the first page
 		while (elems.dbpContentPageOne.firstChild) {
