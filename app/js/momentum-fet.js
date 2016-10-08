@@ -195,7 +195,12 @@ var momentumModule = (function momentumModule(helper) {
 	 * @param {Event} event - The event.
 	 */
 	function dbpNextClick(event) {
-		console.log('we in there');
+		// Only change to next page if it exists
+		if(helper.getElementNextOf(getCurrentlyShownDbpContent()) != null) {
+			dbpChangePage('next');
+		} else {
+			console.log('naw dawg');
+		}
 	}
 
 	/**
@@ -305,7 +310,6 @@ var momentumModule = (function momentumModule(helper) {
 		event.preventDefault();
 	}
 
-	// Reset active dbp and bottom nav buttons state (TODO)
 	/**
 	 * Reset the entire dashboard state and remove all content from it.
 	 */
@@ -482,16 +486,29 @@ var momentumModule = (function momentumModule(helper) {
 
 		switch (direction) {
 			case 'previous':
+				console.log('back');
 				var previousPage = helper.getElementPreviousOf(currentContentElem);
 				previousPage.classList.add('active');
 				previousPage.dataset.currentcontent = true;
+
+				// Set next btn to active
+				elems.dbp2Next.removeAttribute('disabled');
+
 				callback();
 				break;
 
 			case 'next':
+				console.log('next');
 				var nextPage = helper.getElementNextOf(currentContentElem);
+
 				nextPage.classList.add('active');
 				nextPage.dataset.currentcontent = true;
+
+				// If reached the end, make btn disabled
+				if (helper.getElementNextOf(nextPage) == null) {
+					elems.dbp2Next.setAttribute('disabled', true);
+				}
+
 				callback();
 				break;
 
