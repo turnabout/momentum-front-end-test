@@ -28,27 +28,27 @@ var momentumModule = (function momentumModule(helper) {
 		'userPosts': function (userId) { 
 			return {
 				'query' : `posts?userId=${userId}`,
-				'name' : 'Your Posts',
+				'titleQuery' : `users/${userId}`,
 				'type' : 'posts',
 			};
 		},
 		'userAlbums': function (userId) { 
 			return {
 				'query' : `albums?userId=${userId}`,
-				'name' : 'Your Album',
+				'titleQuery' : `users/${userId}`,
 				'type' : 'album',
 			};
 		},
 		'allPosts': function (userId) { 
 			return {
 				'query' : `posts`,
-				'name' : 'All Posts',
+				'title' : 'All Posts',
 				'type' : 'posts',
 			};
 		},
 		'post': function (postId) { 
 			return {
-				'query' : `posts?id=${postId}`,
+				'query' : `posts/${postId}`,
 				'name' : 'Post',
 				'type' : 'post',
 			};
@@ -349,14 +349,24 @@ var momentumModule = (function momentumModule(helper) {
 			parent.removeChild(parent.firstChild);
 		}
 
-		// Place the title
-		elems.dashboardContentTitle.innerHTML = request.name;
 		elems.dashboardContentPage.dataset.processing = false;
 
 		// Use the correct rendering function
 		render[request.type](content, request);
 
 		function renderPosts(content, request) {
+
+			// Set the page title
+			if ('titleQuery' in request) {
+				helper.getApiData(request.titleQuery, function (user) {
+					setTitle(`Posts by ${user.username}`);
+				});
+			} else if ('title' in request) {
+				setTitle(request.title);
+			} else {
+				setTitle('Page');
+			}
+
 			// Create all new elements and append to page
 			for (var post of content) {
 				var newElem = document.createElement('a');
@@ -400,13 +410,24 @@ var momentumModule = (function momentumModule(helper) {
 		}
 
 		function renderPost(content, request) {
-			console.log('rendering single post');
 			console.log(content);
 			console.log(request);
 
+			// Set title
+			setTitle(content.title);
+
+			// Render post content
+
+
+			// Get and render the comments
+
+			// parent.appendChild(newElem);
 			afterRender();
 		}
 
+		/**
+		 * Function executed at the end of the main render function.
+		 */
 		function afterRender() {
 			parent.classList.add('active');
 
@@ -417,6 +438,15 @@ var momentumModule = (function momentumModule(helper) {
 			}
 
 			callback();
+		}
+
+		/**
+		 * Set the title, both in the data-attribute of the page and the title element.
+		 * @param {String} title - The title.
+		 */
+		function setTitle(title) {
+			parent.dataset.title = title;
+			elems.dashboardContentTitle.innerHTML = title;
 		}
 	}
 
@@ -469,32 +499,41 @@ var momentumModule = (function momentumModule(helper) {
 
 		switch (direction) {
 			case 'previous':
-				var previousPage = helper.getElementPreviousOf(currentContentElem);
-				previousPage.classList.add('active');
-				previousPage.dataset.currentcontent = true;
+				var newPage = helper.getElementPreviousOf(currentContentElem);
+				newPage.classList.add('active');
+				newPage.dataset.currentcontent = true;
 
 				// Set next btn to active
 				elems.contentNext.removeAttribute('disabled');
-
-				callback();
+				afterChange();
 				break;
 
 			case 'next':
-				var nextPage = helper.getElementNextOf(currentContentElem);
+				var newPage = helper.getElementNextOf(currentContentElem);
 
-				nextPage.classList.add('active');
-				nextPage.dataset.currentcontent = true;
+				newPage.classList.add('active');
+				newPage.dataset.currentcontent = true;
 
 				// If reached the end, make btn disabled
-				if (helper.getElementNextOf(nextPage) == null) {
+				if (helper.getElementNextOf(newPage) == null) {
 					elems.contentNext.setAttribute('disabled', true);
 				}
 
-				callback();
+				afterChange();
 				break;
 
 			default:
+
 				break;
+		}
+
+		/**
+		 * Function executed after the page change.
+		 */
+		function afterChange() {
+			// Set the title
+			elems.dashboardContentTitle.innerHTML = newPage.dataset.title;
+			callback();
 		}
 	}
 
