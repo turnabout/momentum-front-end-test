@@ -72,7 +72,7 @@ var momentumModule = (function momentumModule(helper) {
 	 	helper.addEvent(document.getElementById('login'), 'submit', authenticate);
 	 	helper.addEvent(document.getElementById('logout'), 'click', logout);
 
-	 	// Secondary dbp back button
+	 	// Secondary dbp previous/next buttons
 	 	helper.addEvent(elems.dbp2Back, 'click', handleDbpBackClick);
 	 }
 
@@ -393,6 +393,24 @@ var momentumModule = (function momentumModule(helper) {
 			nextContentElem = helper.getElementNextOf(currentContentElem),
 			request = requests[this.dataset.req](this.dataset.id);
 
+		// Next page doesn't exist, create it
+		if (nextContentElem == null) {
+			let nextElem = document.createElement('div');
+			nextElem.classList.add('inner-content', 'list-group-active');
+
+			let dataId = document.createAttribute('data-currentcontent');
+			dataId.value = true;
+
+			let dataPagenum = document.createAttribute('data-pagenum');
+			dataPagenum.value = parseInt(currentContentElem.dataset.pagenum) + 1;
+
+			nextElem.setAttributeNode(dataId);
+			nextElem.setAttributeNode(dataPagenum);
+
+			elems.dbp2Content.appendChild(nextElem);
+			nextContentElem = helper.getElementNextOf(currentContentElem);
+		}
+
 		// Request the content and render page with it
 		helper.getApiData(request.query, function (result) {
 			renderDashboardPage(result, request, nextContentElem, function () {
@@ -413,7 +431,6 @@ var momentumModule = (function momentumModule(helper) {
 		// Make current page inactive
 		currentContentElem.classList.remove('active');
 		currentContentElem.dataset.currentcontent = false;
-
 
 		switch (direction) {
 			case 'previous':
