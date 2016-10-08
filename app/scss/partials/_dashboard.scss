@@ -51,11 +51,17 @@ $dbp-mid-breakpoint: ($dbp-breakpoint / 2);
 		padding: $list-group-item-padding-y $list-group-item-padding-x;
 		color: $primary;
 		border-bottom: 1px solid $db-borders-col;
-
+		
+		// Content title from dbp2
 		&.single-line {
 			font-size: 18px;
 			padding-top: 22px;
 			padding-bottom: 24px;
+
+			// Prevent overflowing text from wrapping around
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
 		}
 		
 		.line {

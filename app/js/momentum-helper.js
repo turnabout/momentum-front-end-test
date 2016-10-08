@@ -181,6 +181,10 @@ var momentumHelperModule = (function momentumHelperModule() {
 		return previousSibling;
 	}
 
+	function checkIfNewLine(text) {
+		return Boolean(/\r|\n/.exec(text));
+	}
+
 
 	return {
 		'getApiData' : getApiData,
@@ -191,7 +195,8 @@ var momentumHelperModule = (function momentumHelperModule() {
 		'setApiUrl' : setApiUrl,
 		'getElemsWithAttr' : getElemsWithAttr,
 		'getElementNextOf' : getElementNextOf,
-		'getElementPreviousOf' : getElementPreviousOf
+		'getElementPreviousOf' : getElementPreviousOf,
+		'checkIfNewLine' : checkIfNewLine
 	};
 	
 })();

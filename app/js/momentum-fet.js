@@ -17,6 +17,7 @@ var momentumModule = (function momentumModule(helper) {
 		dashboardMenuItems:document.querySelectorAll('.dashboard-menu-item'),
 		dashboardContentPage: document.getElementById('content-dbp'),
 		dashboardContentTitle: document.getElementById('dbp-content-title'),
+		dashboardContentTitleWrap: document.getElementById('dbp-content-title-wrap'),
 		dbpContentContainer: document.getElementById('dbp-content-container'),
 		dbpContentPageOne: document.getElementById('dbp-content-page-1'),
 		contentBack: document.getElementById('content-back'),

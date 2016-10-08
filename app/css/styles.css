@@ -2424,7 +2424,10 @@ a {
     .dbp .main-title.single-line {
       font-size: 18px;
       padding-top: 22px;
-      padding-bottom: 24px; }
+      padding-bottom: 24px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden; }
     .dbp .main-title .line {
       float: left; }
       .dbp .main-title .line:first-child {
