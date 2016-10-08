@@ -17,7 +17,6 @@ var momentumModule = (function momentumModule(helper) {
 		dashboardMenuItems:document.querySelectorAll('.dashboard-menu-item'),
 		dashboardContentPage: document.getElementById('content-dbp'),
 		dashboardContentTitle: document.getElementById('dbp-content-title'),
-		dashboardContentTitleWrap: document.getElementById('dbp-content-title-wrap'),
 		dbpContentContainer: document.getElementById('dbp-content-container'),
 		dbpContentPageOne: document.getElementById('dbp-content-page-1'),
 		contentBack: document.getElementById('content-back'),
@@ -57,6 +56,8 @@ var momentumModule = (function momentumModule(helper) {
 	};
 
 	var user = {};
+
+	var pageTitleBase = document.title;
 
 	/**
 	 * Initialize all the things!
@@ -148,6 +149,9 @@ var momentumModule = (function momentumModule(helper) {
 					elems.dashboardContentPage.dataset.animating = false;
 					elems.dashboardContentPage.dataset.active = false;
 					elems.dashboardContentPage.classList.remove('active');
+
+					// Sliding back in, so reset head title
+					document.title = pageTitleBase;
 					callback();
 				});
 				break;
@@ -224,7 +228,6 @@ var momentumModule = (function momentumModule(helper) {
 	 * @param {Event} event - The event.
 	 */
 	function authenticate(event) {
-
 		var username = elems.loginField.value;
 
 		if(username) {
@@ -323,6 +326,9 @@ var momentumModule = (function momentumModule(helper) {
 			document.getElementById('active-dbp-btn').classList.remove('active');
 			document.getElementById('active-dbp-btn').setAttribute('id', '');
 		}
+
+		// Reset head title
+		document.title = pageTitleBase;
 
 		// Reset dbps to their initial state
 		resetDbpState();
@@ -448,6 +454,7 @@ var momentumModule = (function momentumModule(helper) {
 		function setTitle(title) {
 			parent.dataset.title = title;
 			elems.dashboardContentTitle.innerHTML = title;
+			document.title = `${pageTitleBase} - ${title}`;
 		}
 	}
 
@@ -534,6 +541,7 @@ var momentumModule = (function momentumModule(helper) {
 		function afterChange() {
 			// Set the title
 			elems.dashboardContentTitle.innerHTML = newPage.dataset.title;
+			document.title = `${pageTitleBase} - ${newPage.dataset.title}`;
 			callback();
 		}
 	}
