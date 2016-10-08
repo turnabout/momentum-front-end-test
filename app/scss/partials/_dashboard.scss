@@ -5,12 +5,16 @@
 $db-borders-col: lighten($primary-light, 45%);
 $dbp-width: 470px;
 $dbp-breakpoint: ($dbp-width * 2);
+$dbp-mid-breakpoint: ($dbp-breakpoint / 2);
 
 .dashboard.page {
 	height: 100%;
 }
 
-.dashboard-page {
+// 
+// Dashboard pages
+// 
+.dbp {
 	background: $white;
 	height: 100%;
 	position: relative;
@@ -31,8 +35,8 @@ $dbp-breakpoint: ($dbp-width * 2);
 
 	&.dbp-2  {
 		z-index: 15;
-		background: darken($white, 5%);
 		position: absolute; top: 0; left: 0;
+		background: darken($white, 5%);
 
 		// As soon as both pages fit on the same screen, display dbp2 to the right of dbp1
 		@media (min-width: $dbp-breakpoint) {
@@ -40,62 +44,6 @@ $dbp-breakpoint: ($dbp-width * 2);
 			position: static; top: auto; left: auto;
 		}
 	}
-	
-	// Menus
-	.menu {
-		.title {
-			color: #efefef;
-			background: $primary;
-			border: 1px solid $primary;
-		}
-		
-		.list-group-item {
-			border-top: 1px solid $db-borders-col;
-
-			&:first-child { border-top: none; }
-			&:last-child { border-bottom: 1px solid $db-borders-col; }
-		}
-
-		a.list-group-item {
-
-
-			
-			&:hover {
-				background: darken($white, 10%);
-			}
-
-			&:active, &:focus {
-				background: darken($white, 20%);
-			}
-
-			&.active {
-				background: $primary-light;
-				color: #fff;
-			}
-
-			&.active:hover {
-				background: darken($primary-light, 1%);
-			}
-		}
-	}
-
-	.logout {
-		position: absolute;
-		right: $list-group-item-padding-x;
-		top: $list-group-item-padding-x;
-		color: $primary;
-
-		@include hover-focus-active {
-			color: $primary-light;
-			cursor: pointer;
-		}
-	}
-}
-
-// 
-// Dashboard pages
-// 
-.dbp {
 
 	// Top title
 	.main-title {
@@ -121,10 +69,8 @@ $dbp-breakpoint: ($dbp-width * 2);
 				font-size: 17px;
 				margin: 4px 0 0 4px;
 			}
-		}
 
-		@include media-breakpoint-up('lg') {
-			.line {
+			@media (min-width: $dbp-breakpoint) {
 				float: none;
 
 				&:last-child {
@@ -149,28 +95,59 @@ $dbp-breakpoint: ($dbp-width * 2);
 		&.active {
 			display: block;
 		}
-	}
+		
+		// Content lists
+		.list-group-item {
+			&:first-child {
+				border-top: none;
+			}
 
-	.list-group-item {
-		&:first-child {
-			border-top: none;
+			.list-group-item-heading {
+				font-weight: 700;
+				&::first-letter { text-transform: uppercase; }
+			}
+
+			.list-group-item-text {
+				&::first-letter { text-transform: uppercase; }
+			}
 		}
 	}
 
-	.list-group-item-heading {
-		font-weight: 700;
+	// Menus
+	.menu {
+		.title {
+			color: #efefef;
+			background: $primary;
+			border: 1px solid $primary;
+		}
+		
+		.list-group-item {
+			border-top: 1px solid $db-borders-col;
+			&:first-child { border-top: none; }
+			&:last-child  { border-bottom: 1px solid $db-borders-col; }
+		}
 
-		&::first-letter {
-			text-transform: uppercase;
+		a.list-group-item {
+			
+			&:hover {
+				background: darken($white, 10%);
+			}
+
+			&:active, &:focus {
+				background: darken($white, 20%);
+			}
+
+			&.active {
+				background: $primary-light;
+				color: #fff;
+			}
+
+			&.active:hover, &.active:focus {
+				background: darken($primary-light, 1%);
+			}
 		}
 	}
-
-	.list-group-item-text {
-		&::first-letter {
-			text-transform: uppercase;
-		}
-	}
-
+	
 	// Bottom back/logout button
 	.btn-back, .btn-bottom {
 		display: block;
@@ -191,35 +168,48 @@ $dbp-breakpoint: ($dbp-width * 2);
 			&:first-child {
 				border-right: 1px solid $db-borders-col;
 			}
-			
-			// background: darken($btn-secondary-bg, 5%);
-			// border: 1px solid darken($btn-secondary-bg, 5%);
-
-			// &:hover {
-			// 	background: darken($btn-secondary-bg, 10%);
-			// }
-
-   //  		&:focus, &:active {
-			// 	background: darken($btn-secondary-bg, 15%);
-   //  		}
-			// &:disabled {
-			// 	cursor: not-allowed;
-			// 	opacity: .65;
-
-			// 	&:hover {
-			// 		background: darken($btn-secondary-bg, 5%);
-			// 	}
-			// }
 		}
 	}
 }
 
 // 
-// Dbp elements heights
+// Dbp sections heights
 // 
 .dbp {
+	.main-title {
+		height: 12%;
+	}
+	
+	.dbp-content {
+		height: 77%;
+	}
 
-	// Top title
+	.bottom-btns, .btn-logout {
+		height: 10%;
+	}
+}
+
+@media (min-width: $dbp-mid-breakpoint) {
+
+.dbp {
+	.main-title {
+		height: 9%;
+	}
+	
+	.dbp-content {
+		height: 84%;
+	}
+
+	.bottom-btns, .btn-logout {
+		height: 7%;
+	}
+}
+
+}
+
+@media (min-width: $dbp-breakpoint) {
+
+.dbp {
 	.main-title {
 		height: 7%;
 	}
@@ -228,11 +218,9 @@ $dbp-breakpoint: ($dbp-width * 2);
 		height: 88%;
 	}
 
-	.bottom-btns {
+	.bottom-btns, .btn-logout {
 		height: 5%;
 	}
 }
-
-@include media-breakpoint-up('lg') {
 
 }
