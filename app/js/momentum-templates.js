@@ -198,8 +198,8 @@ var momentumTemplatesModule = (function (helper, app) {
 			parent.classList.add('active');
 
 			// Remove any dbp that come after the new, current dashboard page. To avoid having the 'next' option available to irrelevent pages.
-			while (helper.getElemNAfter(parent) != null) {
-				let nextElem = helper.getElemNAfter(parent);
+			while (helper.getElemAfter(parent) != null) {
+				let nextElem = helper.getElemAfter(parent);
 				nextElem.parentElement.removeChild(nextElem);
 			}
 
@@ -222,7 +222,7 @@ var momentumTemplatesModule = (function (helper, app) {
 	 */
 	function renderNewPage() {
 		var currentContentElem = app.getActiveContentPage(),
-			nextContentElem = helper.getElemNAfter(currentContentElem),
+			nextContentElem = helper.getElemAfter(currentContentElem),
 			request = requests[this.dataset.req](this.dataset.id);
 
 		// Next page doesn't exist, create it

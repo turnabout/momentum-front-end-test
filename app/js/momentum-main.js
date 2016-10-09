@@ -37,8 +37,8 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 	 	helper.addEvent(document.getElementById('logout'), 'click', logout);
 
 	 	// Secondary dbp previous/next buttons
-	 	helper.addEvent(elems.contentBack, 'click', dbpPreviousClick);
-	 	helper.addEvent(elems.contentNext, 'click', dbpNextClick);
+	 	helper.addEvent(elems.contentBack, 'click', app.dbpPreviousClick);
+	 	helper.addEvent(elems.contentNext, 'click', app.dbpNextClick);
 	 }
 
 	/**
@@ -57,7 +57,7 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 
 		// If button clicked already active, slide page back in
 		if (this.getAttribute('id') === 'active-dbp-btn') {
-			transitionDashboardPage('slideIn');
+			app.transitionDashboardPage('slideIn');
 			elems.dashboardContentPage.dataset.active = false;
 			this.classList.remove('active');
 			this.setAttribute('id', '');
@@ -82,96 +82,15 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 		elems.dashboardContentPage.dataset.processing = true;
 
 		if (elems.dashboardContentPage.dataset.active === 'true') {
-			transitionDashboardPage('slideInOut');
+			app.transitionDashboardPage('slideInOut');
 		} else {
-			transitionDashboardPage('slideOut');
+			app.transitionDashboardPage('slideOut');
 		}
 
 		// Request the content and render page with it
 		helper.getApiData(request.query, function (result) {
 			dbp.render(result, request, elems.dbpContentPageOne);
 		});
-	}
-
-	/**
-	 * Transition the dashboard page.
-	 * @param {String} type - The type of transition.
-	 * @param {Function} callback - Function to call after transition is over.
-	 */
-	function transitionDashboardPage(type, callback) {
-		elems.dashboardContentPage.dataset.animating = true;
-		elems.dashboardContentPage.classList.add('active');
-		callback = callback || function(){};
-
-		switch (type) {
-		case 'slideIn':
-			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft'], function () {
-				elems.dashboardContentPage.dataset.animating = false;
-				elems.dashboardContentPage.dataset.active = false;
-				elems.dashboardContentPage.classList.remove('active');
-
-				// Sliding back in, so reset head title
-				document.title = pageTitleBase;
-				callback();
-			});
-			break;
-
-		case 'slideOut':
-			helper.animateElem(elems.dashboardContentPage, ['fadeInLeft'], function () {
-				elems.dashboardContentPage.dataset.animating = false;
-				elems.dashboardContentPage.dataset.active = true;
-				callback();
-			});
-			break;
-
-		case 'slideInOut':
-			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft', 'fast'], function () {
-				helper.animateElem(elems.dashboardContentPage, ['slideInLeft'], function () {
-					elems.dashboardContentPage.dataset.animating = false;
-					callback();
-				});
-			});
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	/**
-	 * Handle click on secondary DBP back button.
-	 * @param {Event} event - The event.
-	 */
-	function dbpPreviousClick(event) {
-		var currentContentElem = app.getActiveContentPage();
-
-		// First page, so slide dbp back in
-		if (currentContentElem.dataset.pagenum === '1') {
-			transitionDashboardPage('slideIn');
-			elems.dashboardContentPage.dataset.active = false;
-
-			if (document.getElementById('active-dbp-btn')) {
-				var activeMenuBtn = document.getElementById('active-dbp-btn');
-				activeMenuBtn.classList.remove('active');
-				activeMenuBtn.setAttribute('id', '');
-				activeMenuBtn.blur();
-			}
-			return;
-		}
-
-		app.dbpChangePage('previous');
-	}
-
-	/**
-	 * Handle click on secondary DBP next button.
-	 * @param {Event} event - The event.
-	 */
-	function dbpNextClick(event) {
-
-		// Only change to next page if it exists
-		if (helper.getElemAfter(app.getActiveContentPage()) != null) {
-			app.dbpChangePage('next');
-		}
 	}
 
 	/**
