@@ -8,7 +8,6 @@ var momentumHelperModule = (function momentumHelperModule() {
 	var data = {};
 	var apiUrl = '';
 
-
 	/**
 	 * Get data from API.
 	 * @param {String} request - The API request.
@@ -17,7 +16,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	function getApiData(request, callback) {
 
 		// If data already stored, skip sending GET request and just execute the callback with it directly
-		if(request in data) {
+		if (request in data) {
 			callback(data[request]);
 			return;
 		}
@@ -29,7 +28,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 			var result = JSON.parse(this.responseText);
 
 			// Store data in global data object to more easily fetch again later
-			if(result.length > 0 && !(request in data)) {
+			if (result.length > 0 && !(request in data)) {
 				data[request] = result;
 			}
 			
@@ -53,19 +52,19 @@ var momentumHelperModule = (function momentumHelperModule() {
 		animationNames.push('animated');
 		DOMTokenList.prototype.add.apply(element.classList, animationNames);
 
-		addEventOnce(element, 'animationend', function afterAnimationEnd(e) {
+		addAnimEventOnce(element, 'animationend', function afterAnimationEnd(e) {
 			DOMTokenList.prototype.remove.apply(element.classList, animationNames);
 			element.dataset.animating = false;
 			callback();
 		});
 
 		/**
-		 * Add a one-time event listener.
+		 * Add a one-time event for the duration of an animation.
 		 * @param {Object} element - The target element.
 		 * @param {String} type - The type of the event.
-		 * @param {Function} callback - The callback to attach to the event.
+		 * @param {Function} callback - The callback exeto attach to the event.
 		 */
-		function addEventOnce(element, type, callback) {
+		function addAnimEventOnce(element, type, callback) {
 			addEvent(element, type, function fn(event) {
 				removeEvent(element, type, fn);
 				callback(event);
@@ -83,7 +82,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		if (element.addEventListener) {
 			element.addEventListener(type, callback, false);
 		} else if (element.attachEvent) {
-			element.attachEvent("on" + type, callback);
+			element.attachEvent(`on${type}`, callback);
 		} else {
 			element["on" + type] = callback;
 		}
@@ -99,7 +98,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		if (element.removeEventListener) {
 			element.removeEventListener(type, callback, false);
 		} else if (element.detachEvent) {
-			element.detachEvent("on" + type, callback);
+			element.detachEvent(`on${type}`, callback);
 		} else {
 			element["on" + type] = null;
 		}
@@ -112,7 +111,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Boolean} dataTruth - Whether the data attribute evaluates to true.
 	 */
 	function isElement(element, data) {
-		if(data.constructor === Array) {
+		if (data.constructor === Array) {
 			for (var d of data) {
 				if (element.dataset[d] === 'true') {
 					return true;
@@ -124,9 +123,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 	}
 
 	/**
-	* Set the module's apiUrl variable.
-	* @param {String} url - The base api url.
-	*/
+	 * Set the module's apiUrl variable.
+	 * @param {String} url - The base api url.
+	 */
 	function setApiUrl(url) {
 		apiUrl = (apiUrl) ? apiUrl : url;
 	}
@@ -141,8 +140,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		var allElements = document.getElementsByTagName('*');
 		for (var i = 0, n = allElements.length; i < n; i++) {
 			if (allElements[i].getAttribute(attribute) !== null) {
-				// Element exists with attribute. Add to array.
-				matchingElements.push(allElements[i]);
+				matchingElements.push(allElements[i]); // Element exists with attribute. Add to array.
 			}
 		}
 
@@ -158,7 +156,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		var nextSibling = element.nextSibling;
 
 		// Skip text nodes
-		while(nextSibling != null && nextSibling.nodeType == 3) {
+		while (nextSibling != null && nextSibling.nodeType == 3) {
 			nextSibling = nextSibling.nextSibling;
 		}
 
@@ -172,9 +170,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 */
 	 function getElementPreviousOf(element) {
 		var previousSibling = element.previousSibling;
-
+		
 		// Skip text nodes
-		while(previousSibling != null && previousSibling.nodeType == 3) {
+		while (previousSibling != null && previousSibling.nodeType == 3) {
 			previousSibling = previousSibling.previousSibling;
 		}
 

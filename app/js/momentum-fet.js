@@ -61,7 +61,6 @@ var momentumModule = (function momentumModule(helper) {
 	};
 
 	var user = {};
-
 	var pageTitleBase = document.title;
 
 	/**
@@ -69,6 +68,7 @@ var momentumModule = (function momentumModule(helper) {
 	 * @param {String} url - Base URL from which the API data is fetched.
 	 */
 	 function init(url) {
+
 	 	// Set the api url
 	 	helper.setApiUrl(url);
 
@@ -90,9 +90,9 @@ var momentumModule = (function momentumModule(helper) {
 	 * Function fired when a dashboard menu item is clicked.
 	 * @param {Event} event
 	 */
-	function handleDashboardMenuClick (event) {
+	function handleDashboardMenuClick(event) {
 
-		// If page is already busy being processed/animated or request doesn't exist, don't do anything
+		// If already busy being processed/animated or request doesn't exist, don't do anything
 		if (helper.isElement(elems.dashboardContentPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
 			return;
 		}
@@ -149,34 +149,37 @@ var momentumModule = (function momentumModule(helper) {
 		callback = callback || function(){};
 
 		switch (type) {
-			case 'slideIn':
-				helper.animateElem(elems.dashboardContentPage, ['slideOutLeft'], function () {
-					elems.dashboardContentPage.dataset.animating = false;
-					elems.dashboardContentPage.dataset.active = false;
-					elems.dashboardContentPage.classList.remove('active');
+		case 'slideIn':
+			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft'], function () {
+				elems.dashboardContentPage.dataset.animating = false;
+				elems.dashboardContentPage.dataset.active = false;
+				elems.dashboardContentPage.classList.remove('active');
 
-					// Sliding back in, so reset head title
-					document.title = pageTitleBase;
+				// Sliding back in, so reset head title
+				document.title = pageTitleBase;
+				callback();
+			});
+			break;
+
+		case 'slideOut':
+			helper.animateElem(elems.dashboardContentPage, ['fadeInLeft'], function () {
+				elems.dashboardContentPage.dataset.animating = false;
+				elems.dashboardContentPage.dataset.active = true;
+				callback();
+			});
+			break;
+
+		case 'slideInOut':
+			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft', 'fast'], function () {
+				helper.animateElem(elems.dashboardContentPage, ['slideInLeft'], function () {
+					elems.dashboardContentPage.dataset.animating = false;
 					callback();
 				});
-				break;
+			});
+			break;
 
-			case 'slideOut':
-				helper.animateElem(elems.dashboardContentPage, ['fadeInLeft'], function () {
-					elems.dashboardContentPage.dataset.animating = false;
-					elems.dashboardContentPage.dataset.active = true;
-					callback();
-				});
-				break;
-
-			case 'slideInOut':
-				helper.animateElem(elems.dashboardContentPage, ['slideOutLeft', 'fast'], function () {
-					helper.animateElem(elems.dashboardContentPage, ['slideInLeft'], function () {
-						elems.dashboardContentPage.dataset.animating = false;
-						callback();
-					});
-				});
-				break;
+		default:
+			break;
 		}
 	}
 
@@ -210,7 +213,7 @@ var momentumModule = (function momentumModule(helper) {
 	 */
 	function dbpNextClick(event) {
 		// Only change to next page if it exists
-		if(helper.getElementNextOf(getCurrentlyShownDbpContent()) != null) {
+		if (helper.getElementNextOf(getCurrentlyShownDbpContent()) != null) {
 			dbpChangePage('next');
 		}
 	}
@@ -235,18 +238,17 @@ var momentumModule = (function momentumModule(helper) {
 	function authenticate(event) {
 		var username = elems.loginField.value;
 
-		if(username) {
+		if (username) {
 			// Disable the form
 			elems.loginField.setAttribute('disabled', 'disabled');
 			elems.loginBtn.setAttribute('disabled', 'disabled');
 
 			helper.getApiData(`users?username=${username}`, function processResult(result) {
 
-				if(result.length > 0) {
+				if (result.length > 0) {
 					user = result[0];
 					login();
 				} else {
-					// Username does not exist, display error message
 					displayError(`Username "${username}" does not exist.`);
 				}
 				
@@ -293,9 +295,9 @@ var momentumModule = (function momentumModule(helper) {
 	}
 
 	/**
-	* Log the user out and return to login page.
-	* @param {Event} event - The event.
-	*/
+	 * Log the user out and return to login page.
+	 * @param {Event} event - The event.
+	 */
 	function logout(event) {
 		user = {};
 
@@ -327,7 +329,7 @@ var momentumModule = (function momentumModule(helper) {
 	function resetDashboardState() {
 
 		// Reset active db button
-		if(document.getElementById('active-dbp-btn')) {
+		if (document.getElementById('active-dbp-btn')) {
 			document.getElementById('active-dbp-btn').classList.remove('active');
 			document.getElementById('active-dbp-btn').setAttribute('id', '');
 		}
@@ -340,12 +342,37 @@ var momentumModule = (function momentumModule(helper) {
 	}
 
 	/**
-	* Render a dashboard page with some passed-in content.
-	* @param {Array} content - Content to render in the page.
-	* @param {Object} request - Info on the request, including the type, used to select the correct render.
-	* @param {Object} parent - The dashboard page in which the content should be rendered.
-	* @param {Function} callback - Function to call once page is finished rendering.
-	*/
+	 * Reset the state of dbp to the original default one. Launch on tab change.
+	 */
+	function resetDbpState() {
+
+		// Remove all additional content pages
+		while (helper.getElementNextOf(elems.dbpContentPageOne) != null) {
+			let nextElem = helper.getElementNextOf(elems.dbpContentPageOne);
+			nextElem.parentElement.removeChild(nextElem);
+		}
+
+		// Make first content page active
+		elems.dbpContentPageOne.dataset.currentcontent = true;
+
+		// Reset bottom buttons states
+		elems.contentNext.disabled = true;
+		
+		// Empty the first content page
+		elems.dashboardContentTitle.innerHTML = '';
+
+		while (elems.dbpContentPageOne.firstChild) {
+			elems.dbpContentPageOne.removeChild(elems.dbpContentPageOne.firstChild);
+		}
+	}
+
+	/**
+	 * Render a dashboard page with some passed-in content.
+	 * @param {Array} content - Content to render in the page.
+	 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+	 * @param {Object} parent - The dashboard page in which the content should be rendered.
+	 * @param {Function} callback - Function to call once page is finished rendering.
+	 */
 	function renderDashboardPage(content, request, parent, callback) {
 
 		var render = {
@@ -355,7 +382,7 @@ var momentumModule = (function momentumModule(helper) {
 			'user' : renderUser
 		};
 
-		callback = callback || function(){};
+		callback = callback || function () {};
 
 		// Empty the parent
 		while (parent.firstChild) {
@@ -417,6 +444,7 @@ var momentumModule = (function momentumModule(helper) {
 
 				parent.appendChild(newElem);
 			}
+
 			afterRender();
 		}
 
@@ -428,7 +456,6 @@ var momentumModule = (function momentumModule(helper) {
 		function renderAlbum(content, request) {
 			console.log(content);
 			console.log(request);
-
 			afterRender();
 		}
 
@@ -485,6 +512,7 @@ var momentumModule = (function momentumModule(helper) {
 			 */
 			function addUser(callback) {
 				helper.getApiData(`users/${content.userId}`, function (result) {
+
 					// Add user
 					userElem.innerHTML = result.username;
 					postElem.appendChild(userElem);
@@ -502,8 +530,7 @@ var momentumModule = (function momentumModule(helper) {
 			 */
 			function addComments(callback) {
 				helper.getApiData(`posts/${content.id}/comments`, function (result) {
-					// Add comments
-					
+					// Add comments here (TODO)
 
 					callback();
 				});
@@ -579,7 +606,7 @@ var momentumModule = (function momentumModule(helper) {
 		}
 
 		// Request the content and render page with it
-		helper.getApiData(request.query, function (result) {
+		helper.getApiData(request.query, function(result) {
 			renderDashboardPage(result, request, nextContentElem, function () {
 				dbpChangePage('next');
 			});
@@ -633,34 +660,11 @@ var momentumModule = (function momentumModule(helper) {
 		 * Function executed after the page change.
 		 */
 		function afterChange() {
+
 			// Set the title
 			elems.dashboardContentTitle.innerHTML = newPage.dataset.title;
 			document.title = `${pageTitleBase} - ${newPage.dataset.title}`;
 			callback();
-		}
-	}
-
-	/**
-	 * Reset the state of dbp to the original default one. Launch on tab change.
-	 */
-	function resetDbpState() {
-		while (helper.getElementNextOf(elems.dbpContentPageOne) != null) {
-			let nextElem = helper.getElementNextOf(elems.dbpContentPageOne);
-			nextElem.parentElement.removeChild(nextElem);
-		}
-
-		// Make first page active
-		elems.dbpContentPageOne.dataset.currentcontent = true;
-
-		// Reset bottom btns states
-		elems.contentNext.disabled = true;
-
-		// Remove all contents from first dbp
-		elems.dashboardContentTitle.innerHTML = '';
-		
-		// Empty the first page
-		while (elems.dbpContentPageOne.firstChild) {
-			elems.dbpContentPageOne.removeChild(elems.dbpContentPageOne.firstChild);
 		}
 	}
 
