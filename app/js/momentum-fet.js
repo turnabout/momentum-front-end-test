@@ -93,7 +93,7 @@ var momentumModule = (function momentumModule(helper) {
 	function handleDashboardMenuClick(event) {
 
 		// If already busy being processed/animated or request doesn't exist, don't do anything
-		if (helper.isElement(elems.dashboardContentPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
+		if (helper.isElem(elems.dashboardContentPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
 			return;
 		}
 
@@ -213,7 +213,7 @@ var momentumModule = (function momentumModule(helper) {
 	 */
 	function dbpNextClick(event) {
 		// Only change to next page if it exists
-		if (helper.getElementNextOf(getCurrentlyShownDbpContent()) != null) {
+		if (helper.getElemNextOf(getCurrentlyShownDbpContent()) != null) {
 			dbpChangePage('next');
 		}
 	}
@@ -224,7 +224,7 @@ var momentumModule = (function momentumModule(helper) {
 	 */
 	function getCurrentlyShownDbpContent() {
 		for (var elem of helper.getElemsWithAttr('data-currentcontent')) {
-			if (helper.isElement(elem, 'currentcontent')) {
+			if (helper.isElem(elem, 'currentcontent')) {
 				return elem;
 			}
 		}
@@ -347,8 +347,8 @@ var momentumModule = (function momentumModule(helper) {
 	function resetDbpState() {
 
 		// Remove all additional content pages
-		while (helper.getElementNextOf(elems.dbpContentPageOne) != null) {
-			let nextElem = helper.getElementNextOf(elems.dbpContentPageOne);
+		while (helper.getElemNextOf(elems.dbpContentPageOne) != null) {
+			let nextElem = helper.getElemNextOf(elems.dbpContentPageOne);
 			nextElem.parentElement.removeChild(nextElem);
 		}
 
@@ -360,7 +360,7 @@ var momentumModule = (function momentumModule(helper) {
 		
 		// Empty the first content page
 		elems.dashboardContentTitle.innerHTML = '';
-		helper.emptyElement(elems.dbpContentPageOne);
+		helper.emptyElem(elems.dbpContentPageOne);
 	}
 
 	/**
@@ -382,7 +382,7 @@ var momentumModule = (function momentumModule(helper) {
 		callback = callback || function () {};
 
 		// Empty the parent
-		helper.emptyElement(parent);
+		helper.emptyElem(parent);
 
 		elems.dashboardContentPage.dataset.processing = false;
 
@@ -540,8 +540,8 @@ var momentumModule = (function momentumModule(helper) {
 			parent.classList.add('active');
 
 			// Remove any dbp that come after the new, current dashboard page. To avoid having the 'next' option available to irrelevent pages.
-			while (helper.getElementNextOf(parent) != null) {
-				let nextElem = helper.getElementNextOf(parent);
+			while (helper.getElemNextOf(parent) != null) {
+				let nextElem = helper.getElemNextOf(parent);
 				nextElem.parentElement.removeChild(nextElem);
 			}
 
@@ -579,7 +579,7 @@ var momentumModule = (function momentumModule(helper) {
 	 */
 	function renderNewPage() {
 		var currentContentElem = getCurrentlyShownDbpContent(),
-			nextContentElem = helper.getElementNextOf(currentContentElem),
+			nextContentElem = helper.getElemNextOf(currentContentElem),
 			request = requests[this.dataset.req](this.dataset.id);
 
 		// Next page doesn't exist, create it
@@ -597,7 +597,7 @@ var momentumModule = (function momentumModule(helper) {
 			nextElem.setAttributeNode(dataPagenum);
 
 			elems.dbpContentContainer.appendChild(nextElem);
-			nextContentElem = helper.getElementNextOf(currentContentElem);
+			nextContentElem = helper.getElemNextOf(currentContentElem);
 		}
 
 		// Request the content and render page with it
@@ -623,7 +623,7 @@ var momentumModule = (function momentumModule(helper) {
 
 		switch (direction) {
 		case 'previous':
-			var newPage = helper.getElementPreviousOf(currentContentElem);
+			var newPage = helper.getElemPreviousOf(currentContentElem);
 			newPage.classList.add('active');
 			newPage.dataset.currentcontent = true;
 
@@ -633,13 +633,13 @@ var momentumModule = (function momentumModule(helper) {
 			break;
 
 		case 'next':
-			var newPage = helper.getElementNextOf(currentContentElem);
+			var newPage = helper.getElemNextOf(currentContentElem);
 
 			newPage.classList.add('active');
 			newPage.dataset.currentcontent = true;
 
 			// If reached the end, make btn disabled
-			if (helper.getElementNextOf(newPage) == null) {
+			if (helper.getElemNextOf(newPage) == null) {
 				elems.contentNext.setAttribute('disabled', true);
 			}
 

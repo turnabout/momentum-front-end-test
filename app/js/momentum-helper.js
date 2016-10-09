@@ -110,7 +110,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {String|Array} data - String of data attribute, or array of all data attributes to check.
 	 * @param {Boolean} dataTruth - Whether the data attribute evaluates to true.
 	 */
-	function isElement(element, data) {
+	function isElem(element, data) {
 		if (data.constructor === Array) {
 			for (var d of data) {
 				if (element.dataset[d] === 'true') {
@@ -152,7 +152,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Object} element - The element from which to start.
 	 * @return {Object} next - The element next of the starting one.
 	 */
-	 function getElementNextOf(element) {
+	 function getElemNextOf(element) {
 		var nextSibling = element.nextSibling;
 
 		// Skip text nodes
@@ -168,7 +168,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Object} element - The element from which to start.
 	 * @return {Object} next - The element next of the starting one.
 	 */
-	 function getElementPreviousOf(element) {
+	 function getElemPreviousOf(element) {
 		var previousSibling = element.previousSibling;
 
 		// Skip text nodes
@@ -183,7 +183,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * Empty a DOM element of all its children.
 	 * @param {Object} element - The element to empty.
 	 */
-	function emptyElement(element) {
+	function emptyElem(element) {
 		while (element.firstChild) {
 			element.removeChild(element.firstChild);
 		}
@@ -192,12 +192,12 @@ var momentumHelperModule = (function momentumHelperModule() {
 	return {
 		'addEvent' : addEvent,
 		'animateElem' : animateElem,
-		'emptyElement' : emptyElement,
+		'emptyElem' : emptyElem,
 		'getApiData' : getApiData,
-		'getElementNextOf' : getElementNextOf,
-		'getElementPreviousOf' : getElementPreviousOf,
+		'getElemNextOf' : getElemNextOf,
+		'getElemPreviousOf' : getElemPreviousOf,
 		'getElemsWithAttr' : getElemsWithAttr,
-		'isElement' : isElement,
+		'isElem' : isElem,
 		'removeEvent' : removeEvent,
 		'setApiUrl' : setApiUrl
 	};
