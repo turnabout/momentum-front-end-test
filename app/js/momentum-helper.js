@@ -217,12 +217,24 @@ var momentumHelperModule = (function momentumHelperModule() {
 		}
 	}
 
+	/**
+	 * Enable a form and all its inputs/buttons.
+	 * @param {Object} form - The form element.
+	 */
+	function enableForm(form) {
+		var children = form.children;
+		for (var elem of form) {
+			elem.removeAttribute('disabled');
+		}
+	}
+
 	return {
 		'addEvent' : addEvent,
 		'animateElem' : animateElem,
 		'createAnchor' : createAnchor,
 		'disableForm' : disableForm,
 		'emptyElem' : emptyElem,
+		'enableForm' : enableForm,
 		'getApiData' : getApiData,
 		'getElemAfter' : getElemAfter,
 		'getElemBefore' : getElemBefore,

@@ -149,8 +149,7 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 			elems.loginBox.classList.add('error');
 
 			// Enable form and focus back on field
-			elems.loginField.removeAttribute('disabled', 'disabled');
-			elems.loginBtn.removeAttribute('disabled', 'disabled');
+			helper.enableForm(elems.loginForm);
 			elems.loginField.focus();
 		 }
 	}
@@ -163,8 +162,7 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 		user = {};
 
 		// Prepare login page to be shown again
-		elems.loginBtn.removeAttribute('disabled', 'disabled');
-		elems.loginField.removeAttribute('disabled', 'disabled');
+		helper.disableForm(elems.loginForm);
 		elems.loginField.value = '';
 
 		// Fade dashboard out
