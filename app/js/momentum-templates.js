@@ -7,44 +7,10 @@
 var momentumTemplatesModule = (function (helper, app) {
 
 	// Object containing references to static, reused DOM elements
-	var elems = helper.getAppElems();
+	var elems = app.getAppElems();
 
 	// Different requests info, used to render pages
-	var requests = {
-		'userPosts': function (userId) { 
-			return {
-				'query' 		: `posts?userId=${userId}`,
-				'titleQuery' 	: `users/${userId}`,
-				'type' 			: 'posts',
-			};
-		},
-		'userAlbums': function (userId) { 
-			return {
-				'query' 		: `albums?userId=${userId}`,
-				'titleQuery' 	: `users/${userId}`,
-				'type' 			: 'album',
-			};
-		},
-		'allPosts': function (userId) { 
-			return {
-				'query' 		: `posts`,
-				'title' 		: 'All Posts',
-				'type' 			: 'posts',
-			};
-		},
-		'post': function (postId) { 
-			return {
-				'query' 		: `posts/${postId}`,
-				'type' 			: 'post',
-			};
-		},
-		'user': function (userId) { 
-			return {
-				'query' 		: `users/${userId}`,
-				'type' 			: 'user',
-			};
-		},
-	};
+	var requests = app.requests();
 
 	var pageTitleBase = document.title;
 
@@ -287,7 +253,8 @@ var momentumTemplatesModule = (function (helper, app) {
 
 	return {
 		'render': render,
-		'renderNewPage': renderNewPage
+		'renderNewPage': renderNewPage,
+		'requests': requests
 	}
 	
 })(momentumHelperModule, momentumFunctionsModule);

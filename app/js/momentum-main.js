@@ -1,5 +1,5 @@
 /**
- * Module containing the main code for the Momentum Front End app.
+ * Main module containing the code for the Momentum Front End app.
  * @param {Object} helper - Helper functions module.
  * @param {Object} app - App related functions.
  * @param {Object} dbp - Module to render dashboard pages.
@@ -8,44 +8,10 @@
 var momentumModule = (function momentumModule(helper, app, dbp) {
 
 	// Object containing references to static, reused DOM elements
-	var elems = helper.getAppElems();
+	var elems = app.getAppElems();
 
 	// Store all different requests to use to different pages
-	var requests = {
-		'userPosts': function (userId) { 
-			return {
-				'query' : `posts?userId=${userId}`,
-				'titleQuery' : `users/${userId}`,
-				'type' : 'posts',
-			};
-		},
-		'userAlbums': function (userId) { 
-			return {
-				'query' : `albums?userId=${userId}`,
-				'titleQuery' : `users/${userId}`,
-				'type' : 'album',
-			};
-		},
-		'allPosts': function (userId) { 
-			return {
-				'query' : `posts`,
-				'title' : 'All Posts',
-				'type' : 'posts',
-			};
-		},
-		'post': function (postId) { 
-			return {
-				'query' : `posts/${postId}`,
-				'type' : 'post',
-			};
-		},
-		'user': function (userId) { 
-			return {
-				'query' : `users/${userId}`,
-				'type' : 'user',
-			};
-		},
-	};
+	var requests = app.requests();
 
 	// The current user
 	var user = {};
@@ -123,7 +89,7 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 
 		// Request the content and render page with it
 		helper.getApiData(request.query, function (result) {
-			renderDashboardPage(result, request, elems.dbpContentPageOne);
+			dbp.render(result, request, elems.dbpContentPageOne);
 		});
 	}
 
@@ -201,6 +167,7 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 	 * @param {Event} event - The event.
 	 */
 	function dbpNextClick(event) {
+
 		// Only change to next page if it exists
 		if (helper.getElemNextOf(app.getActiveContentPage()) != null) {
 			app.dbpChangePage('next');
@@ -215,6 +182,7 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 		var username = elems.loginField.value;
 
 		if (username) {
+
 			// Disable the form
 			elems.loginField.setAttribute('disabled', 'disabled');
 			elems.loginBtn.setAttribute('disabled', 'disabled');

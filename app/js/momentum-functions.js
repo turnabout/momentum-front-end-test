@@ -6,7 +6,7 @@
 var momentumFunctionsModule = (function (helper) {
 
 	// Object containing references to static, reused DOM elements
-	var elems = helper.getAppElems();
+	var elems = getAppElems();
 
 	var pageTitleBase = document.title;
 
@@ -77,9 +77,76 @@ var momentumFunctionsModule = (function (helper) {
 		}
 	}
 
+	/**
+	* Get the different requests to use to render content pages.
+	* @return {Object} reqs - The requests.
+	*/
+	function requests() {
+		return {
+			'userPosts': function (userId) { 
+				return {
+					'query' 		: `posts?userId=${userId}`,
+					'titleQuery' 	: `users/${userId}`,
+					'type' 			: 'posts',
+				};
+			},
+			'userAlbums': function (userId) { 
+				return {
+					'query' 		: `albums?userId=${userId}`,
+					'titleQuery' 	: `users/${userId}`,
+					'type' 			: 'album',
+				};
+			},
+			'allPosts': function (userId) { 
+				return {
+					'query' 		: `posts`,
+					'title' 		: 'All Posts',
+					'type' 			: 'posts',
+				};
+			},
+			'post': function (postId) { 
+				return {
+					'query' 		: `posts/${postId}`,
+					'type' 			: 'post',
+				};
+			},
+			'user': function (userId) { 
+				return {
+					'query' 		: `users/${userId}`,
+					'type' 			: 'user',
+				};
+			},
+		};
+	}
+
+	/**
+	 * Get references to app elements.
+	 * @return {Object} els - Object containing references to many static app elements.
+	 */
+	function getAppElems() {
+		return {
+			contentBack: 			document.getElementById('content-back'),
+			contentNext: 			document.getElementById('content-next'),
+			dashboard: 				document.getElementById('dashboard'),
+			dashboardContentPage: 	document.getElementById('content-dbp'),
+			dashboardContentTitle: 	document.getElementById('dbp-content-title'),
+			dashboardMenuPage: 		document.getElementById('main-dbp'),
+			dbpContentContainer: 	document.getElementById('dbp-content-container'),
+			dbpContentPageOne: 		document.getElementById('dbp-content-page-1'),
+			loginAlert: 			document.getElementById('login-alert'),
+			loginBox: 				document.getElementById('login-box'),
+			loginBtn: 				document.getElementById('login-btn'),
+			loginField: 			document.getElementById('login-field'),
+			loginPage: 				document.getElementById('login-page'),
+			dashboardMenuItems: 	document.querySelectorAll('.dashboard-menu-item')
+		};
+	}
+
 	return {
+		'dbpChangePage': dbpChangePage,
 		'getActiveContentPage': getActiveContentPage,
-		'dbpChangePage': dbpChangePage
+		'getAppElems': getAppElems,
+		'requests': requests
 	}
 	
 })(momentumHelperModule);
