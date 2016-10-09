@@ -170,7 +170,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 */
 	 function getElementPreviousOf(element) {
 		var previousSibling = element.previousSibling;
-		
+
 		// Skip text nodes
 		while (previousSibling != null && previousSibling.nodeType == 3) {
 			previousSibling = previousSibling.previousSibling;
@@ -179,16 +179,27 @@ var momentumHelperModule = (function momentumHelperModule() {
 		return previousSibling;
 	}
 
+	/**
+	 * Empty a DOM element of all its children.
+	 * @param {Object} element - The element to empty.
+	 */
+	function emptyElement(element) {
+		while (element.firstChild) {
+			element.removeChild(element.firstChild);
+		}
+	}
+
 	return {
-		'getApiData' : getApiData,
-		'animateElem' : animateElem,
 		'addEvent' : addEvent,
-		'removeEvent' : removeEvent,
-		'isElement' : isElement,
-		'setApiUrl' : setApiUrl,
-		'getElemsWithAttr' : getElemsWithAttr,
+		'animateElem' : animateElem,
+		'emptyElement' : emptyElement,
+		'getApiData' : getApiData,
 		'getElementNextOf' : getElementNextOf,
-		'getElementPreviousOf' : getElementPreviousOf
+		'getElementPreviousOf' : getElementPreviousOf,
+		'getElemsWithAttr' : getElemsWithAttr,
+		'isElement' : isElement,
+		'removeEvent' : removeEvent,
+		'setApiUrl' : setApiUrl
 	};
 	
 })();

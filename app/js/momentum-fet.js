@@ -360,10 +360,7 @@ var momentumModule = (function momentumModule(helper) {
 		
 		// Empty the first content page
 		elems.dashboardContentTitle.innerHTML = '';
-
-		while (elems.dbpContentPageOne.firstChild) {
-			elems.dbpContentPageOne.removeChild(elems.dbpContentPageOne.firstChild);
-		}
+		helper.emptyElement(elems.dbpContentPageOne);
 	}
 
 	/**
@@ -385,9 +382,7 @@ var momentumModule = (function momentumModule(helper) {
 		callback = callback || function () {};
 
 		// Empty the parent
-		while (parent.firstChild) {
-			parent.removeChild(parent.firstChild);
-		}
+		helper.emptyElement(parent);
 
 		elems.dashboardContentPage.dataset.processing = false;
 
@@ -627,33 +622,32 @@ var momentumModule = (function momentumModule(helper) {
 		currentContentElem.dataset.currentcontent = false;
 
 		switch (direction) {
-			case 'previous':
-				var newPage = helper.getElementPreviousOf(currentContentElem);
-				newPage.classList.add('active');
-				newPage.dataset.currentcontent = true;
+		case 'previous':
+			var newPage = helper.getElementPreviousOf(currentContentElem);
+			newPage.classList.add('active');
+			newPage.dataset.currentcontent = true;
 
-				// Set next btn to active
-				elems.contentNext.removeAttribute('disabled');
-				afterChange();
-				break;
+			// Set next btn to active
+			elems.contentNext.removeAttribute('disabled');
+			afterChange();
+			break;
 
-			case 'next':
-				var newPage = helper.getElementNextOf(currentContentElem);
+		case 'next':
+			var newPage = helper.getElementNextOf(currentContentElem);
 
-				newPage.classList.add('active');
-				newPage.dataset.currentcontent = true;
+			newPage.classList.add('active');
+			newPage.dataset.currentcontent = true;
 
-				// If reached the end, make btn disabled
-				if (helper.getElementNextOf(newPage) == null) {
-					elems.contentNext.setAttribute('disabled', true);
-				}
+			// If reached the end, make btn disabled
+			if (helper.getElementNextOf(newPage) == null) {
+				elems.contentNext.setAttribute('disabled', true);
+			}
 
-				afterChange();
-				break;
+			afterChange();
+			break;
 
-			default:
-
-				break;
+		default:
+			break;
 		}
 
 		/**
