@@ -206,10 +206,22 @@ var momentumHelperModule = (function momentumHelperModule() {
 		return anchor;
 	}
 
+	/**
+	 * Disable a form and all its inputs/buttons.
+	 * @param {Object} form - The form element.
+	 */
+	function disableForm(form) {
+		var children = form.children;
+		for (var elem of form) {
+			elem.setAttribute('disabled', 'true');
+		}
+	}
+
 	return {
 		'addEvent' : addEvent,
 		'animateElem' : animateElem,
 		'createAnchor' : createAnchor,
+		'disableForm' : disableForm,
 		'emptyElem' : emptyElem,
 		'getApiData' : getApiData,
 		'getElemAfter' : getElemAfter,

@@ -32,13 +32,10 @@ var momentumFunctionsModule = (function (helper) {
 		var currentContentElem = getActiveContentPage();
 		callback = callback || function(){};
 
-		// Make current page inactive
-		currentContentElem.classList.remove('active');
-		currentContentElem.dataset.currentcontent = false;
-
 		switch (direction) {
 		case 'previous':
 			var newPage = helper.getElemBefore(currentContentElem);
+
 			newPage.classList.add('active');
 			newPage.dataset.currentcontent = true;
 
@@ -69,6 +66,10 @@ var momentumFunctionsModule = (function (helper) {
 		 * Function executed after the page change.
 		 */
 		function afterChange() {
+
+			// Make current page inactive
+			currentContentElem.classList.remove('active');
+			currentContentElem.dataset.currentcontent = false;
 
 			// Set the title
 			elems.dashboardContentTitle.innerHTML = newPage.dataset.title;
@@ -163,6 +164,7 @@ var momentumFunctionsModule = (function (helper) {
 	 * @param {Event} event - The event.
 	 */
 	 function submitPostComment(event) {
+	 	helper.disableForm(this);
 	 	console.log(this);
 
 	 	event.preventDefault();
@@ -224,6 +226,7 @@ var momentumFunctionsModule = (function (helper) {
 			dashboardMenuPage: 		document.getElementById('main-dbp'),
 			dbpContentContainer: 	document.getElementById('dbp-content-container'),
 			dbpContentPageOne: 		document.getElementById('dbp-content-page-1'),
+			loginForm:				document.getElementById('login'),
 			loginAlert: 			document.getElementById('login-alert'),
 			loginBox: 				document.getElementById('login-box'),
 			loginBtn: 				document.getElementById('login-btn'),

@@ -264,7 +264,7 @@ var momentumTemplatesModule = (function (helper, app) {
 
 						// "Mail user" tag
 						let aroundAncor = document.createElement('div');
-						let userAnchor = helper.createAnchor('Mail this user', `mailto:${comment.email}`);
+						let userAnchor = helper.createAnchor('Email this user', `mailto:${comment.email}`);
 						userAnchor.classList.add('user-email');
 						aroundAncor.appendChild(userAnchor);
 						userElem.appendChild(aroundAncor);

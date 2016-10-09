@@ -102,9 +102,7 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 
 		if (username) {
 
-			// Disable the form
-			elems.loginField.setAttribute('disabled', 'disabled');
-			elems.loginBtn.setAttribute('disabled', 'disabled');
+			helper.disableForm(elems.loginForm);
 
 			helper.getApiData(`users?username=${username}`, function processResult(result) {
 

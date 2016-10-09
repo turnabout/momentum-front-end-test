@@ -2759,6 +2759,9 @@ textarea {
 .post .title:first-letter, .post .content:first-letter {
   text-transform: uppercase; }
 
+.post .content {
+  line-height: 1.3; }
+
 .post .user-around {
   margin-bottom: 12px;
   padding: 12px 0;
@@ -2769,11 +2772,9 @@ textarea {
     color: #4F628E; }
 
 .before-comments {
-  padding: 12px 20px;
   margin-bottom: 12px; }
   .before-comments .title {
-    margin-top: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     font-size: 21px; }
   .before-comments .field {
     width: 100%;
