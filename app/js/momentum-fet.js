@@ -1,9 +1,10 @@
 /**
  * Module containing the main code for the Momentum Front End app.
  * @param {Object} helper - Helper functions module.
+ * @param {Object} dbp - Module to render dashboard pages.
  * @return {Object} publicApi - Api containing references to the module functions.
  */
-var momentumModule = (function momentumModule(helper) {
+var momentumModule = (function momentumModule(helper, dbp) {
 
 	// Object containing references to static, reused DOM elements
 	var elems = helper.getAppElems();
@@ -45,7 +46,9 @@ var momentumModule = (function momentumModule(helper) {
 		},
 	};
 
+	// The current user
 	var user = {};
+
 	var pageTitleBase = document.title;
 
 	/**
@@ -587,7 +590,7 @@ var momentumModule = (function momentumModule(helper) {
 
 		// Request the content and render page with it
 		helper.getApiData(request.query, function(result) {
-			renderDashboardPage(result, request, nextContentElem, function () {
+			dbp.render(result, request, nextContentElem, function () {
 				dbpChangePage('next');
 			});
 		});
@@ -651,4 +654,4 @@ var momentumModule = (function momentumModule(helper) {
 		'init' : init
 	};
 
-})(momentumHelperModule);
+})(momentumHelperModule, momentumTemplatesModule);
