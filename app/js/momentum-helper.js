@@ -168,7 +168,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Object} element - The element from which to start.
 	 * @return {Object} next - The element next of the starting one.
 	 */
-	 function getElemPreviousOf(element) {
+	 function getElemBefore(element) {
 		var previousSibling = element.previousSibling;
 
 		// Skip text nodes
@@ -195,7 +195,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		'emptyElem' : emptyElem,
 		'getApiData' : getApiData,
 		'getElemAfter' : getElemAfter,
-		'getElemPreviousOf' : getElemPreviousOf,
+		'getElemBefore' : getElemBefore,
 		'getElemsWithAttr' : getElemsWithAttr,
 		'isElem' : isElem,
 		'removeEvent' : removeEvent,

@@ -38,7 +38,7 @@ var momentumFunctionsModule = (function (helper) {
 
 		switch (direction) {
 		case 'previous':
-			var newPage = helper.getElemPreviousOf(currentContentElem);
+			var newPage = helper.getElemBefore(currentContentElem);
 			newPage.classList.add('active');
 			newPage.dataset.currentcontent = true;
 
