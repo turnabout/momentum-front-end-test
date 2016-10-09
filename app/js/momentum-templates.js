@@ -113,9 +113,7 @@ var momentumTemplatesModule = (function (helper, app) {
 			// Render post content
 			var postElem = document.createElement('div'),
 				postTitleElem = document.createElement('h3'),
-				postContentElem = document.createElement('p'),
-				userElem = document.createElement('a'),
-				userAround = document.createElement('div');
+				postContentElem = document.createElement('p');
 
 			// Main element
 			postElem.classList.add('card', 'card-block', 'post');
@@ -126,14 +124,15 @@ var momentumTemplatesModule = (function (helper, app) {
 
 			// Content
 			postContentElem.innerHTML = content.body;
-			postContentElem.classList.add('card-text');
+			postContentElem.classList.add('card-text', 'content');
 
 			// Add the elements
 			postElem.appendChild(postTitleElem);
 
 			addUser(function () {
+				parent.appendChild(postElem);
+
 				addComments(function () {
-					parent.appendChild(postElem);
 					afterRender();
 				});
 			});
@@ -144,16 +143,11 @@ var momentumTemplatesModule = (function (helper, app) {
 			 */
 			function addUser(callback) {
 				helper.getApiData(`users/${content.userId}`, function (result) {
-
-					userAround.classList.add('user-around');
+					var userElem = helper.createAnchor(result.username);
 
 					var dataId = document.createAttribute('data-id');
 					dataId.value = content.userId;
 					userElem.setAttributeNode(dataId);
-
-					var href = document.createAttribute('href');
-					href.value = '#';
-					userElem.setAttributeNode(href);
 
 					var dataReq = document.createAttribute('data-req');
 					dataReq.value = 'user';
@@ -162,13 +156,12 @@ var momentumTemplatesModule = (function (helper, app) {
 					userElem.classList.add('post-user');
 					helper.addEvent(userElem, 'click', renderNewPage);
 
-					var text = document.createTextNode('Posted by: ');
-
-					userAround.appendChild(text);
+					var userAround = document.createElement('div');
+					userAround.classList.add('user-around');
+					userAround.appendChild(document.createTextNode('Posted by: '));
 					userAround.appendChild(userElem);
 
 					// Add user
-					userElem.innerHTML = result.username;
 					postElem.appendChild(userAround);
 
 					// Add post content
@@ -179,14 +172,136 @@ var momentumTemplatesModule = (function (helper, app) {
 			}
 
 			/**
+			 * Get the new comment form.
+			 * @return {Object} form - The form to enter a new comment.
+			 */
+			function getCommentForm() {
+
+				// Form
+				var form = document.createElement('form');
+				form.setAttribute('method','post');
+				form.classList.add('comment-form');
+
+				helper.addEvent(form, 'submit', app.submitPostComment);
+
+				// Input
+				var input = document.createElement('input');
+				input.setAttribute('placeholder', 'Enter a title...');
+				input.setAttribute('type', 'text');
+				input.classList.add('field', 'title-field');
+
+				// Textarea
+				var textArea = document.createElement('textarea');
+				textArea.setAttribute('placeholder', 'Enter a comment...');
+				textArea.classList.add('field', 'comment-field');
+
+				// Button
+				var button = document.createElement('input');
+				button.setAttribute('type', 'submit');
+				button.setAttribute('value', 'Send');
+				button.classList.add('btn', 'btn-primary', 'btn-block');
+
+				form.appendChild(input);
+				form.appendChild(textArea);
+				form.appendChild(button);
+
+				return form;
+			}
+
+			/**
 			 * Get and add comments to the post element.
 			 * @param {Function} callback - Function to call after comments are added.
 			 */
 			function addComments(callback) {
 				helper.getApiData(`posts/${content.id}/comments`, function (result) {
-					// Add comments here (TODO)
 
+					// Add the amount of comments & the comment form before the comments
+					var beforeComments = document.createElement('div');
+					beforeComments.classList.add('before-comments', 'card', 'card-block');
+
+					var commentsSectionHeading = document.createElement('h3');
+					commentsSectionHeading.classList.add('title', 'card-title');
+					commentsSectionHeading.appendChild(document.createTextNode('Add a comment'));
+
+					beforeComments.appendChild(commentsSectionHeading);
+					beforeComments.appendChild(getCommentForm());
+
+					// Add the 'before commments' sections
+					parent.appendChild(beforeComments);
+
+					// Add comments title section
+					var commentsElemTitleAround = document.createElement('div');
+					commentsElemTitleAround.classList.add('card', 'card-block', 'before-comments-title');
+
+					var commentsElemTitle = document.createElement('h3');
+					commentsElemTitle.classList.add('card-title');
+					commentsElemTitle.appendChild(document.createTextNode(getCommentsTitle()));
+
+					var dataComs = document.createAttribute('data-comments');
+					dataComs.value = result.length;
+					commentsElemTitle.setAttributeNode(dataComs);
+
+					// Append it all
+					commentsElemTitleAround.appendChild(commentsElemTitle);
+					parent.appendChild(commentsElemTitleAround);
+
+					// Add the main comments element
+					var commentsElem = document.createElement('div');
+					commentsElem.classList.add('comments', 'list-group');
+
+					// Output all comments
+					for (var comment of result) {
+
+						// Main comment elem
+						let commentElem = document.createElement('div');
+						commentElem.classList.add('list-group-item', 'list-group-item-action');
+
+						// User/title
+						let userElem = document.createElement('h4');
+						let name = document.createTextNode(comment.name);
+						userElem.appendChild(name);
+						userElem.classList.add('list-group-item-heading');
+
+						// "Mail user" tag
+						let aroundAncor = document.createElement('div');
+						let userAnchor = helper.createAnchor('Mail this user', `mailto:${comment.email}`);
+						userAnchor.classList.add('user-email');
+						aroundAncor.appendChild(userAnchor);
+						userElem.appendChild(aroundAncor);
+
+						// Body
+						let bodyElem = document.createElement('p');
+						bodyElem.classList.add('list-group-item-text');
+						bodyElem.appendChild(document.createTextNode(comment.body));
+
+						// Add to main comment elem
+						commentElem.appendChild(userElem);
+						commentElem.appendChild(bodyElem);
+
+						if (commentsElem.firstChild) {
+							commentsElem.insertBefore(commentElem, commentsElem.firstChild);
+						} else {
+							commentsElem.appendChild(commentElem);
+						}
+					}
+
+					parent.appendChild(commentsElem);
 					callback();
+
+
+					/**
+					 * Get the appropriate title for the comments amount title.
+					 * @return {Object} title - The title text.
+					 */
+					function getCommentsTitle() {
+						if (result.length === 1) {
+							return '1 comment';
+						} else if (result.length > 1) {
+							return `${result.length} comments`;
+						} else {
+							return 'No comments';
+						}
+					}
 				});
 			}
 		}

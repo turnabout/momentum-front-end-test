@@ -5,8 +5,10 @@
 // Single post
 .post {
 	
-	.title {
-		
+	.title, .content {
+		&:first-letter {
+			text-transform: uppercase;
+		}
 	}
 
 	// User
@@ -22,4 +24,55 @@
 			color: $primary-light;
 		}
 	}
+
+}
+
+// New comment form
+.before-comments {
+	padding: $card-spacer-y $card-spacer-x;
+	margin-bottom: $card-spacer-y;
+
+
+	// Heading
+	.title {
+		margin-top: $card-spacer-y;
+		margin-bottom: ($card-spacer-y * 2);
+		font-size: 21px;
+	}
+
+	// <textarea> & <input>
+	.field {
+		width: 100%;
+		border-radius: 0;
+		margin-bottom: $card-spacer-y;
+	}
+
+
+	.comment-field {
+		padding: 6px;
+		max-width: 100%;
+		font-size: 16px;
+		height: 100px;
+	}
+}
+
+.before-comments-title .card-title {
+		font-size: 21px;
+}
+
+// Section title before comments
+.before-comments-title {
+	margin-bottom: -$card-spacer-y;
+}
+
+.comments {
+	.list-group-item-heading {
+
+	}
+
+	.user-email {
+		display: inline-block;
+		font-size: 12px;
+	}
+
 }

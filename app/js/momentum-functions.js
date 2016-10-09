@@ -159,6 +159,16 @@ var momentumFunctionsModule = (function (helper) {
 	}
 
 	/**
+	 * Handle post comment form submit.
+	 * @param {Event} event - The event.
+	 */
+	 function submitPostComment(event) {
+	 	console.log(this);
+
+	 	event.preventDefault();
+	 }
+
+	/**
 	* Get the different requests to use to render content pages.
 	* @return {Object} reqs - The requests.
 	*/
@@ -230,6 +240,7 @@ var momentumFunctionsModule = (function (helper) {
 		'getActiveContentPage': getActiveContentPage,
 		'getAppElems': getAppElems,
 		'requests': requests,
+		'submitPostComment': submitPostComment,
 		'transitionDashboardPage': transitionDashboardPage
 	}
 	

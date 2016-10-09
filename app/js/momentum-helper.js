@@ -189,9 +189,27 @@ var momentumHelperModule = (function momentumHelperModule() {
 		}
 	}
 
+	/**
+	 * Create an anchor tag element and return it.
+	 * @param {String} text - Text to place inside the anchor.
+	 * @param {String} href - Text to place inside href attribute.
+	 * @return {Object} elem - The anchor tag element.
+	*/
+	function createAnchor(text, href) {
+		var anchor = document.createElement('a');
+		anchor.href = href || '#';
+		
+		if (text) {
+			anchor.appendChild(document.createTextNode(text));
+		}
+
+		return anchor;
+	}
+
 	return {
 		'addEvent' : addEvent,
 		'animateElem' : animateElem,
+		'createAnchor' : createAnchor,
 		'emptyElem' : emptyElem,
 		'getApiData' : getApiData,
 		'getElemAfter' : getElemAfter,

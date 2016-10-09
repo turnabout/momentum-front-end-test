@@ -66,4 +66,13 @@ button::-moz-focus-inner {
 
 a {
   text-decoration: none;
+  color: $primary;
+
+  &:hover {
+    color: $primary-light;
+  }
+}
+
+textarea {
+  font-family: $font-family-text;
 }
