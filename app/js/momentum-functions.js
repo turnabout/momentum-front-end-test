@@ -164,31 +164,39 @@ var momentumFunctionsModule = (function (helper) {
 	 * @param {Event} event - The event.
 	 */
 	function submitPostComment(event) {
-		event.preventDefault();
-		var form = this;
-		helper.disableForm(this);
+		var body;			// The body value of the posted comment
+		var commentsAmount; // The amount of comments already posted
+		var commentsTitle; 	// Element containing title for comments section
+		var currentPage 	// Currently active page
+		var form; 			// The form
+		var name;			// The 'name' or title value of the posted comment
+		var params;			// The parameters to send to the POST request
+		var postId;			// The ID of the post attached to the comment
 
-		var currentPage = getActiveContentPage();
+		helper.disableForm(this);
+		form = this;
+		currentPage = getActiveContentPage();
+
+		event.preventDefault();
 
 		if (!currentPage) {
 			helper.enableForm(this);
 			return;
 		}
 
-		// Get the title containing amount of comments
-		var commentsTitle = currentPage.querySelectorAll('[data-comments]')[0];
+		commentsTitle = currentPage.querySelectorAll('[data-comments]')[0];
+
 		if (!commentsTitle) {
 			helper.enableForm(this);
 			return;
 		}
 
-		// Get comment data
-		var commentsAmount = parseInt(commentsTitle.dataset.comments);
-		var postId = this.dataset.postid;
-		var name = form.elements['name'].value;
-		var body = form.elements['body'].value;
-
-		var params = `postId=${postId}&name=${name}&body=${body}&email=${body}`;
+		// Get comment data and prepare POST request
+		commentsAmount = parseInt(commentsTitle.dataset.comments);
+		postId = this.dataset.postid;
+		name = form.elements['name'].value;
+		body = form.elements['body'].value;
+		params = `postId=${postId}&name=${name}&body=${body}&email=${body}`;
 
 		// Post the comment
 		helper.postApiData('comments', params, `posts/${postId}/comments`, function (result) {
@@ -199,7 +207,6 @@ var momentumFunctionsModule = (function (helper) {
 				result.newCommentsAmount = commentsAmount + 1;
 				addComment(currentPage, result);
 			}
-
 		});
 
 		/**
@@ -208,41 +215,55 @@ var momentumFunctionsModule = (function (helper) {
 		 * @param {Object} commentData - All data on the comment.
 		 */
 		function addComment(page, commentData) {
+			var aroundAnchor;		// Element wrapping around the userAnchor element
+			var body;				// The comment's body
+			var comment;			// The comment element
+			var commentsElem; 		// Element containing all comments
+			var commentsTitleText;	// Text to be inserted in the comments section title
+			var title;				// The comment's title
+			var userAnchor;			// The anchor element used to email the user
+
 			if (page) {
 
-				// Add the new comment to the list
-				var commentsElem = page.querySelectorAll('.comments')[0];
+				// Comments
+				commentsElem = page.querySelectorAll('.comments')[0];
 
-				var comment = document.createElement('div');
+				// Comment
+				comment = document.createElement('div');
 				comment.classList.add('list-group-item');
 
-				var title = document.createElement('h4');
+				// Comment title
+				title = document.createElement('h4');
 				title.classList.add('list-group-item-heading');
 				title.appendChild( document.createTextNode(commentData.name) );
 
-				var aroundAnchor = document.createElement('div');
-				aroundAnchor.classList.add('around-anchor');
-
-				var userAnchor = helper.createAnchor('Email this user', `mailto:${commentData.email}`);
+				// User email anchor
+				userAnchor = helper.createAnchor('Email this user', `mailto:${commentData.email}`);
 				userAnchor.classList.add('user-email');
+
+				// Around user email anchor
+				aroundAnchor = document.createElement('div');
+				aroundAnchor.classList.add('around-anchor');
 				aroundAnchor.appendChild(userAnchor);
 
-				var body = document.createElement('p');
+				// Body
+				body = document.createElement('p');
 				body.classList.add('list-group-item-text');
 				body.appendChild( document.createTextNode(commentData.body) );
 
+				// Append all
 				comment.appendChild(title);
 				comment.appendChild(aroundAnchor);
 				comment.appendChild(body);
 				commentsElem.insertBefore(comment, commentsElem.firstChild);
 
-				// Update the comments count
-				var commentsText = `${commentData.newCommentsAmount} comment`;
+				// Update comments count
+				commentsTitleText = `${commentData.newCommentsAmount} comment`;
 
 				if (commentData.newCommentsAmount > 1) {
 					commentsText += 's';
 				}
-
+				
 				commentsTitle.removeChild(commentsTitle.firstChild);
 				commentsTitle.appendChild( document.createTextNode(commentsText) );
 			}

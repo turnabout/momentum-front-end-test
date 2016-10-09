@@ -378,6 +378,7 @@ var momentumTemplatesModule = (function (helper, app) {
 		// Request the content and render page with it
 		helper.getApiData(request.query, function(result) {
 			render(result, request, nextContentElem, function () {
+				console.log(nextContentElem);
 				app.dbpChangePage('next');
 			});
 		});
