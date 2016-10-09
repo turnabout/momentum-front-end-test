@@ -257,20 +257,20 @@ var momentumTemplatesModule = (function (helper, app) {
 
 						// Main comment elem
 						let commentElem = document.createElement('div');
-						commentElem.classList.add('list-group-item', 'list-group-item-action');
+						commentElem.classList.add('list-group-item');
 
-						// User/title
-						let userElem = document.createElement('h4');
+						// Title
+						let titleElem = document.createElement('h4');
 						let name = document.createTextNode(comment.name);
-						userElem.appendChild(name);
-						userElem.classList.add('list-group-item-heading');
+						titleElem.appendChild(name);
+						titleElem.classList.add('list-group-item-heading');
 
-						// "Mail user" tag
-						let aroundAncor = document.createElement('div');
+						// "Email user" element
+						let aroundAnchor = document.createElement('div');
+						aroundAnchor.classList.add('around-anchor');
 						let userAnchor = helper.createAnchor('Email this user', `mailto:${comment.email}`);
 						userAnchor.classList.add('user-email');
-						aroundAncor.appendChild(userAnchor);
-						userElem.appendChild(aroundAncor);
+						aroundAnchor.appendChild(userAnchor);
 
 						// Body
 						let bodyElem = document.createElement('p');
@@ -278,7 +278,8 @@ var momentumTemplatesModule = (function (helper, app) {
 						bodyElem.appendChild(document.createTextNode(comment.body));
 
 						// Add to main comment elem
-						commentElem.appendChild(userElem);
+						commentElem.appendChild(titleElem);
+						commentElem.appendChild(aroundAnchor);
 						commentElem.appendChild(bodyElem);
 
 						if (commentsElem.firstChild) {

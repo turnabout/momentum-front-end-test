@@ -2792,9 +2792,17 @@ textarea {
 .before-comments-title {
   margin-bottom: -12px; }
 
+.comments .list-group-item-text {
+  color: #555555; }
+
+.comments .around-anchor {
+  margin: -5px 0 5px; }
+
 .comments .user-email {
   display: inline-block;
-  font-size: 12px; }
+  font-size: 12px;
+  font-weight: 700;
+  font-family: Georgia, Times, "Times New Roman", serif; }
 
 body {
   color: #201f1f;

@@ -197,17 +197,55 @@ var momentumFunctionsModule = (function (helper) {
 			if (result) {
 				helper.clearForm(form);
 				result.newCommentsAmount = commentsAmount + 1;
-				addComment(result);
+				addComment(currentPage, result);
 			}
 
 		});
 
 		/**
 		 * Add the comment to both the DOM and app data.
+		 * @param {Object} page - The page in which the comments reside.
 		 * @param {Object} commentData - All data on the comment.
 		 */
-		function addComment(commentData) {
-			console.log(commentData);
+		function addComment(page, commentData) {
+			if (page) {
+
+				// Add the new comment to the list
+				var commentsElem = page.querySelectorAll('.comments')[0];
+
+				var comment = document.createElement('div');
+				comment.classList.add('list-group-item');
+
+				var title = document.createElement('h4');
+				title.classList.add('list-group-item-heading');
+				title.appendChild( document.createTextNode(commentData.name) );
+
+				var aroundAnchor = document.createElement('div');
+				aroundAnchor.classList.add('around-anchor');
+
+				var userAnchor = helper.createAnchor('Email this user', `mailto:${commentData.email}`);
+				userAnchor.classList.add('user-email');
+				aroundAnchor.appendChild(userAnchor);
+
+				var body = document.createElement('p');
+				body.classList.add('list-group-item-text');
+				body.appendChild( document.createTextNode(commentData.body) );
+
+				comment.appendChild(title);
+				comment.appendChild(aroundAnchor);
+				comment.appendChild(body);
+				commentsElem.insertBefore(comment, commentsElem.firstChild);
+
+				// Update the comments count
+				var commentsText = `${commentData.newCommentsAmount} comment`;
+
+				if (commentData.newCommentsAmount > 1) {
+					commentsText += 's';
+				}
+
+				commentsTitle.removeChild(commentsTitle.firstChild);
+				commentsTitle.appendChild( document.createTextNode(commentsText) );
+			}
 		}
 	}
 

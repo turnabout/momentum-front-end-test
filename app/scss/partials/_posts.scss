@@ -72,9 +72,19 @@
 
 	}
 
+	.list-group-item-text {
+		color: #555555;
+	}
+	
+	.around-anchor {
+		margin: -$list-group-item-heading-margin-bottom 0 $list-group-item-heading-margin-bottom;
+	}
+
 	.user-email {
 		display: inline-block;
 		font-size: 12px;
+		font-weight: 700;
+		font-family: $font-family-titles;
 	}
 
 }
