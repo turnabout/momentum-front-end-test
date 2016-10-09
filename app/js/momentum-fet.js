@@ -1,10 +1,11 @@
 /**
  * Module containing the main code for the Momentum Front End app.
  * @param {Object} helper - Helper functions module.
+ * @param {Object} app - App related functions.
  * @param {Object} dbp - Module to render dashboard pages.
  * @return {Object} publicApi - Api containing references to the module functions.
  */
-var momentumModule = (function momentumModule(helper, dbp) {
+var momentumModule = (function momentumModule(helper, app, dbp) {
 
 	// Object containing references to static, reused DOM elements
 	var elems = helper.getAppElems();
@@ -176,7 +177,7 @@ var momentumModule = (function momentumModule(helper, dbp) {
 	 * @param {Event} event - The event.
 	 */
 	function dbpPreviousClick(event) {
-		var currentContentElem = getCurrentlyShownDbpContent();
+		var currentContentElem = app.getActiveContentPage();
 
 		// First page, so slide dbp back in
 		if (currentContentElem.dataset.pagenum === '1') {
@@ -201,7 +202,7 @@ var momentumModule = (function momentumModule(helper, dbp) {
 	 */
 	function dbpNextClick(event) {
 		// Only change to next page if it exists
-		if (helper.getElemNextOf(getCurrentlyShownDbpContent()) != null) {
+		if (helper.getElemNextOf(app.getActiveContentPage()) != null) {
 			dbpChangePage('next');
 		}
 	}
@@ -210,14 +211,14 @@ var momentumModule = (function momentumModule(helper, dbp) {
 	 * Get the element of the currently displayed dbp content.
 	 * @return {Object||Boolean} element - The element if one is shown, or false.
 	 */
-	function getCurrentlyShownDbpContent() {
+/*	function getCurrentlyShownDbpContent() {
 		for (var elem of helper.getElemsWithAttr('data-currentcontent')) {
 			if (helper.isElem(elem, 'currentcontent')) {
 				return elem;
 			}
 		}
 		return false;
-	}
+	}*/
 
 	/**
 	 * Authenticate user on form submit.
@@ -566,7 +567,7 @@ var momentumModule = (function momentumModule(helper, dbp) {
 	 * Render a new page. Attached to every clickable navigation links in DBP inner content.
 	 */
 	function renderNewPage() {
-		var currentContentElem = getCurrentlyShownDbpContent(),
+		var currentContentElem = app.getActiveContentPage(),
 			nextContentElem = helper.getElemNextOf(currentContentElem),
 			request = requests[this.dataset.req](this.dataset.id);
 
@@ -602,7 +603,7 @@ var momentumModule = (function momentumModule(helper, dbp) {
 	 * @param {Function} callback - Functions to call after page is changed.
 	 */
 	function dbpChangePage(direction, callback) {
-		var currentContentElem = getCurrentlyShownDbpContent();
+		var currentContentElem = app.getActiveContentPage();
 		callback = callback || function(){};
 
 		// Make current page inactive
@@ -654,4 +655,4 @@ var momentumModule = (function momentumModule(helper, dbp) {
 		'init' : init
 	};
 
-})(momentumHelperModule, momentumTemplatesModule);
+})(momentumHelperModule, momentumFunctionsModule, momentumTemplatesModule);

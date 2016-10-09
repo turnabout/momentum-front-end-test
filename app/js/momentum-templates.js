@@ -1,9 +1,10 @@
 /**
  * Module containing the dashboard pages templates to be rendered.
  * @param {Object} helper - Helper functions module.
+ * @param {Object} app - App related functions.
  * @return {Object} publicApi - Api containing references to the module functions.
  */
-var momentumTemplatesModule = (function (helper) {
+var momentumTemplatesModule = (function (helper, app) {
 
 	// Object containing references to static, reused DOM elements
 	var elems = helper.getAppElems();
@@ -46,8 +47,6 @@ var momentumTemplatesModule = (function (helper) {
 	};
 
 	var pageTitleBase = document.title;
-
-	// 
 
 	/**
 	 * Render a dashboard page with some passed-in content.
@@ -216,7 +215,7 @@ var momentumTemplatesModule = (function (helper) {
 		/**
 		 * Render a user page.
 		 */
-		function renderUser(content, request) {
+		function renderUser() {
 			setTitle(`User: ${content.username}`);
 			console.log('rendering user');
 			console.log(content);
@@ -256,7 +255,7 @@ var momentumTemplatesModule = (function (helper) {
 	 * Render a new page. Attached to every clickable navigation links in DBP inner content.
 	 */
 	function renderNewPage() {
-		var currentContentElem = getCurrentlyShownDbpContent(),
+		var currentContentElem = app.getActiveContentPage(),
 			nextContentElem = helper.getElemNextOf(currentContentElem),
 			request = requests[this.dataset.req](this.dataset.id);
 
@@ -280,8 +279,8 @@ var momentumTemplatesModule = (function (helper) {
 
 		// Request the content and render page with it
 		helper.getApiData(request.query, function(result) {
-			dbp.render(result, request, nextContentElem, function () {
-				dbpChangePage('next');
+			render(result, request, nextContentElem, function () {
+				app.dbpChangePage('next');
 			});
 		});
 	}
@@ -291,4 +290,4 @@ var momentumTemplatesModule = (function (helper) {
 		'renderNewPage': renderNewPage
 	}
 	
-})(momentumHelperModule);
+})(momentumHelperModule, momentumFunctionsModule);
