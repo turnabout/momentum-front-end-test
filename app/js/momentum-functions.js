@@ -48,13 +48,13 @@ var momentumFunctionsModule = (function (helper) {
 			break;
 
 		case 'next':
-			var newPage = helper.getElemNextOf(currentContentElem);
+			var newPage = helper.getElemAfter(currentContentElem);
 
 			newPage.classList.add('active');
 			newPage.dataset.currentcontent = true;
 
 			// If reached the end, make btn disabled
-			if (helper.getElemNextOf(newPage) == null) {
+			if (helper.getElemAfter(newPage) == null) {
 				elems.contentNext.setAttribute('disabled', true);
 			}
 

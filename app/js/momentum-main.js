@@ -169,7 +169,7 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 	function dbpNextClick(event) {
 
 		// Only change to next page if it exists
-		if (helper.getElemNextOf(app.getActiveContentPage()) != null) {
+		if (helper.getElemAfter(app.getActiveContentPage()) != null) {
 			app.dbpChangePage('next');
 		}
 	}
@@ -291,8 +291,8 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 	function resetDbpState() {
 
 		// Remove all additional content pages
-		while (helper.getElemNextOf(elems.dbpContentPageOne) != null) {
-			let nextElem = helper.getElemNextOf(elems.dbpContentPageOne);
+		while (helper.getElemAfter(elems.dbpContentPageOne) != null) {
+			let nextElem = helper.getElemAfter(elems.dbpContentPageOne);
 			nextElem.parentElement.removeChild(nextElem);
 		}
 
