@@ -49,8 +49,13 @@ var momentumModule = (function momentumModule(helper) {
 		'post': function (postId) { 
 			return {
 				'query' : `posts/${postId}`,
-				'name' : 'Post',
 				'type' : 'post',
+			};
+		},
+		'user': function (userId) { 
+			return {
+				'query' : `users/${userId}`,
+				'type' : 'user',
 			};
 		},
 	};
@@ -346,7 +351,8 @@ var momentumModule = (function momentumModule(helper) {
 		var render = {
 			'posts' : renderPosts,
 			'album' : renderAlbum,
-			'post' : renderPost
+			'post' : renderPost,
+			'user' : renderUser
 		};
 
 		callback = callback || function(){};
@@ -367,6 +373,7 @@ var momentumModule = (function momentumModule(helper) {
 		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
 		 */
 		function renderPosts(content, request) {
+
 			// Set the page title
 			if ('titleQuery' in request) {
 				helper.getApiData(request.titleQuery, function (user) {
@@ -431,19 +438,77 @@ var momentumModule = (function momentumModule(helper) {
 		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
 		 */
 		function renderPost(content, request) {
-			console.log(content);
-			console.log(request);
 
 			// Set title
 			setTitle(content.title);
 
 			// Render post content
+			var postElem = document.createElement('div'),
+				postTitleElem = document.createElement('h3'),
+				postContentElem = document.createElement('p'),
+				userElem = document.createElement('a');
 
+			// Title
+			postTitleElem.innerHTML = content.title;
 
-			// Get and render the comments
+			// Author
+			var dataId = document.createAttribute('data-id');
+			dataId.value = content.userId;
+			userElem.setAttributeNode(dataId);
 
-			// parent.appendChild(newElem);
-			afterRender();
+			var href = document.createAttribute('href');
+			href.value = '#';
+			userElem.setAttributeNode(href);
+
+			var dataReq = document.createAttribute('data-req');
+			dataReq.value = 'user';
+			userElem.setAttributeNode(dataReq);
+
+			helper.addEvent(userElem, 'click', renderNewPage);
+
+			// Content
+			postContentElem.innerHTML = content.body;
+
+			// Add the elements
+			postElem.appendChild(postTitleElem);
+
+			addUser(function () {
+				addComments(function () {
+					parent.appendChild(postElem);
+					afterRender();
+				});
+			});
+
+			/**
+			 * Add the user to the post element.
+			 * @param {Function} callback - Function to call after user is added.
+			 */
+			function addUser(callback) {
+				helper.getApiData(`users/${content.userId}`, function (result) {
+					// Add user
+					userElem.innerHTML = result.username;
+					postElem.appendChild(userElem);
+
+					// Add post content
+					postElem.appendChild(postContentElem);
+
+					callback();
+				});
+			}
+
+			/**
+			 * Get and add comments to the post element.
+			 * @param {Function} callback - Function to call after comments are added.
+			 */
+			function addComments(callback) {
+				helper.getApiData(`posts/${content.id}/comments`, function (result) {
+					// Add comments
+					
+
+					callback();
+				});
+
+			}
 		}
 
 		/**
@@ -459,6 +524,21 @@ var momentumModule = (function momentumModule(helper) {
 			}
 
 			callback();
+		}
+
+		/**
+		 * Render a user page.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 */
+		function renderUser(content, request) {
+			setTitle(`User: ${content.username}`);
+			console.log('rendering user');
+			console.log(content);
+			console.log(request);
+			console.log('rendering user');
+
+			afterRender();
 		}
 
 		/**

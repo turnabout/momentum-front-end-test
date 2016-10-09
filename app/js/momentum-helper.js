@@ -181,11 +181,6 @@ var momentumHelperModule = (function momentumHelperModule() {
 		return previousSibling;
 	}
 
-	function checkIfNewLine(text) {
-		return Boolean(/\r|\n/.exec(text));
-	}
-
-
 	return {
 		'getApiData' : getApiData,
 		'animateElem' : animateElem,
@@ -195,8 +190,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		'setApiUrl' : setApiUrl,
 		'getElemsWithAttr' : getElemsWithAttr,
 		'getElementNextOf' : getElementNextOf,
-		'getElementPreviousOf' : getElementPreviousOf,
-		'checkIfNewLine' : checkIfNewLine
+		'getElementPreviousOf' : getElementPreviousOf
 	};
 	
 })();
