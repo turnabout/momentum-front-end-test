@@ -189,10 +189,34 @@ var momentumHelperModule = (function momentumHelperModule() {
 		}
 	}
 
+	/**
+	 * Get references to app elements.
+	 * @return {Object} els - Object containing references to many static app elements.
+	 */
+	function getAppElems() {
+		return {
+			contentBack: 			document.getElementById('content-back'),
+			contentNext: 			document.getElementById('content-next'),
+			dashboard: 				document.getElementById('dashboard'),
+			dashboardContentPage: 	document.getElementById('content-dbp'),
+			dashboardContentTitle: 	document.getElementById('dbp-content-title'),
+			dashboardMenuPage: 		document.getElementById('main-dbp'),
+			dbpContentContainer: 	document.getElementById('dbp-content-container'),
+			dbpContentPageOne: 		document.getElementById('dbp-content-page-1'),
+			loginAlert: 			document.getElementById('login-alert'),
+			loginBox: 				document.getElementById('login-box'),
+			loginBtn: 				document.getElementById('login-btn'),
+			loginField: 			document.getElementById('login-field'),
+			loginPage: 				document.getElementById('login-page'),
+			dashboardMenuItems: 	document.querySelectorAll('.dashboard-menu-item')
+		};
+	}
+
 	return {
 		'addEvent' : addEvent,
 		'animateElem' : animateElem,
 		'emptyElem' : emptyElem,
+		'getAppElems' : getAppElems,
 		'getApiData' : getApiData,
 		'getElemNextOf' : getElemNextOf,
 		'getElemPreviousOf' : getElemPreviousOf,

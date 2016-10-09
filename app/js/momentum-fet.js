@@ -5,23 +5,8 @@
  */
 var momentumModule = (function momentumModule(helper) {
 
-	// Store references to static, reused dom elements
-	var elems = {
-		loginField: document.getElementById('login-field'),
-		loginAlert: document.getElementById('login-alert'),
-		loginBox: document.getElementById('login-box'),
-		loginBtn: document.getElementById('login-btn'),
-		loginPage: document.getElementById('login-page'),
-		dashboard: document.getElementById('dashboard'),
-		dashboardMenuPage: document.getElementById('main-dbp'),
-		dashboardMenuItems:document.querySelectorAll('.dashboard-menu-item'),
-		dashboardContentPage: document.getElementById('content-dbp'),
-		dashboardContentTitle: document.getElementById('dbp-content-title'),
-		dbpContentContainer: document.getElementById('dbp-content-container'),
-		dbpContentPageOne: document.getElementById('dbp-content-page-1'),
-		contentBack: document.getElementById('content-back'),
-		contentNext: document.getElementById('content-next')
-	};
+	// References to static, reused DOM elements
+	var elems = {};
 
 	// Store all different requests to use to different pages
 	var requests = {
@@ -71,6 +56,9 @@ var momentumModule = (function momentumModule(helper) {
 
 	 	// Set the api url
 	 	helper.setApiUrl(url);
+
+	 	// Get app static elements
+	 	elems = helper.getAppElems();
 
 	 	// Add events to each dashboard menu items which request appropriate content and renders a page with it
 	 	for (var i = 0; i < elems.dashboardMenuItems.length; i++) {
