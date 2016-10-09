@@ -191,7 +191,7 @@ var momentumFunctionsModule = (function (helper) {
 		var params = `postId=${postId}&name=${name}&body=${body}&email=${body}`;
 
 		// Post the comment
-		helper.postApiData('comments', params, function (result) {
+		helper.postApiData('comments', params, `posts/${postId}/comments`, function (result) {
 			helper.enableForm(form);
 
 			if (result) {

@@ -43,10 +43,13 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * Post data to the API.
 	 * @param {String} request - The API request.
 	 * @param {String} params - The parameters to send.
+	 * @param {String|Boolean} dataKey - The data key the results should be appended to (if it exists).
 	 * @param {Function} callback - The function to call once the data is posted.
 	 */
-	function postApiData(request, params, callback) {
+	function postApiData(request, params, dataKey = false, callback) {
 		var http = new XMLHttpRequest();
+		callback = callback || function() {};
+
 		http.open("POST", `${apiUrl}/${request}`, true);
 
 		//Send the proper header information along with the request
@@ -55,6 +58,11 @@ var momentumHelperModule = (function momentumHelperModule() {
 		http.onreadystatechange = function() {//Call a function when the state changes.
 			if(http.readyState == 4 && http.status == 201) {
 				var result = JSON.parse(http.responseText);
+
+				// Append the result to data if needed
+				if (dataKey && dataKey in data) {
+					data[dataKey].push(result);
+				}
 				callback(result);
 			}
 		}
