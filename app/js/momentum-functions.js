@@ -5,10 +5,8 @@
  */
 var momentumFunctionsModule = (function (helper) {
 
-	// Object containing references to static, reused DOM elements
-	var elems = getAppElems();
-
-	var pageTitleBase = document.title;
+	var elems = getAppElems();				// Object containing references to static, reused DOM elements
+	var pageTitleBase = document.title;		// The starting document title base
 
 	/**
 	 * Get the currently active and displayed content page.
@@ -29,12 +27,15 @@ var momentumFunctionsModule = (function (helper) {
 	 * @param {Function} callback - Functions to call after page is changed.
 	 */
 	function dbpChangePage(direction, callback) {
-		var currentContentElem = getActiveContentPage();
+		var currentContentPage; // The currently active content page
+		var newPage;			// The new page being switched to
+
+		currentContentPage = getActiveContentPage();
 		callback = callback || function(){};
 
 		switch (direction) {
 		case 'previous':
-			var newPage = helper.getElemBefore(currentContentElem);
+			newPage = helper.getElemBefore(currentContentPage);
 
 			newPage.classList.add('active');
 			newPage.dataset.currentcontent = true;
@@ -45,7 +46,7 @@ var momentumFunctionsModule = (function (helper) {
 			break;
 
 		case 'next':
-			var newPage = helper.getElemAfter(currentContentElem);
+			newPage = helper.getElemAfter(currentContentPage);
 
 			newPage.classList.add('active');
 			newPage.dataset.currentcontent = true;
@@ -68,8 +69,8 @@ var momentumFunctionsModule = (function (helper) {
 		function afterChange() {
 
 			// Make current page inactive
-			currentContentElem.classList.remove('active');
-			currentContentElem.dataset.currentcontent = false;
+			currentContentPage.classList.remove('active');
+			currentContentPage.dataset.currentcontent = false;
 
 			// Set the title
 			elems.dashboardContentTitle.innerHTML = newPage.dataset.title;
@@ -83,10 +84,12 @@ var momentumFunctionsModule = (function (helper) {
 	 * @param {Event} event - The event.
 	 */
 	function dbpPreviousClick(event) {
-		var currentContentElem =getActiveContentPage();
+		var currentContentPage; // The currently active content page
+
+		currentContentPage = getActiveContentPage();
 
 		// If first page is current, slide dbp back in
-		if (currentContentElem.dataset.pagenum === '1') {
+		if (currentContentPage.dataset.pagenum === '1') {
 			transitionDashboardPage('slideIn');
 			elems.dashboardContentPage.dataset.active = false;
 
@@ -173,29 +176,38 @@ var momentumFunctionsModule = (function (helper) {
 		var params;			// The parameters to send to the POST request
 		var postId;			// The ID of the post attached to the comment
 
-		helper.disableForm(this);
 		form = this;
 		currentPage = getActiveContentPage();
 
+		helper.disableForm(form);
 		event.preventDefault();
 
 		if (!currentPage) {
-			helper.enableForm(this);
+			helper.enableForm(form);
 			return;
 		}
 
 		commentsTitle = currentPage.querySelectorAll('[data-comments]')[0];
 
+		// Cancel if can't get comments title
 		if (!commentsTitle) {
-			helper.enableForm(this);
+			helper.enableForm(form);
 			return;
 		}
 
-		// Get comment data and prepare POST request
-		commentsAmount = parseInt(commentsTitle.dataset.comments);
-		postId = this.dataset.postid;
+		// Get comment data
 		name = form.elements['name'].value;
 		body = form.elements['body'].value;
+
+		// Cancel if either field is empty
+		if (!name || !body) {
+			helper.enableForm(form);
+			return;
+		}
+
+		// Prepare POST request
+		commentsAmount = parseInt(commentsTitle.dataset.comments);
+		postId = this.dataset.postid;
 		params = `postId=${postId}&name=${name}&body=${body}&email=${body}`;
 
 		// Post the comment
@@ -261,11 +273,12 @@ var momentumFunctionsModule = (function (helper) {
 				commentsTitleText = `${commentData.newCommentsAmount} comment`;
 
 				if (commentData.newCommentsAmount > 1) {
-					commentsText += 's';
+					commentsTitleText += 's';
 				}
-				
+
+				commentsTitle.dataset.comments = commentData.newCommentsAmount;
 				commentsTitle.removeChild(commentsTitle.firstChild);
-				commentsTitle.appendChild( document.createTextNode(commentsText) );
+				commentsTitle.appendChild( document.createTextNode(commentsTitleText) );
 			}
 		}
 	}

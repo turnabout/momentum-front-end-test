@@ -353,32 +353,33 @@ var momentumTemplatesModule = (function (helper, app) {
 	 * Render a new page. Attached to every clickable navigation links in DBP inner content.
 	 */
 	function renderNewPage() {
-		var currentContentElem = app.getActiveContentPage(),
-			nextContentElem = helper.getElemAfter(currentContentElem),
-			request = requests[this.dataset.req](this.dataset.id);
+		var currentContentPage; // The currently active content page
+		var nextContentPage; 	// The content page after the current one
+		var request;			// The request object to use to render the page
 
-		// Next page doesn't exist, create it
-		if (typeof(nextContentElem) === 'undefined' || nextContentElem === null) {
-			let nextElem = document.createElement('div');
-			nextElem.classList.add('inner-content', 'list-group-active');
+		currentContentPage = app.getActiveContentPage();
+		nextContentPage = helper.getElemAfter(currentContentPage);
+		request = requests[this.dataset.req](this.dataset.id);
 
-			let dataId = document.createAttribute('data-currentcontent');
-			dataId.value = true;
+		// If next page doesn't exist, create it
+		if (typeof(nextContentPage) === 'undefined' || nextContentPage === null) {
+			let next;		// The next content page
 
-			let dataPagenum = document.createAttribute('data-pagenum');
-			dataPagenum.value = parseInt(currentContentElem.dataset.pagenum) + 1;
+			// Create the next content page
+			next = document.createElement('div');
+			next.dataset.currentcontent = 'true';
+			next.dataset.pagenum = parseInt(currentContentPage.dataset.pagenum) + 1;
+			next.classList.add('inner-content', 'list-group-active');
 
-			nextElem.setAttributeNode(dataId);
-			nextElem.setAttributeNode(dataPagenum);
-
-			elems.dbpContentContainer.appendChild(nextElem);
-			nextContentElem = helper.getElemAfter(currentContentElem);
+			// Append it
+			elems.dbpContentContainer.appendChild(next);
+			nextContentPage = helper.getElemAfter(currentContentPage);
 		}
 
 		// Request the content and render page with it
 		helper.getApiData(request.query, function(result) {
-			render(result, request, nextContentElem, function () {
-				console.log(nextContentElem);
+			render(result, request, nextContentPage, function () {
+				console.log(nextContentPage);
 				app.dbpChangePage('next');
 			});
 		});
