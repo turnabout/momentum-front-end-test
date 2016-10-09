@@ -1,6 +1,6 @@
 /**
  * Module containing the code for the Momentum Front End app.
- * @param {Object} helper - The 'momentumHelperModule' helper module public api.
+ * @param {Object} helper - Helper functions module.
  * @return {Object} publicApi - Api containing references to the module functions.
  */
 var momentumModule = (function momentumModule(helper) {
