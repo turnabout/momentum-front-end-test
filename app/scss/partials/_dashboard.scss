@@ -2,11 +2,6 @@
 // Dashboard
 // 
 
-$db-borders-col: lighten($primary-light, 45%);
-$dbp-width: 470px;
-$dbp-breakpoint: ($dbp-width * 2);
-$dbp-mid-breakpoint: ($dbp-breakpoint / 2);
-
 .dashboard.page {
 	height: 100%;
 }

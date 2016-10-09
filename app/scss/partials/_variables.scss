@@ -154,3 +154,11 @@ $list-group-item-heading-margin-bottom: 5px;
 // Animations duration
 $animations-duration:       .75s;
 $animations-duration-fast:  .50s;
+
+
+
+// Dashboard
+$db-borders-col: lighten($primary-light, 45%);
+$dbp-width: 470px;
+$dbp-breakpoint: ($dbp-width * 2);
+$dbp-mid-breakpoint: ($dbp-breakpoint / 2);

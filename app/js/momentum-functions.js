@@ -78,7 +78,7 @@ var momentumFunctionsModule = (function (helper) {
 	}
 
 	/**
-	 * Handle click on secondary DBP back button.
+	 * Handle click on content navigation back button.
 	 * @param {Event} event - The event.
 	 */
 	function dbpPreviousClick(event) {
@@ -102,7 +102,7 @@ var momentumFunctionsModule = (function (helper) {
 	}
 
 	/**
-	 * Handle click on secondary DBP next button.
+	 * Handle click on content navigation next button.
 	 * @param {Event} event - The event.
 	 */
 	function dbpNextClick(event) {

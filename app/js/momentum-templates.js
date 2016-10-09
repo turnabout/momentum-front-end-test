@@ -49,7 +49,7 @@ var momentumTemplatesModule = (function (helper, app) {
 			// Set the page title
 			if ('titleQuery' in request) {
 				helper.getApiData(request.titleQuery, function (user) {
-					setTitle(`Posts by ${user.username}`);
+					setTitle(`Posts by: ${user.username}`);
 				});
 			} else if ('title' in request) {
 				setTitle(request.title);
@@ -114,28 +114,19 @@ var momentumTemplatesModule = (function (helper, app) {
 			var postElem = document.createElement('div'),
 				postTitleElem = document.createElement('h3'),
 				postContentElem = document.createElement('p'),
-				userElem = document.createElement('a');
+				userElem = document.createElement('a'),
+				userAround = document.createElement('div');
+
+			// Main element
+			postElem.classList.add('card', 'card-block', 'post');
 
 			// Title
 			postTitleElem.innerHTML = content.title;
-
-			// Author
-			var dataId = document.createAttribute('data-id');
-			dataId.value = content.userId;
-			userElem.setAttributeNode(dataId);
-
-			var href = document.createAttribute('href');
-			href.value = '#';
-			userElem.setAttributeNode(href);
-
-			var dataReq = document.createAttribute('data-req');
-			dataReq.value = 'user';
-			userElem.setAttributeNode(dataReq);
-
-			helper.addEvent(userElem, 'click', renderNewPage);
+			postTitleElem.classList.add('card-title', 'title');
 
 			// Content
 			postContentElem.innerHTML = content.body;
+			postContentElem.classList.add('card-text');
 
 			// Add the elements
 			postElem.appendChild(postTitleElem);
@@ -154,9 +145,31 @@ var momentumTemplatesModule = (function (helper, app) {
 			function addUser(callback) {
 				helper.getApiData(`users/${content.userId}`, function (result) {
 
+					userAround.classList.add('user-around');
+
+					var dataId = document.createAttribute('data-id');
+					dataId.value = content.userId;
+					userElem.setAttributeNode(dataId);
+
+					var href = document.createAttribute('href');
+					href.value = '#';
+					userElem.setAttributeNode(href);
+
+					var dataReq = document.createAttribute('data-req');
+					dataReq.value = 'user';
+					userElem.setAttributeNode(dataReq);
+
+					userElem.classList.add('post-user');
+					helper.addEvent(userElem, 'click', renderNewPage);
+
+					var text = document.createTextNode('Posted by: ');
+
+					userAround.appendChild(text);
+					userAround.appendChild(userElem);
+
 					// Add user
 					userElem.innerHTML = result.username;
-					postElem.appendChild(userElem);
+					postElem.appendChild(userAround);
 
 					// Add post content
 					postElem.appendChild(postContentElem);

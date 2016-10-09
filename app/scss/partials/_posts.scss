@@ -1,0 +1,25 @@
+// 
+// Posts
+// 
+
+// Single post
+.post {
+	
+	.title {
+		
+	}
+
+	// User
+	.user-around {
+		margin-bottom: $card-spacer-y;
+		padding: $card-spacer-y 0;
+		color: $gray-light;
+		border-top: 1px solid $db-borders-col;
+		border-bottom: 1px solid $db-borders-col;
+
+		// <a>
+		.post-user {
+			color: $primary-light;
+		}
+	}
+}
