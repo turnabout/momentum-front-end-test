@@ -1,12 +1,12 @@
 /**
- * Module containing the code for the Momentum Front End app.
+ * Module containing the main code for the Momentum Front End app.
  * @param {Object} helper - Helper functions module.
  * @return {Object} publicApi - Api containing references to the module functions.
  */
 var momentumModule = (function momentumModule(helper) {
 
-	// References to static, reused DOM elements
-	var elems = {};
+	// Object containing references to static, reused DOM elements
+	var elems = helper.getAppElems();
 
 	// Store all different requests to use to different pages
 	var requests = {
@@ -56,9 +56,6 @@ var momentumModule = (function momentumModule(helper) {
 
 	 	// Set the api url
 	 	helper.setApiUrl(url);
-
-	 	// Get app static elements
-	 	elems = helper.getAppElems();
 
 	 	// Add events to each dashboard menu items which request appropriate content and renders a page with it
 	 	for (var i = 0; i < elems.dashboardMenuItems.length; i++) {
