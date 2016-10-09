@@ -181,6 +181,7 @@ var momentumTemplatesModule = (function (helper, app) {
 				var form = document.createElement('form');
 				form.setAttribute('method','post');
 				form.classList.add('comment-form');
+				form.dataset.postid = content.id;
 
 				helper.addEvent(form, 'submit', app.submitPostComment);
 
@@ -189,11 +190,13 @@ var momentumTemplatesModule = (function (helper, app) {
 				input.setAttribute('placeholder', 'Enter a title...');
 				input.setAttribute('type', 'text');
 				input.classList.add('field', 'title-field');
+				input.setAttribute('name', 'name');
 
 				// Textarea
 				var textArea = document.createElement('textarea');
 				textArea.setAttribute('placeholder', 'Enter a comment...');
 				textArea.classList.add('field', 'comment-field');
+				textArea.setAttribute('name', 'body');
 
 				// Button
 				var button = document.createElement('input');
@@ -248,7 +251,7 @@ var momentumTemplatesModule = (function (helper, app) {
 					// Add the main comments element
 					var commentsElem = document.createElement('div');
 					commentsElem.classList.add('comments', 'list-group');
-
+					
 					// Output all comments
 					for (var comment of result) {
 

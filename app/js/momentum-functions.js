@@ -163,12 +163,53 @@ var momentumFunctionsModule = (function (helper) {
 	 * Handle post comment form submit.
 	 * @param {Event} event - The event.
 	 */
-	 function submitPostComment(event) {
-	 	helper.disableForm(this);
-	 	console.log(this);
+	function submitPostComment(event) {
+		event.preventDefault();
+		var form = this;
+		helper.disableForm(this);
 
-	 	event.preventDefault();
-	 }
+		var currentPage = getActiveContentPage();
+
+		if (!currentPage) {
+			helper.enableForm(this);
+			return;
+		}
+
+		// Get the title containing amount of comments
+		var commentsTitle = currentPage.querySelectorAll('[data-comments]')[0];
+		if (!commentsTitle) {
+			helper.enableForm(this);
+			return;
+		}
+
+		// Get comment data
+		var commentsAmount = parseInt(commentsTitle.dataset.comments);
+		var postId = this.dataset.postid;
+		var name = form.elements['name'].value;
+		var body = form.elements['body'].value;
+
+		var params = `postId=${postId}&name=${name}&body=${body}&email=${body}`;
+
+		// Post the comment
+		helper.postApiData('comments', params, function (result) {
+			helper.enableForm(form);
+
+			if (result) {
+				helper.clearForm(form);
+				result.newCommentsAmount = commentsAmount + 1;
+				addComment(result);
+			}
+
+		});
+
+		/**
+		 * Add the comment to both the DOM and app data.
+		 * @param {Object} commentData - All data on the comment.
+		 */
+		function addComment(commentData) {
+			console.log(commentData);
+		}
+	}
 
 	/**
 	* Get the different requests to use to render content pages.

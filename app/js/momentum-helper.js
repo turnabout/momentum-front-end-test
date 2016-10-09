@@ -22,10 +22,10 @@ var momentumHelperModule = (function momentumHelperModule() {
 		}
 
 		// Data does not already exist, launch GET request to API
-		var oReq = new XMLHttpRequest();
+		var http = new XMLHttpRequest();
 
-		addEvent(oReq, 'load', function returnParsedJSON() {
-			var result = JSON.parse(this.responseText);
+		addEvent(http, 'load', function returnParsedJSON() {
+			var result = JSON.parse(http.responseText);
 
 			// Store data in global data object to more easily fetch again later
 			if (result.length > 0 && !(request in data)) {
@@ -35,8 +35,31 @@ var momentumHelperModule = (function momentumHelperModule() {
 			callback(result);
 		});
 
-		oReq.open('GET', `${apiUrl}/${request}`);
-		oReq.send();
+		http.open('GET', `${apiUrl}/${request}`);
+		http.send();
+	}
+
+	/**
+	 * Post data to the API.
+	 * @param {String} request - The API request.
+	 * @param {String} params - The parameters to send.
+	 * @param {Function} callback - The function to call once the data is posted.
+	 */
+	function postApiData(request, params, callback) {
+		var http = new XMLHttpRequest();
+		http.open("POST", `${apiUrl}/${request}`, true);
+
+		//Send the proper header information along with the request
+		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+		http.onreadystatechange = function() {//Call a function when the state changes.
+			if(http.readyState == 4 && http.status == 201) {
+				var result = JSON.parse(http.responseText);
+				callback(result);
+			}
+		}
+
+		http.send(params);
 	}
 
 	/**
@@ -228,9 +251,23 @@ var momentumHelperModule = (function momentumHelperModule() {
 		}
 	}
 
+	/**
+	 * Clear a form of all its previously entered data.
+	 * @param {Object} form - The form element.
+	 */
+	function clearForm(form) {
+		var children = form.children;
+		for (var elem of form) {
+			if (elem.getAttribute('type') !== 'submit') {
+				elem.value = '';
+			}
+		}
+	}
+
 	return {
 		'addEvent' : addEvent,
 		'animateElem' : animateElem,
+		'clearForm' : clearForm,
 		'createAnchor' : createAnchor,
 		'disableForm' : disableForm,
 		'emptyElem' : emptyElem,
@@ -240,6 +277,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		'getElemBefore' : getElemBefore,
 		'getElemsWithAttr' : getElemsWithAttr,
 		'isElem' : isElem,
+		'postApiData' : postApiData,
 		'removeEvent' : removeEvent,
 		'setApiUrl' : setApiUrl
 	};
