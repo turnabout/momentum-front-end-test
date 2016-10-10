@@ -2653,7 +2653,7 @@ textarea {
     @media (min-width: 940px) {
       .dbp.dbp-2 {
         z-index: 5;
-        position: static;
+        position: relative;
         top: auto;
         left: auto; } }
   .dbp .main-title {
@@ -2845,6 +2845,53 @@ textarea {
 
 .single-photo img {
   max-width: 100%; }
+
+.loading-overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  z-index: 20;
+  display: none; }
+  .busy .loading-overlay {
+    display: block; }
+  .loading-overlay .loading {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 80px;
+    height: 80px; }
+    .loading-overlay .loading .outer-circle {
+      display: block;
+      position: absolute;
+      margin: 0 auto;
+      width: 80px;
+      height: 80px;
+      border-radius: 80px;
+      animation: loadingSpin .666s linear .2s infinite;
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid #4F628E;
+      border-left: 7px solid #4F628E;
+      border-right: 7px solid transparent; }
+
+@keyframes loadingSpin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+.busy .main-title, .busy .content-page {
+  visibility: hidden; }
 
 body {
   color: #201f1f;

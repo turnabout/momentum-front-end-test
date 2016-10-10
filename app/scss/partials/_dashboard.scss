@@ -36,7 +36,7 @@
 		// As soon as both pages fit on the same screen, display dbp2 to the right of dbp1
 		@media (min-width: $dbp-breakpoint) {
 			z-index: 5;
-			position: static; top: auto; left: auto;
+			position: relative; top: auto; left: auto;
 		}
 	}
 

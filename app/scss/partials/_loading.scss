@@ -1,0 +1,61 @@
+// 
+// Dashboard page loading overlay and icon
+// 
+.loading-overlay {
+	content: '';
+	position: absolute;
+	top: 0; right: 0; bottom: 0; left: 0;
+	margin: 0 auto;
+	height: 100%;
+	width: 100%;
+	background: rgba(255,255,255,0.6);
+	z-index: 20;
+	display: none;
+	
+	.busy & {
+		display: block;
+	}
+
+	.loading {
+		display:block;
+		position:absolute;
+		top: 0; right: 0; bottom: 0; left: 0;
+		margin: auto;
+		width: 80px;
+		height: 80px;
+		
+		.outer-circle {
+			display: block;
+			position: absolute;
+			margin: 0 auto;
+			width: 80px;
+			height: 80px;
+			border-radius: 80px;
+			animation: loadingSpin .666s linear .2s infinite;
+			border-top: 7px solid transparent;
+			border-bottom: 7px solid $primary-light;
+			border-left: 7px solid $primary-light;
+			border-right: 7px solid transparent;
+		}
+	}
+}
+
+@keyframes loadingSpin {
+	0% {
+		transform:rotate(0deg);
+	}
+	100%{
+		transform:rotate(360deg);
+	}
+}
+
+
+
+// 
+// Dashboard content page busy state
+// 
+.busy {
+	.main-title, .content-page {
+		visibility: hidden;
+	}
+}
