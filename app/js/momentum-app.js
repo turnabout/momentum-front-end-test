@@ -170,6 +170,9 @@ var momentumFunctionsModule = (function (helper) {
 			return;
 		}
 
+		// Set page to "busy"
+		setDbpBusyState(true);
+
 		// Prepare POST request
 		commentsAmount = parseInt(commentsTitle.dataset.comments);
 		postId = this.dataset.postid;
@@ -244,6 +247,9 @@ var momentumFunctionsModule = (function (helper) {
 				commentsTitle.dataset.comments = commentData.newCommentsAmount;
 				commentsTitle.removeChild(commentsTitle.firstChild);
 				commentsTitle.appendChild( document.createTextNode(commentsTitleText) );
+
+				// Page no longer busy
+				setDbpBusyState(false);
 			}
 		}
 	}
