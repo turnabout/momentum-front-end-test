@@ -57,6 +57,18 @@ var momentumHelperModule = (function momentumHelperModule() {
 		}, 0);
 	}
 
+	/**
+	 * Do a POST request.
+	 * @param {String} request - The API request.
+	 * @param {Function} callback - The function to call once the JSON data is fetched.
+	 */
+	function doPost() {
+		var url;	// Where to send GET request
+		var xhr;	// XHR object
+
+		
+	}
+
 
 	/**
 	 * Get data from API.
@@ -84,39 +96,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 			
 			callback(result);
 		});
-
-
-
-
-
-
-
-
-
-
-/*		http = new XMLHttpRequest();
-
-		addEvent(http, 'load', function returnParsedJSON() {
-			result = JSON.parse(http.responseText);
-
-			// Store data in global data object to more easily fetch again later
-			if (result.length > 0 && !(request in data)) {
-				data[request] = result;
-			}
-			
-			callback(result);
-		});
-
-		http.open('GET', `${apiUrl}/${request}`);
-		http.send();*/
 	}
-
-/*
-
-*/
-
-
-
 
 	/**
 	 * Post data to the API.
@@ -171,7 +151,6 @@ var momentumHelperModule = (function momentumHelperModule() {
 			}
 
 			setData(element, 'animating', false);
-
 			callback();
 		});
 
@@ -388,11 +367,6 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {String} value - The value.
 	 */
 	function setData(elem, data, value) {
-/*		console.log('setting data');
-		console.log(elem);
-		console.log(data);
-		console.log(value);
-		console.log('setting data');*/
 		elem.setAttribute(`data-${data}`, value);
 	}
 
@@ -403,10 +377,6 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @return {String} value - The data attribute's value.
 	 */
 	function getData(elem, data) {
-/*		console.log('getting data');
-		console.log(elem);
-		console.log(data);
-		console.log('getting data');*/
 		return elem.getAttribute(`data-${data}`);
 	}
 

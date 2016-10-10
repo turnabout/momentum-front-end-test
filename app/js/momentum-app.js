@@ -404,11 +404,6 @@ var momentumFunctionsModule = (function (helper) {
 		var request;		// Request attached to the clicked menu item
 
 		event.preventDefault ? event.preventDefault() : (event.returnValue = false);
-
-
-		console.log(this);
-		console.log( helper.getData(this, 'req') );
-		console.log('after');
 		
 		// If already busy being processed/animated or request doesn't exist, don't do anything
 		if (helper.isElem(elems.dashboardContentPage, ['processing', 'animating']) || !(helper.getData(this, 'req') in requests)) {
@@ -438,21 +433,10 @@ var momentumFunctionsModule = (function (helper) {
 
 		this.setAttribute('id', 'active-dbp-btn');
 		this.classList.add('active');
-		console.log('before fuckup');
+		
 		// Get request attached to this menu item
 		var thisRequest = helper.getData(this, 'req');
 		var requestFunc = requests[thisRequest];
-
-		console.log('thisRequest');
-		console.log(thisRequest);
-		console.log(typeof(thisRequest));
-		console.log('thisRequest');
-
-		console.log('requestFunc');
-		console.log(requestFunc);
-		console.log(typeof(requestFunc));
-		console.log('requestFunc');
-
 
 		request = requestFunc(user.id);
 
