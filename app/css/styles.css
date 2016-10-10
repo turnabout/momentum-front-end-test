@@ -2910,5 +2910,5 @@ body {
 .btn {
   font-family: Georgia, Times, "Times New Roman", serif; }
 
-.last-visited, .last-visited:hover, .last-visited:active, .last-visited:focus {
+.last-visited.list-group-item-action, .last-visited.list-group-item-action:hover, .last-visited.list-group-item-action:active, .last-visited.list-group-item-action:focus {
   background: gainsboro; }
