@@ -54,6 +54,9 @@ var momentumFunctionsModule = (function (helper) {
 
 		case 'next':
 			newPage = helper.getElemAfter(currentContentPage);
+			
+			// Make sure next page is scrolled to top
+			newPage.scrollTop = 0;
 
 			newPage.classList.add('active');
 			newPage.dataset.currentcontent = true;
