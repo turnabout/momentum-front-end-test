@@ -10,7 +10,7 @@ var momentumTemplatesModule = (function (helper, app) {
 	var elems;				// Object containing references to static, reused DOM elements
 	var requests;			// Different requests info, used to render pages
 	var pageTitleBase;		// The starting document title base
-	
+
 	commentsForm = setNewCommentForm();
 	elems = helper.getAppElems();
 	requests = helper.getRequests();
@@ -24,9 +24,9 @@ var momentumTemplatesModule = (function (helper, app) {
 	 * @param {Function} callback - Function to call once page is finished rendering.
 	*/
 	function render(content, request, parent, callback) {
-
-		// Different templates to render
-		var renderTemplates = {
+		var renderTemplates;	// The different templates that can be rendered
+		
+		renderTemplates = {
 			'posts' : renderPosts,
 			'album' : renderAlbum,
 			'post'  : renderPost,
@@ -41,12 +41,20 @@ var momentumTemplatesModule = (function (helper, app) {
 		elems.dashboardContentPage.dataset.processing = false;
 
 		// Use the correct rendering template function
-		renderTemplates[request.type]();
+		renderTemplates[request.type](content, request, parent, callback);
 
 		/**
 		 * Render a list of multiple posts.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 * @param {Object} parent - The dashboard page in which the content should be rendered.
+		 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
-		function renderPosts() {
+		function renderPosts(content, request, parent, callback) {
+			var href;			// The href attribute on the post element
+			var post;			// Every post element being created
+			var postContent;	// Every post content element
+			var postTitle;		// Every post title element
 
 			// Set the page title
 			if ('titleQuery' in request) {
@@ -60,82 +68,91 @@ var momentumTemplatesModule = (function (helper, app) {
 			}
 
 			// Create all new elements and append to page
-			for (var post of content) {
-				var newElem = document.createElement('a');
-				newElem.classList.add('list-group-item', 'list-group-item-action');
+			for (var entry of content) {
 
-				var href = document.createAttribute('href');
+				// Post
+				post = document.createElement('a');
+				post.classList.add('list-group-item', 'list-group-item-action');
+				post.dataset.id = entry.id;
+				post.dataset.req = 'post';
+
+				// Href
+				href = document.createAttribute('href');
 				href.value = '#';
-				newElem.setAttributeNode(href);
+				post.setAttributeNode(href);
 
-				var dataId = document.createAttribute('data-id');
-				dataId.value = post.id;
-				newElem.setAttributeNode(dataId);
+				// Title
+				postTitle = document.createElement('h5');
+				postTitle.classList.add('list-group-item-heading');
+				postTitle.appendChild( document.createTextNode(entry.title) );
+				post.appendChild(postTitle);
 
-				var dataReq = document.createAttribute('data-req');
-				dataReq.value = 'post';
-				newElem.setAttributeNode(dataReq);
+				// Content
+				postContent = document.createElement('p');
+				postContent.classList.add('list-group-item-text');
+				postContent.appendChild( document.createTextNode(entry.body) );
+				post.appendChild(postContent);
 
-				var newElemTitle = document.createElement('h5');
-				newElemTitle.classList.add('list-group-item-heading');
-				newElemTitle.innerHTML = post.title;
+				// Handle post event
+				helper.addEvent(post, 'click', renderNewPage);
 
-				var newElemP = document.createElement('p');
-				newElemP.classList.add('list-group-item-text');
-				newElemP.innerHTML = post.body;
-
-				newElem.appendChild(newElemTitle);
-				newElem.appendChild(newElemP);
-
-				helper.addEvent(newElem, 'click', renderNewPage);
-
-				parent.appendChild(newElem);
+				// Append the final post
+				parent.appendChild(post);
 			}
 
-			afterRender();
+			afterRender(content, request, parent, callback);
 		}
 
 		/**
 		 * Render an album page.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 * @param {Object} parent - The dashboard page in which the content should be rendered.
+	 	 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
-		function renderAlbum() {
+		function renderAlbum(content, request, parent, callback) {
 			console.log(content);
 			console.log(request);
-			afterRender();
+			afterRender(content, request, parent, callback);
 		}
 
 		/**
 		 * Render a single post.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 * @param {Object} parent - The dashboard page in which the content should be rendered.
+		 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
-		function renderPost() {
+		function renderPost(content, request, parent, callback) {
+			var postElem;			// The post's main element
+			var postContentElem;	// The post's content element
+			var postTitleElem;		// The post's title element
 
-			// Set title
+			// Set page title
 			setTitle(content.title);
 
-			// Render post content
-			var postElem = document.createElement('div'),
-				postTitleElem = document.createElement('h3'),
-				postContentElem = document.createElement('p');
-
-			// Main element
+			// Post
+			postElem = document.createElement('div');
 			postElem.classList.add('card', 'card-block', 'post');
 
 			// Title
+			postTitleElem = document.createElement('h3');
 			postTitleElem.innerHTML = content.title;
 			postTitleElem.classList.add('card-title', 'title');
 
 			// Content
+			postContentElem = document.createElement('p');
 			postContentElem.innerHTML = content.body;
 			postContentElem.classList.add('card-text', 'content');
 
-			// Add the elements
+			// Add all the elements
 			postElem.appendChild(postTitleElem);
 
 			addUser(function () {
 				parent.appendChild(postElem);
 
 				addComments(function () {
-					afterRender();
+					afterRender(content, request, parent, callback);
 				});
 			});
 			
@@ -144,80 +161,31 @@ var momentumTemplatesModule = (function (helper, app) {
 			 * @param {Function} callback - Function to call after user is added.
 			 */
 			function addUser(callback) {
+				var userElem;		// The user's element
+				var userAround;		// Element wrapping around user element
+
 				helper.getApiData(`users/${content.userId}`, function (result) {
-					var userElem = helper.createAnchor(result.username);
 
-					var dataId = document.createAttribute('data-id');
-					dataId.value = content.userId;
-					userElem.setAttributeNode(dataId);
-
-					var dataReq = document.createAttribute('data-req');
-					dataReq.value = 'user';
-					userElem.setAttributeNode(dataReq);
-
+					// User
+					userElem = helper.createAnchor(result.username);
 					userElem.classList.add('post-user');
+					userElem.dataset.id = content.userId;
+					userElem.dataset.req = 'user';
+
+					// User click event handler
 					helper.addEvent(userElem, 'click', renderNewPage);
 
-					var userAround = document.createElement('div');
+					// User wrapper
+					userAround = document.createElement('div');
 					userAround.classList.add('user-around');
-					userAround.appendChild(document.createTextNode('Posted by: '));
+					userAround.appendChild( document.createTextNode('Posted by: ') );
 					userAround.appendChild(userElem);
-
-					// Add user
+					
 					postElem.appendChild(userAround);
-
-					// Add post content
 					postElem.appendChild(postContentElem);
 
 					callback();
 				});
-			}
-
-			/**
-			 * Get the new comment form.
-			 * @return {Object} form - The form to enter a new comment.
-			 */
-			function getCommentForm() {
-
-				var button;		// The form's button
-				var form;		// The form
-				var input;		// The form's title input
-				var textArea;	// The form's body input
-
-				// Form
-				form = document.createElement('form');
-				form.setAttribute('method', 'post');
-				form.setAttribute('action', '');
-				form.classList.add('comment-form');
-				form.dataset.postid = content.id;
-
-				// Add submit event handler on the form
-				helper.addEvent(form, 'submit', app.submitPostComment);
-
-				// Input
-				var input = document.createElement('input');
-				input.setAttribute('placeholder', 'Enter a title...');
-				input.setAttribute('type', 'text');
-				input.classList.add('field', 'title-field');
-				input.setAttribute('name', 'name');
-
-				// Textarea
-				var textArea = document.createElement('textarea');
-				textArea.setAttribute('placeholder', 'Enter a comment...');
-				textArea.classList.add('field', 'comment-field');
-				textArea.setAttribute('name', 'body');
-
-				// Button
-				var button = document.createElement('input');
-				button.setAttribute('type', 'submit');
-				button.setAttribute('value', 'Send');
-				button.classList.add('btn', 'btn-primary', 'btn-block');
-
-				form.appendChild(input);
-				form.appendChild(textArea);
-				form.appendChild(button);
-
-				return form;
 			}
 
 			/**
@@ -246,7 +214,7 @@ var momentumTemplatesModule = (function (helper, app) {
 
 					commentsElemTitle = document.createElement('h3');
 					commentsElemTitle.classList.add('card-title');
-					commentsElemTitle.appendChild( document.createTextNode( getCommentsTitleText() ) );
+					commentsElemTitle.appendChild( document.createTextNode( getCommentsTitleText(result.length) ) );
 					commentsElemTitle.dataset.comments = result.length;
 					commentsElemTitleAround.appendChild(commentsElemTitle);
 
@@ -291,61 +259,117 @@ var momentumTemplatesModule = (function (helper, app) {
 
 					parent.appendChild(comments);
 					callback();
-
-					/**
-					 * Get the appropriate title for the comments amount title.
-					 * @return {Object} title - The title text.
-					 */
-					function getCommentsTitleText() {
-						if (result.length === 1) {
-							return '1 comment';
-						} else if (result.length > 1) {
-							return `${result.length} comments`;
-						} else {
-							return 'No comments';
-						}
-					}
-
-					/**
-					 * Get a new comment.
-					 * @param {String} title - The title of the comment.
-					 * @param {String} email - The user email.
-					 * @param {String} body - The body text.
-					 * @param {String} base - The base to use as a starting element.
-					 * @return {Object} comment - The new comment element.
-					 */
-					function getNewComment(title, email, body, base) {
-						var newComment;		// New comment to return.
-
-						newComment = base.cloneNode(true);
-
-						newComment.childNodes[0].appendChild( document.createTextNode(title) );
-						newComment.childNodes[1].firstChild.setAttribute('href', `mailto:${email}`);
-						newComment.childNodes[2].appendChild( document.createTextNode(body) );
-
-						return newComment;
-					}
 				});
+
+				/**
+				 * Get the appropriate title for the comments amount title.
+				 * @param {Integer} commentsAmount - The amount of comments.
+				 * @return {Object} title - The title text.
+				 */
+				function getCommentsTitleText(commentsAmount) {
+					if (commentsAmount === 1) {
+						return '1 comment';
+					} else if (commentsAmount > 1) {
+						return `${commentsAmount} comments`;
+					} else {
+						return 'No comments';
+					}
+				}
+
+				/**
+				 * Get a new comment.
+				 * @param {String} title - The title of the comment.
+				 * @param {String} email - The user email.
+				 * @param {String} body - The body text.
+				 * @param {String} base - The base to use as a starting element.
+				 * @return {Object} comment - The new comment element.
+				 */
+				function getNewComment(title, email, body, base) {
+					var newComment;		// New comment to return.
+
+					newComment = base.cloneNode(true);
+
+					newComment.childNodes[0].appendChild( document.createTextNode(title) );
+					newComment.childNodes[1].firstChild.setAttribute('href', `mailto:${email}`);
+					newComment.childNodes[2].appendChild( document.createTextNode(body) );
+
+					return newComment;
+				}
+
+				/**
+				 * Get the new comment form.
+				 * @return {Object} form - The form to enter a new comment.
+				 */
+				function getCommentForm() {
+
+					var button;		// The form's button
+					var form;		// The form
+					var input;		// The form's title input
+					var textArea;	// The form's body input
+
+					// Form
+					form = document.createElement('form');
+					form.setAttribute('method', 'post');
+					form.setAttribute('action', '');
+					form.classList.add('comment-form');
+					form.dataset.postid = content.id;
+
+					// Add submit event handler on the form
+					helper.addEvent(form, 'submit', app.submitPostComment);
+
+					// Input
+					var input = document.createElement('input');
+					input.setAttribute('placeholder', 'Enter a title...');
+					input.setAttribute('type', 'text');
+					input.classList.add('field', 'title-field');
+					input.setAttribute('name', 'name');
+
+					// Textarea
+					var textArea = document.createElement('textarea');
+					textArea.setAttribute('placeholder', 'Enter a comment...');
+					textArea.classList.add('field', 'comment-field');
+					textArea.setAttribute('name', 'body');
+
+					// Button
+					var button = document.createElement('input');
+					button.setAttribute('type', 'submit');
+					button.setAttribute('value', 'Send');
+					button.classList.add('btn', 'btn-primary', 'btn-block');
+
+					form.appendChild(input);
+					form.appendChild(textArea);
+					form.appendChild(button);
+
+					return form;
+				}
 			}
 		}
 
 		/**
-		 * Render a user page.
+		 * Render a user profile page.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 * @param {Object} parent - The dashboard page in which the content should be rendered.
+		 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
-		function renderUser() {
+		function renderUser(content, request, parent, callback) {
 			setTitle(`User: ${content.username}`);
 			console.log('rendering user');
 			console.log(content);
 			console.log(request);
 			console.log('rendering user');
 
-			afterRender();
+			afterRender(content, request, parent, callback);
 		}
 
 		/**
 		 * Function executed at the end of the main render function.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 * @param {Object} parent - The dashboard page in which the content should be rendered.
+		 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
-		function afterRender() {
+		function afterRender(content, request, parent, callback) {
 			parent.classList.add('active');
 
 			// Remove any dbp that come after the new, current dashboard page. To avoid having the 'next' option available to irrelevent pages.
@@ -398,7 +422,6 @@ var momentumTemplatesModule = (function (helper, app) {
 		// Request the content and render page with it
 		helper.getApiData(request.query, function(result) {
 			render(result, request, nextContentPage, function () {
-				console.log(nextContentPage);
 				app.dbpChangePage('next');
 			});
 		});

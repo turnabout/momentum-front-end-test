@@ -14,6 +14,8 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Function} callback - The function to call once the JSON data is fetched.
 	 */
 	function getApiData(request, callback) {
+		var http;		// Http request
+		var result;		// Http request result
 
 		// If data already stored, skip sending GET request and just execute the callback with it directly
 		if (request in data) {
@@ -22,10 +24,10 @@ var momentumHelperModule = (function momentumHelperModule() {
 		}
 
 		// Data does not already exist, launch GET request to API
-		var http = new XMLHttpRequest();
+		http = new XMLHttpRequest();
 
 		addEvent(http, 'load', function returnParsedJSON() {
-			var result = JSON.parse(http.responseText);
+			result = JSON.parse(http.responseText);
 
 			// Store data in global data object to more easily fetch again later
 			if (result.length > 0 && !(request in data)) {
@@ -47,13 +49,10 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Function} callback - The function to call once the data is posted.
 	 */
 	function postApiData(request, params, dataKey = false, callback) {
-		var http = new XMLHttpRequest();
+		var http;		// Http request
+
+		http = new XMLHttpRequest();
 		callback = callback || function() {};
-
-		http.open("POST", `${apiUrl}/${request}`, true);
-
-		//Send the proper header information along with the request
-		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 		http.onreadystatechange = function() {//Call a function when the state changes.
 			if(http.readyState == 4 && http.status == 201) {
@@ -67,6 +66,8 @@ var momentumHelperModule = (function momentumHelperModule() {
 			}
 		}
 
+		http.open('POST', `${apiUrl}/${request}`, true);
+		http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		http.send(params);
 	}
 
@@ -115,7 +116,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		} else if (element.attachEvent) {
 			element.attachEvent(`on${type}`, callback);
 		} else {
-			element["on" + type] = callback;
+			element['on' + type] = callback;
 		}
 	}
 
@@ -131,7 +132,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		} else if (element.detachEvent) {
 			element.detachEvent(`on${type}`, callback);
 		} else {
-			element["on" + type] = null;
+			element['on' + type] = null;
 		}
 	}
 
@@ -167,8 +168,12 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @return {Array} elements - All elements with that attribute.
 	 */
 	function getElemsWithAttr(attribute) {
-		var matchingElements = [];
-		var allElements = document.getElementsByTagName('*');
+		var matchingElements;		// Elements that are matching
+		var allElements;			// Every element
+
+		matchingElements  = [];
+		allElements = document.getElementsByTagName('*');
+
 		for (var i = 0, n = allElements.length; i < n; i++) {
 			if (allElements[i].getAttribute(attribute) !== null) {
 				matchingElements.push(allElements[i]); // Element exists with attribute. Add to array.
@@ -184,7 +189,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @return {Object} next - The element next of the starting one.
 	 */
 	 function getElemAfter(element) {
-		var nextSibling = element.nextSibling;
+		var nextSibling;	// The next element
+
+		nextSibling = element.nextSibling;
 
 		// Skip text nodes
 		while (nextSibling != null && nextSibling.nodeType == 3) {
@@ -200,7 +207,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @return {Object} next - The element next of the starting one.
 	 */
 	 function getElemBefore(element) {
-		var previousSibling = element.previousSibling;
+	 	var previousSibling;	// The previous element
+
+		previousSibling = element.previousSibling;
 
 		// Skip text nodes
 		while (previousSibling != null && previousSibling.nodeType == 3) {
@@ -227,7 +236,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @return {Object} elem - The anchor tag element.
 	*/
 	function createAnchor(text, href) {
-		var anchor = document.createElement('a');
+		var anchor;	// Anchor element
+
+		anchor = document.createElement('a');
 		anchor.href = href || '#';
 		
 		if (text) {
@@ -242,7 +253,10 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Object} form - The form element.
 	 */
 	function disableForm(form) {
-		var children = form.children;
+		var children;	// The form children
+
+		children = form.children;
+
 		for (var elem of form) {
 			elem.setAttribute('disabled', 'true');
 		}
@@ -253,7 +267,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Object} form - The form element.
 	 */
 	function enableForm(form) {
-		var children = form.children;
+		var children;	// The form children
+
+		children = form.children;
 		for (var elem of form) {
 			elem.removeAttribute('disabled');
 		}
@@ -264,7 +280,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Object} form - The form element.
 	 */
 	function clearForm(form) {
-		var children = form.children;
+		var children;	// The form children
+
+		children = form.children;
 		for (var elem of form) {
 			if (elem.getAttribute('type') !== 'submit') {
 				elem.value = '';
