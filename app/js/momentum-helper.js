@@ -144,11 +144,12 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 */
 	function isElem(element, data) {
 		if (data.constructor === Array) {
-			for (var d of data) {
-				if (element.dataset[d] === 'true') {
+			for (var i = 0; i < data.length; i++) {
+				if (element.dataset[data[i]] === 'true') {
 					return true;
 				}
 			}
+
 			return false;
 		}
 		return (element.dataset[data] === 'true');
@@ -257,8 +258,8 @@ var momentumHelperModule = (function momentumHelperModule() {
 
 		children = form.children;
 
-		for (var elem of form) {
-			elem.setAttribute('disabled', 'true');
+		for (var i = 0; i < children.length; i++) {
+			children[i].setAttribute('disabled', 'true');
 		}
 	}
 
@@ -270,8 +271,10 @@ var momentumHelperModule = (function momentumHelperModule() {
 		var children;	// The form children
 
 		children = form.children;
-		for (var elem of form) {
-			elem.removeAttribute('disabled');
+
+		for (var i = 0; i < children.length; i++) {
+			children[i].setAttribute('disabled', 'true');
+			children[i].removeAttribute('disabled');
 		}
 	}
 
@@ -283,9 +286,10 @@ var momentumHelperModule = (function momentumHelperModule() {
 		var children;	// The form children
 
 		children = form.children;
-		for (var elem of form) {
-			if (elem.getAttribute('type') !== 'submit') {
-				elem.value = '';
+
+		for (var i = 0; i < children.length; i++) {
+			if (children[i].getAttribute('type') !== 'submit') {
+				children[i].value = '';
 			}
 		}
 	}

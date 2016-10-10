@@ -20,11 +20,16 @@ var momentumFunctionsModule = (function (helper) {
 	 * @return {Object||Boolean} element - The element if one is shown, or false.
 	 */
 	function getActiveContentPage() {
-		for (var elem of helper.getElemsWithAttr('data-currentcontent')) {
-			if (helper.isElem(elem, 'currentcontent')) {
-				return elem;
+		var dataCurrentContent;		// Array of al elements with the "data-currentcontent" attribute
+
+		dataCurrentContent = helper.getElemsWithAttr('data-currentcontent');
+
+		for (var i = 0; i < dataCurrentContent.length; i++) {
+			if (helper.isElem(dataCurrentContent[i], 'currentcontent')) {
+				return dataCurrentContent[i];
 			}
 		}
+
 		return false;
 	}
 
@@ -56,7 +61,9 @@ var momentumFunctionsModule = (function (helper) {
 			newPage = helper.getElemAfter(currentContentPage);
 			
 			// Make sure next page is scrolled to top
-			newPage.scrollTop = 0;
+			if (newPage) {
+				newPage.scrollTop = 0;
+			}
 
 			newPage.classList.add('active');
 			newPage.dataset.currentcontent = true;

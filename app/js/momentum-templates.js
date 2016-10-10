@@ -53,6 +53,7 @@ var momentumTemplatesModule = (function (helper, app) {
 		 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
 		function renderPosts(content, request, parent, callback) {
+			var entry;			// The current content entry being looped through
 			var href;			// The href attribute on the post element
 			var post;			// Every post element being created
 			var postContent;	// Every post content element
@@ -70,7 +71,9 @@ var momentumTemplatesModule = (function (helper, app) {
 			}
 
 			// Create all new elements and append to page
-			for (var entry of content) {
+			for (var i = 0; i < content.length; i++) {
+
+				entry = content[i];
 
 				// Post
 				post = helper.createAnchor();
@@ -114,6 +117,7 @@ var momentumTemplatesModule = (function (helper, app) {
 			var albums;				// All of the album thumbnails
 			var albumThumb;			// An album's thumbnail
 			var albumTitle;			// An album's title
+			var entry;				// The current content entry being looped through
 			var newAlbum;			// Album element. Created from cloning the base one, 'album'
 
 			// Set page title
@@ -151,7 +155,10 @@ var momentumTemplatesModule = (function (helper, app) {
 			album.appendChild(albumThumb);
 
 			// Loop through every album and append
-			for (var entry of content) {
+			for (var i = 0; i < content.length; i++) {
+
+				entry = content[i];
+
 				(function processEntry() {
 					var currentEntry = entry;	// Keep reference to the currently looped entry
 
@@ -202,6 +209,7 @@ var momentumTemplatesModule = (function (helper, app) {
 		function renderAlbum(content, request, parent, callback) {
 			var albumText;		// Element containing all text pertaining to the album
 			var albumTitle;		// The album's title
+			var entry;			// The current content entry being looped through
 			var photo;			// Photo element (anchor)
 			var photoImg;		// Photo image element
 			var photos;			// Element containing all photos
@@ -241,7 +249,8 @@ var momentumTemplatesModule = (function (helper, app) {
 				
 				// Loop through album photos
 				helper.getApiData(`albums/${content.id}/photos`, function (result) {
-					for (var entry of result) {
+					for (var i = 0; i < content.length; i++) {
+						entry = content[i];
 						photos.appendChild( getPhotoElem(entry.id, entry.thumbnailUrl, photo) );
 					}
 					afterRender(content, request, parent, callback);
@@ -424,6 +433,7 @@ var momentumTemplatesModule = (function (helper, app) {
 					var commentEmail;				// The user's email
 					var commentsElemTitle;			// Title before comments
 					var commentsElemTitleAround;	// Section before comments, contains title
+					var entry;						// The current content entry being looped through
 					var newComment;					// Every new comment element
 
 					// "Add a comment" form
@@ -468,7 +478,9 @@ var momentumTemplatesModule = (function (helper, app) {
 					comment.appendChild(commentBody);
 
 					// Output all comments
-					for (var entry of result) {
+					for (var i = 0; i < result.length; i++) {
+
+						entry = result[i];
 						newComment = getNewComment(entry.name, entry.email, entry.body, comment);
 
 						if (comments.firstChild) {
