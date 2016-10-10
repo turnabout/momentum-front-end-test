@@ -374,7 +374,8 @@ var momentumTemplatesModule = (function (helper, app) {
 			userEmailElem = helper.createAnchor(content.email, `mailto:${content.email}`);
 
 			// Website
-			userWebsiteElem = helper.createAnchor(content.website, content.website);
+			userWebsiteElem = helper.createAnchor(content.website, `http://${content.website}`);
+			userWebsiteElem.setAttribute('target', '_blank');
 
 			// Info
 			userInfo = document.createElement('ul');
