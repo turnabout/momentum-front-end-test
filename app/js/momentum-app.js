@@ -426,6 +426,7 @@ var momentumFunctionsModule = (function (helper) {
 		elems.dashboardContentPage.dataset.processing = true;
 
 		if (elems.dashboardContentPage.dataset.active === 'true') {
+			elems.dashboardContentPage.classList.add('sliding');
 			transitionDashboardPage('slideInOut');
 		} else {
 			transitionDashboardPage('slideOut');
@@ -475,6 +476,7 @@ var momentumFunctionsModule = (function (helper) {
 			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft', 'fast'], function () {
 				helper.animateElem(elems.dashboardContentPage, ['slideInLeft'], function () {
 					elems.dashboardContentPage.dataset.animating = false;
+					elems.dashboardContentPage.classList.remove('sliding');
 					callback();
 				});
 			});

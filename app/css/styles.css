@@ -2859,7 +2859,7 @@ textarea {
   background: rgba(255, 255, 255, 0.6);
   z-index: 20;
   display: none; }
-  .busy .loading-overlay {
+  .busy .loading-overlay, .sliding .loading-overlay {
     display: block; }
   .loading-overlay .loading {
     display: block;

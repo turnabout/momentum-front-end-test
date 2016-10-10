@@ -12,7 +12,7 @@
 	z-index: 20;
 	display: none;
 	
-	.busy & {
+	.busy &, .sliding & {
 		display: block;
 	}
 
