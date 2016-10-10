@@ -5,8 +5,12 @@
  */
 var momentumFunctionsModule = (function (helper) {
 
-	var elems = getAppElems();				// Object containing references to static, reused DOM elements
-	var pageTitleBase = document.title;		// The starting document title base
+	var elems;				// Object containing references to static, reused DOM elements
+	var pageTitleBase;		// The starting document title base
+	var user = {};			// The current user
+
+	elems = getAppElems();
+	pageTitleBase = document.title;
 
 	/**
 	 * Get the currently active and displayed content page.
