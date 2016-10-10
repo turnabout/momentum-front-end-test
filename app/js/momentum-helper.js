@@ -159,10 +159,16 @@ var momentumHelperModule = (function momentumHelperModule() {
 
 		element.dataset.animating = true;
 		animationNames.push('animated');
-		DOMTokenList.prototype.add.apply(element.classList, animationNames);
+		
+		for (var i = 0; i < animationNames.length; i++) {
+			element.classList.add(animationNames[i]);
+		}
 
 		addAnimEventOnce(element, 'animationend', function afterAnimationEnd(e) {
-			DOMTokenList.prototype.remove.apply(element.classList, animationNames);
+			for (var j = 0; j < animationNames.length; j++) {
+				element.classList.remove(animationNames[j]);
+			}
+
 			element.dataset.animating = false;
 			callback();
 		});
