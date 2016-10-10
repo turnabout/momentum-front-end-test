@@ -40,7 +40,7 @@ var momentumTemplatesModule = (function (helper, app) {
 		// Empty the parent
 		helper.emptyElem(parent);
 
-		elems.dashboardContentPage.dataset.processing = false;
+		helper.setData(elems.dashboardContentPage, 'processing', false);
 
 		// Use the correct rendering template function
 		renderTemplates[request.type](content, request, parent, callback);
@@ -78,8 +78,9 @@ var momentumTemplatesModule = (function (helper, app) {
 				// Post
 				post = helper.createAnchor();
 				post.classList.add('list-group-item', 'list-group-item-action');
-				post.dataset.id = entry.id;
-				post.dataset.req = 'post';
+				helper.setData(post, 'id', entry.id);
+				helper.setData(post, 'req', 'post');
+
 
 				// Title
 				postTitle = document.createElement('h5');
@@ -182,8 +183,8 @@ var momentumTemplatesModule = (function (helper, app) {
 				var album;	// The album element
 
 				album = base.cloneNode(true);
-				album.dataset.id = albumId;
-				album.dataset.req = 'album';
+				helper.setData(album, 'id', albumId);
+				helper.setData(album, 'req', 'album');
 
 				// Handle click on album event
 				helper.addEvent(album, 'click', renderNewPage);
@@ -270,8 +271,8 @@ var momentumTemplatesModule = (function (helper, app) {
 
 				photo = base.cloneNode(true);
 
-				photo.dataset.id = photoId;
-				photo.dataset.req = 'photo';
+				helper.setData(photo, 'id', photoId);
+				helper.setData(photo, 'req', 'photo');
 
 				// Handle click on photo
 				helper.addEvent(photo, 'click', renderNewPage);
@@ -294,8 +295,9 @@ var momentumTemplatesModule = (function (helper, app) {
 					// User
 					userElem = helper.createAnchor(result.username);
 					userElem.classList.add('post-user');
-					userElem.dataset.id = content.userId;
-					userElem.dataset.req = 'user';
+
+					helper.setData(userElem, 'id', content.userId);
+					helper.setData(userElem, 'req', 'user');
 
 					// User click event handler
 					helper.addEvent(userElem, 'click', renderNewPage);
@@ -400,8 +402,9 @@ var momentumTemplatesModule = (function (helper, app) {
 					// User
 					userElem = helper.createAnchor(result.username);
 					userElem.classList.add('post-user');
-					userElem.dataset.id = content.userId;
-					userElem.dataset.req = 'user';
+
+					helper.setData(userElem, 'id', content.userId);
+					helper.setData(userElem, 'req', 'user');
 
 					// User click event handler
 					helper.addEvent(userElem, 'click', renderNewPage);
@@ -447,7 +450,9 @@ var momentumTemplatesModule = (function (helper, app) {
 					commentsElemTitle = document.createElement('h3');
 					commentsElemTitle.classList.add('card-title');
 					commentsElemTitle.appendChild( document.createTextNode( getCommentsTitleText(result.length) ) );
-					commentsElemTitle.dataset.comments = result.length;
+
+					helper.setData(commentsElemTitle, 'comments', result.length);
+
 					commentsElemTitleAround.appendChild(commentsElemTitle);
 
 					parent.appendChild(addCommentForm);
@@ -546,7 +551,8 @@ var momentumTemplatesModule = (function (helper, app) {
 					form.setAttribute('method', 'post');
 					form.setAttribute('action', '');
 					form.classList.add('comment-form');
-					form.dataset.postid = content.id;
+
+					helper.setData(form, 'postid', content.id);
 
 					// Add submit event handler on the form
 					helper.addEvent(form, 'submit', app.submitPostComment);
@@ -690,7 +696,8 @@ var momentumTemplatesModule = (function (helper, app) {
 		 * @param {String} title - The title.
 		 */
 		function setTitle(title) {
-			parent.dataset.title = title;
+			helper.setData(parent, 'title', title);
+
 			elems.dashboardContentTitle.innerHTML = title;
 			document.title = `${pageTitleBase} - ${title}`;
 		}
@@ -719,7 +726,7 @@ var momentumTemplatesModule = (function (helper, app) {
 
 		currentContentPage = app.getActiveContentPage();
 		nextContentPage = helper.getElemAfter(currentContentPage);
-		request = requests[this.dataset.req](this.dataset.id);
+		request = requests[ helper.getData(this, 'req') ]( helper.getData(this, 'id') );
 
 		// If next page doesn't exist, create it
 		if (typeof(nextContentPage) === 'undefined' || nextContentPage === null) {
@@ -727,8 +734,10 @@ var momentumTemplatesModule = (function (helper, app) {
 
 			// Create the next content page
 			next = document.createElement('div');
-			next.dataset.currentcontent = 'true';
-			next.dataset.pagenum = parseInt(currentContentPage.dataset.pagenum) + 1;
+
+			helper.setData(next, 'currentcontent', 'true');
+			helper.setData(next, 'pagenum', parseInt( helper.getData(currentContentPage, 'pagenum') ) + 1);
+
 			next.classList.add('inner-content', 'list-group-active');
 
 			// Append it
@@ -815,7 +824,7 @@ var momentumTemplatesModule = (function (helper, app) {
 		form = formWrapper.lastChild;
 
 		helper.addEvent(form, 'submit', app.submitPostComment);
-		form.dataset.postid = dataPostId;
+		helper.setData(form, 'postid', dataPostId);
 
 		return formWrapper;
 	}

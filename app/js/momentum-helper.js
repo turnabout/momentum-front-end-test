@@ -157,7 +157,8 @@ var momentumHelperModule = (function momentumHelperModule() {
 	function animateElem(element, animationNames, callback) {
 		callback = callback || function() {};
 
-		element.dataset.animating = true;
+		setData(element, 'animating', true);
+
 		animationNames.push('animated');
 		
 		for (var i = 0; i < animationNames.length; i++) {
@@ -169,7 +170,8 @@ var momentumHelperModule = (function momentumHelperModule() {
 				element.classList.remove(animationNames[j]);
 			}
 
-			element.dataset.animating = false;
+			setData(element, 'animating', false);
+
 			callback();
 		});
 
@@ -197,7 +199,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 		if (element.addEventListener) {
 			element.addEventListener(type, callback, false);
 		} else if (element.attachEvent) {
-			element.attachEvent(`on${type}`, callback);
+			element.attachEvent(`on${type}`, function(){
+				return callback.apply(element, arguments);
+			});
 		} else {
 			element['on' + type] = callback;
 		}
@@ -228,16 +232,16 @@ var momentumHelperModule = (function momentumHelperModule() {
 	function isElem(element, data) {
 		if (data.constructor === Array) {
 			for (var i = 0; i < data.length; i++) {
-				if (element.dataset[data[i]] === 'true') {
+				if (getData(element, [data[i]]) === 'true') {
 					return true;
 				}
 			}
-
+			
 			return false;
 		}
-		return (element.dataset[data] === 'true');
+		return (getData(element, [data]) === 'true');
 	}
-
+	
 	/**
 	 * Set the module's apiUrl variable.
 	 * @param {String} url - The base api url.
@@ -378,6 +382,35 @@ var momentumHelperModule = (function momentumHelperModule() {
 	}
 
 	/**
+	 * Set an element's data attribute. Polyfill for IE8.
+	 * @param {Object} elem - The element.
+	 * @param {String} data - The data attribute to set a value to.
+	 * @param {String} value - The value.
+	 */
+	function setData(elem, data, value) {
+/*		console.log('setting data');
+		console.log(elem);
+		console.log(data);
+		console.log(value);
+		console.log('setting data');*/
+		elem.setAttribute(`data-${data}`, value);
+	}
+
+	/**
+	 * Get an element's data attribute. Polyfill for IE8.
+	 * @param {Object} elem - The element.
+	 * @param {String} data - The data attribute to get the value from.
+	 * @return {String} value - The data attribute's value.
+	 */
+	function getData(elem, data) {
+/*		console.log('getting data');
+		console.log(elem);
+		console.log(data);
+		console.log('getting data');*/
+		return elem.getAttribute(`data-${data}`);
+	}
+
+	/**
 	* Get the different requests to use to render content pages.
 	* @return {Object} reqs - The requests.
 	*/
@@ -466,6 +499,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 		'enableForm' : enableForm,
 		'getApiData' : getApiData,
 		'getAppElems' : getAppElems,
+		'getData' : getData,
 		'getElemAfter' : getElemAfter,
 		'getElemBefore' : getElemBefore,
 		'getElemsWithAttr' : getElemsWithAttr,
@@ -473,7 +507,8 @@ var momentumHelperModule = (function momentumHelperModule() {
 		'isElem' : isElem,
 		'postApiData' : postApiData,
 		'removeEvent' : removeEvent,
-		'setApiUrl' : setApiUrl
+		'setApiUrl' : setApiUrl,
+		'setData' : setData
 	};
 	
 })();

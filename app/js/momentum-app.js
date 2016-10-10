@@ -50,7 +50,7 @@ var momentumFunctionsModule = (function (helper) {
 			newPage = helper.getElemBefore(currentContentPage);
 
 			newPage.classList.add('active');
-			newPage.dataset.currentcontent = true;
+			helper.setData(newPage, 'currentcontent', true);
 
 			// Set next btn to active
 			elems.contentNext.removeAttribute('disabled');
@@ -66,7 +66,7 @@ var momentumFunctionsModule = (function (helper) {
 			}
 
 			newPage.classList.add('active');
-			newPage.dataset.currentcontent = true;
+			helper.setData(newPage, 'currentcontent', true);
 
 			// If reached the end, make btn disabled
 			if (helper.getElemAfter(newPage) == null) {
@@ -87,11 +87,12 @@ var momentumFunctionsModule = (function (helper) {
 
 			// Make current page inactive
 			currentContentPage.classList.remove('active');
-			currentContentPage.dataset.currentcontent = false;
+			helper.setData(currentContentPage, 'currentcontent', false);
 
 			// Set the title
-			elems.dashboardContentTitle.innerHTML = newPage.dataset.title;
-			document.title = `${pageTitleBase} - ${newPage.dataset.title}`;
+			elems.dashboardContentTitle.innerHTML = helper.getData(newPage, 'title');
+
+			document.title = `${pageTitleBase} - ${helper.getData(newPage, 'title')}`;
 			callback();
 		}
 	}
@@ -106,9 +107,10 @@ var momentumFunctionsModule = (function (helper) {
 		currentContentPage = getActiveContentPage();
 
 		// If first page is current, slide dbp back in
-		if (currentContentPage.dataset.pagenum === '1') {
+		if (helper.getData(currentContentPage, 'pagenum') === '1') {
 			transitionDashboardPage('slideIn');
-			elems.dashboardContentPage.dataset.active = false;
+			helper.setData(elems.dashboardContentPage, 'active', false);
+
 
 			if (document.getElementById('active-dbp-btn')) {
 				var activeMenuBtn = document.getElementById('active-dbp-btn');
@@ -181,8 +183,10 @@ var momentumFunctionsModule = (function (helper) {
 		setDbpBusyState(true);
 
 		// Prepare POST request
-		commentsAmount = parseInt(commentsTitle.dataset.comments);
-		postId = this.dataset.postid;
+		commentsAmount = parseInt( helper.getData(commentsTitle, 'comments') );
+
+		postId = helper.getData(this, 'postid');
+
 		params = `postId=${postId}&name=${name}&body=${body}&email=${user.email}`;
 
 		// Post the comment
@@ -251,7 +255,8 @@ var momentumFunctionsModule = (function (helper) {
 					commentsTitleText += 's';
 				}
 
-				commentsTitle.dataset.comments = commentData.newCommentsAmount;
+				helper.setData(commentsTitle, 'comments', commentData.newCommentsAmount);
+
 				commentsTitle.removeChild(commentsTitle.firstChild);
 				commentsTitle.appendChild( document.createTextNode(commentsTitleText) );
 
@@ -293,7 +298,8 @@ var momentumFunctionsModule = (function (helper) {
 			elems.loginAlert.classList.remove('active');
 			elems.loginBox.classList.remove('error');
 
-			elems.dashboardContentPage.dataset.active = false;
+			helper.setData(elems.dashboardContentPage, 'active', false);
+
 			elems.dashboardContentPage.classList.remove('active');
 
 			// Fade dashboard in
@@ -380,7 +386,7 @@ var momentumFunctionsModule = (function (helper) {
 		}
 
 		// Make first content page active
-		elems.dbpContentPageOne.dataset.currentcontent = true;
+		helper.setData(elems.dbpContentPageOne, 'currentcontent', true);
 
 		// Reset bottom buttons states
 		elems.contentNext.disabled = true;
@@ -395,11 +401,17 @@ var momentumFunctionsModule = (function (helper) {
 	 * @param {Event} event
 	 */
 	function handleDashboardMenuClick(event) {
+		var request;		// Request attached to the clicked menu item
 
 		event.preventDefault ? event.preventDefault() : (event.returnValue = false);
 
+
+		console.log(this);
+		console.log( helper.getData(this, 'req') );
+		console.log('after');
+		
 		// If already busy being processed/animated or request doesn't exist, don't do anything
-		if (helper.isElem(elems.dashboardContentPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
+		if (helper.isElem(elems.dashboardContentPage, ['processing', 'animating']) || !(helper.getData(this, 'req') in requests)) {
 			return;
 		}
 
@@ -409,7 +421,8 @@ var momentumFunctionsModule = (function (helper) {
 		// If button clicked already active, slide page back in
 		if (this.getAttribute('id') === 'active-dbp-btn') {
 			transitionDashboardPage('slideIn');
-			elems.dashboardContentPage.dataset.active = false;
+			helper.setData(elems.dashboardContentPage, 'active', false);
+
 			this.classList.remove('active');
 			this.setAttribute('id', '');
 			this.blur();
@@ -425,14 +438,28 @@ var momentumFunctionsModule = (function (helper) {
 
 		this.setAttribute('id', 'active-dbp-btn');
 		this.classList.add('active');
-
+		console.log('before fuckup');
 		// Get request attached to this menu item
-		var request = requests[this.dataset.req](user.id);
+		var thisRequest = helper.getData(this, 'req');
+		var requestFunc = requests[thisRequest];
+
+		console.log('thisRequest');
+		console.log(thisRequest);
+		console.log(typeof(thisRequest));
+		console.log('thisRequest');
+
+		console.log('requestFunc');
+		console.log(requestFunc);
+		console.log(typeof(requestFunc));
+		console.log('requestFunc');
+
+
+		request = requestFunc(user.id);
 
 		// Slide the second page in
-		elems.dashboardContentPage.dataset.processing = true;
+		helper.setData(elems.dashboardContentPage, 'processing', true);
 
-		if (elems.dashboardContentPage.dataset.active === 'true') {
+		if (helper.getData(elems.dashboardContentPage, 'active') === 'true') {
 			elems.dashboardContentPage.classList.add('sliding');
 			transitionDashboardPage('slideInOut');
 		} else {
@@ -454,15 +481,17 @@ var momentumFunctionsModule = (function (helper) {
 	 * @param {Function} callback - Function to call after transition is over.
 	 */
 	function transitionDashboardPage(type, callback) {
-		elems.dashboardContentPage.dataset.animating = true;
+		helper.setData(elems.dashboardContentPage, 'animating', true);
+
 		elems.dashboardContentPage.classList.add('active');
 		callback = callback || function(){};
 
 		switch (type) {
 		case 'slideIn':
 			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft'], function () {
-				elems.dashboardContentPage.dataset.animating = false;
-				elems.dashboardContentPage.dataset.active = false;
+				helper.setData(elems.dashboardContentPage, 'animating', false);
+				helper.setData(elems.dashboardContentPage, 'active', false);
+
 				elems.dashboardContentPage.classList.remove('active');
 
 				// Sliding back in, so reset head title
@@ -473,8 +502,9 @@ var momentumFunctionsModule = (function (helper) {
 
 		case 'slideOut':
 			helper.animateElem(elems.dashboardContentPage, ['fadeInLeft'], function () {
-				elems.dashboardContentPage.dataset.animating = false;
-				elems.dashboardContentPage.dataset.active = true;
+				helper.setData(elems.dashboardContentPage, 'animating', false);
+				helper.setData(elems.dashboardContentPage, 'active', true);
+
 				callback();
 			});
 			break;
@@ -482,7 +512,8 @@ var momentumFunctionsModule = (function (helper) {
 		case 'slideInOut':
 			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft', 'fast'], function () {
 				helper.animateElem(elems.dashboardContentPage, ['slideInLeft'], function () {
-					elems.dashboardContentPage.dataset.animating = false;
+					helper.setData(elems.dashboardContentPage, 'animating', false);
+
 					elems.dashboardContentPage.classList.remove('sliding');
 					callback();
 				});
@@ -515,7 +546,7 @@ var momentumFunctionsModule = (function (helper) {
 	 * @param {Boolean} set - Whether to set it on or off. 'true' is on.
 	 */
 	function setDbpBusyState(state) {
-		elems.dashboardContentPage.dataset.busy = state;
+		helper.setData(elems.dashboardContentPage, 'busy', state);
 
 		if (state) {
 			elems.dashboardContentPage.classList.add('busy');
