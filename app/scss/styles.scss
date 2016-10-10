@@ -38,3 +38,9 @@ body {
 .btn {
 	font-family: $font-family-titles;
 }
+
+.last-visited {
+	&, &:hover, &:active, &:focus {
+		background: darken($list-group-hover-bg, 10%);
+	}
+}

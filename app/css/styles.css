@@ -2909,3 +2909,6 @@ body {
 
 .btn {
   font-family: Georgia, Times, "Times New Roman", serif; }
+
+.last-visited, .last-visited:hover, .last-visited:active, .last-visited:focus {
+  background: gainsboro; }

@@ -684,15 +684,25 @@ var momentumTemplatesModule = (function (helper, app) {
 	}
 
 	/**
-	 * Render a new page. Attached to every clickable navigation links in DBP inner content.
+	 * Render a new page. Attached to every clickable dynamically created elements in content pages.
 	 * @param {Event} event - The event.
 	 */
 	function renderNewPage(event) {
 		var currentContentPage; // The currently active content page
+		var lastVisited;		// The last element previously clicked on before this one
 		var nextContentPage; 	// The content page after the current one
 		var request;			// The request object to use to render the page
 
 		event.preventDefault();
+
+		// Set this element to the "last-visited" one
+		lastVisited = document.querySelectorAll('.last-visited')[0];
+
+		if (lastVisited) {
+			lastVisited.classList.remove('last-visited');
+		}
+
+		this.classList.add('last-visited');
 
 		currentContentPage = app.getActiveContentPage();
 		nextContentPage = helper.getElemAfter(currentContentPage);
