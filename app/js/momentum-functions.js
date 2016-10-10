@@ -7,10 +7,13 @@ var momentumFunctionsModule = (function (helper) {
 
 	var elems;				// Object containing references to static, reused DOM elements
 	var pageTitleBase;		// The starting document title base
-	var user = {};			// The current user
+	var user;				// The current user
+	var requests;			// The different requests to use to render content pages
+	var dbp;				// The templates module. Stands for "Dashboard pages"
 
-	elems = getAppElems();
+	elems = helper.getAppElems();
 	pageTitleBase = document.title;
+	requests = helper.getRequests();
 
 	/**
 	 * Get the currently active and displayed content page.
@@ -288,78 +291,205 @@ var momentumFunctionsModule = (function (helper) {
 	}
 
 	/**
-	* Get the different requests to use to render content pages.
-	* @return {Object} reqs - The requests.
-	*/
-	function requests() {
-		return {
-			'userPosts': function (userId) { 
-				return {
-					'query' 		: `posts?userId=${userId}`,
-					'titleQuery' 	: `users/${userId}`,
-					'type' 			: 'posts',
-				};
-			},
-			'userAlbums': function (userId) { 
-				return {
-					'query' 		: `albums?userId=${userId}`,
-					'titleQuery' 	: `users/${userId}`,
-					'type' 			: 'album',
-				};
-			},
-			'allPosts': function (userId) { 
-				return {
-					'query' 		: `posts`,
-					'title' 		: 'All Posts',
-					'type' 			: 'posts',
-				};
-			},
-			'post': function (postId) { 
-				return {
-					'query' 		: `posts/${postId}`,
-					'type' 			: 'post',
-				};
-			},
-			'user': function (userId) { 
-				return {
-					'query' 		: `users/${userId}`,
-					'type' 			: 'user',
-				};
-			},
-		};
+	 * Authenticate user on form submit.
+	 * @param {Event} event - The event.
+	 */
+	function authenticate(event) {
+		var username = elems.loginField.value;
+
+		if (username) {
+
+			helper.disableForm(elems.loginForm);
+
+			helper.getApiData(`users?username=${username}`, function processResult(result) {
+
+				if (result.length > 0) {
+					user = result[0];
+					login();
+				} else {
+					displayError(`Username "${username}" does not exist.`);
+				}
+				
+			});
+		}
+		event.preventDefault();
+
+		/**
+		 * Log user in.
+		 */
+		function login() {
+			// Username exists, clear any previous error and show the "dashboard"
+			elems.loginAlert.classList.remove('active');
+			elems.loginBox.classList.remove('error');
+
+			elems.dashboardContentPage.dataset.active = false;
+			elems.dashboardContentPage.classList.remove('active');
+
+			// Fade dashboard in
+			elems.dashboard.classList.add('active');
+			helper.animateElem(elems.dashboard, ['fadeInLeft']);
+
+			// Fade login page out
+			helper.animateElem(elems.loginPage, ['fadeOut'], function () {
+				elems.loginPage.classList.remove('active');
+				elems.dashboard.classList.add('active');
+			});
+		}
+
+		/**
+		 * Display an error message on the login page after trying to authenticate the user.
+		 * @param {String} message - The message to display.
+		 */
+		 function displayError(message) {
+			elems.loginAlert.innerHTML = `Username "${username}" does not exist.`;
+			elems.loginAlert.classList.add('active');
+			elems.loginBox.classList.add('error');
+
+			// Enable form and focus back on field
+			helper.enableForm(elems.loginForm);
+			elems.loginField.focus();
+		 }
 	}
 
 	/**
-	 * Get references to app elements.
-	 * @return {Object} els - Object containing references to many static app elements.
+	 * Log the user out and return to login page.
+	 * @param {Event} event - The event.
 	 */
-	function getAppElems() {
-		return {
-			contentBack: 			document.getElementById('content-back'),
-			contentNext: 			document.getElementById('content-next'),
-			dashboard: 				document.getElementById('dashboard'),
-			dashboardContentPage: 	document.getElementById('content-dbp'),
-			dashboardContentTitle: 	document.getElementById('dbp-content-title'),
-			dashboardMenuPage: 		document.getElementById('main-dbp'),
-			dbpContentContainer: 	document.getElementById('dbp-content-container'),
-			dbpContentPageOne: 		document.getElementById('dbp-content-page-1'),
-			loginForm:				document.getElementById('login'),
-			loginAlert: 			document.getElementById('login-alert'),
-			loginBox: 				document.getElementById('login-box'),
-			loginBtn: 				document.getElementById('login-btn'),
-			loginField: 			document.getElementById('login-field'),
-			loginPage: 				document.getElementById('login-page'),
-			dashboardMenuItems: 	document.querySelectorAll('.dashboard-menu-item')
-		};
+	function logout(event) {
+		user = {};
+
+		// Prepare login page to be shown again
+		helper.disableForm(elems.loginForm);
+		elems.loginField.value = '';
+
+		// Fade dashboard out
+		helper.animateElem(elems.dashboard, ['fadeOutLeft'], function () {
+			elems.dashboard.classList.remove('active');
+		});
+
+		// Fade login page in
+		elems.loginPage.classList.add('active');
+
+		// Reset the dashboard state
+		resetDashboardState();
+
+		helper.animateElem(elems.loginPage, ['fadeIn'], function () {
+			elems.loginField.focus();				
+		});
+		event.preventDefault();
+	}
+
+	/**
+	 * Reset the entire dashboard state and remove all content from it.
+	 */
+	function resetDashboardState() {
+
+		// Reset active db button
+		if (document.getElementById('active-dbp-btn')) {
+			document.getElementById('active-dbp-btn').classList.remove('active');
+			document.getElementById('active-dbp-btn').setAttribute('id', '');
+		}
+
+		// Reset head title
+		document.title = pageTitleBase;
+
+		// Reset dbps to their initial state
+		resetDbpState();
+	}
+
+	/**
+	 * Reset the state of dbp to the original default one. Launch on tab change.
+	 */
+	function resetDbpState() {
+
+		// Remove all additional content pages
+		while (helper.getElemAfter(elems.dbpContentPageOne) != null) {
+			let nextElem = helper.getElemAfter(elems.dbpContentPageOne);
+			nextElem.parentElement.removeChild(nextElem);
+		}
+
+		// Make first content page active
+		elems.dbpContentPageOne.dataset.currentcontent = true;
+
+		// Reset bottom buttons states
+		elems.contentNext.disabled = true;
+		
+		// Empty the first content page
+		elems.dashboardContentTitle.innerHTML = '';
+		helper.emptyElem(elems.dbpContentPageOne);
+	}
+
+	/**
+	 * Function fired when a dashboard menu item is clicked.
+	 * @param {Event} event
+	 */
+	function handleDashboardMenuClick(event) {
+
+		// If already busy being processed/animated or request doesn't exist, don't do anything
+		if (helper.isElem(elems.dashboardContentPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
+			return;
+		}
+
+		// Reset dbps to their initial state
+		resetDbpState();
+
+		// If button clicked already active, slide page back in
+		if (this.getAttribute('id') === 'active-dbp-btn') {
+			transitionDashboardPage('slideIn');
+			elems.dashboardContentPage.dataset.active = false;
+			this.classList.remove('active');
+			this.setAttribute('id', '');
+			this.blur();
+			return;
+		}
+
+		// Set any other active button as inactive
+		if (document.getElementById('active-dbp-btn')) {
+			let alreadyActive = document.getElementById('active-dbp-btn');
+			alreadyActive.setAttribute('id', '');
+			alreadyActive.classList.remove('active');
+		}
+
+		this.setAttribute('id', 'active-dbp-btn');
+		this.classList.add('active');
+
+		// Get request attached to this menu item
+		var request = requests[this.dataset.req](user.id);
+
+		// Slide the second page in
+		elems.dashboardContentPage.dataset.processing = true;
+
+		if (elems.dashboardContentPage.dataset.active === 'true') {
+			transitionDashboardPage('slideInOut');
+		} else {
+			transitionDashboardPage('slideOut');
+		}
+
+		// Request the content and render page with it
+		helper.getApiData(request.query, function (result) {
+			dbp.render(result, request, elems.dbpContentPageOne);
+		});
+	}
+
+	/**
+	 * Manually grab and set a reference to the 'momentum-templates' module functions from outside.
+	 * @param {Object} module - The momentum-templates module's public API object.
+	*/
+	function getDbpDependency(module) {
+		dbp = module;
 	}
 
 	return {
+		'authenticate': authenticate,
 		'dbpChangePage': dbpChangePage,
 		'dbpNextClick': dbpNextClick,
 		'dbpPreviousClick': dbpPreviousClick,
 		'getActiveContentPage': getActiveContentPage,
-		'getAppElems': getAppElems,
-		'requests': requests,
+		'getDbpDependency': getDbpDependency,
+		'handleDashboardMenuClick': handleDashboardMenuClick,
+		'logout': logout,
+		'resetDbpState': resetDbpState,
+		'resetDashboardState': resetDashboardState,
 		'submitPostComment': submitPostComment,
 		'transitionDashboardPage': transitionDashboardPage
 	}

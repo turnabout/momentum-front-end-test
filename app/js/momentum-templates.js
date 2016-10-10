@@ -12,8 +12,8 @@ var momentumTemplatesModule = (function (helper, app) {
 	var pageTitleBase;		// The starting document title base
 	
 	commentsForm = setNewCommentForm();
-	elems = app.getAppElems();
-	requests = app.requests(); 
+	elems = helper.getAppElems();
+	requests = helper.getRequests();
 	pageTitleBase = document.title;
 
 	/**
