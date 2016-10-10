@@ -2804,6 +2804,20 @@ textarea {
   font-weight: 700;
   font-family: Georgia, Times, "Times New Roman", serif; }
 
+.user .user-info li {
+  padding: 12px 0; }
+  .user .user-info li + li {
+    border-top: 1px solid #d9deea; }
+
+.user .user-info .name {
+  font-family: Georgia, Times, "Times New Roman", serif;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 700; }
+
+.user .user-info .value {
+  display: block; }
+
 body {
   color: #201f1f;
   background-image: linear-gradient(to right, #2E4172 0%, #314579 100%);

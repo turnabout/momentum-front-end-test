@@ -353,13 +353,79 @@ var momentumTemplatesModule = (function (helper, app) {
 		 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
 		function renderUser(content, request, parent, callback) {
+			var userEmailElem;		// Anchor containing the user's email
+			var userElem;			// The main element wrapping around the user info
+			var userInfo;			// Element containing all the user info
+			var userTitle;			// The user profile page title
+			var userWebsiteElem;	// Anchor containing the user's website
+
 			setTitle(`User: ${content.username}`);
-			console.log('rendering user');
-			console.log(content);
-			console.log(request);
-			console.log('rendering user');
+
+			// User
+			userElem = document.createElement('div');
+			userElem.classList.add('card', 'card-block', 'user');
+
+			// Title
+			userTitle = document.createElement('h3');
+			userTitle.classList.add('card-title', 'title');
+			userTitle.appendChild( document.createTextNode(content.username) );
+
+			// Email
+			userEmailElem = helper.createAnchor(content.email, `mailto:${content.email}`);
+
+			// Website
+			userWebsiteElem = helper.createAnchor(content.website, content.website);
+
+			// Info
+			userInfo = document.createElement('ul');
+			userInfo.classList.add('user-info');
+
+			userInfo.appendChild( createUserInfoPair('Name', content.name) );
+			userInfo.appendChild( createUserInfoPair('Email', userEmailElem) );
+			userInfo.appendChild( createUserInfoPair('Phone', content.phone) );
+			userInfo.appendChild( createUserInfoPair('Website', userWebsiteElem) );
+			userInfo.appendChild( createUserInfoPair('City', content.address.city) );
+			userInfo.appendChild( createUserInfoPair('Company', content.company.name) );
+
+			// Append everything
+			userElem.appendChild(userTitle);
+			userElem.appendChild(userInfo);
+			parent.appendChild(userElem);
 
 			afterRender(content, request, parent, callback);
+
+			/**
+			 * Create an element containing a name/info pair of the user info.
+			 * @param {String} name - The name of the info.
+			 * @param {String|Object} value - The value of the info. Can be a string or a DOM element object.
+			 * @return {Object} infoElem - Element containing the infos.
+			 */
+			function createUserInfoPair(name, value) {
+				var infoElem;	// Element containing the info
+				var infoName;	// Element containing info name
+				var infoValue;	// Element containing info value
+
+				infoElem = document.createElement('li');
+
+				infoName = document.createElement('span');
+				infoName.classList.add('name');
+				infoName.appendChild( document.createTextNode(name) );
+
+				infoValue = document.createElement('span');
+				infoValue.classList.add('value');
+
+
+				if (typeof value === 'string') {
+					infoValue.appendChild( document.createTextNode(value) );
+				} else {
+					infoValue.appendChild(value);
+				}
+
+				infoElem.appendChild(infoName);
+				infoElem.appendChild(infoValue);
+
+				return infoElem;
+			}
 		}
 
 		/**

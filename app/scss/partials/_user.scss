@@ -1,0 +1,29 @@
+// 
+// User profile page
+// 
+.user {
+	
+	// User info list
+	.user-info {
+		
+		// Info name/value pairs
+		li {
+			padding: $card-spacer-y 0;
+
+			+ li {
+				border-top: 1px solid $db-borders-col;
+			}
+		}
+
+		.name {
+			font-family: $font-family-titles;
+			display: block;
+			margin-bottom: ($card-spacer-y / 2);
+			font-weight: 700;
+		}
+
+		.value {
+			display: block;
+		}
+	}
+}
