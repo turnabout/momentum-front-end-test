@@ -359,7 +359,7 @@ var momentumFunctionsModule = (function (helper) {
 		user = {};
 
 		// Prepare login page to be shown again
-		helper.disableForm(elems.loginForm);
+		helper.enableForm(elems.loginForm);
 		elems.loginField.value = '';
 
 		// Fade dashboard out
