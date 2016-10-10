@@ -269,7 +269,31 @@ var momentumTemplatesModule = (function (helper, app) {
 	 	 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
 		function renderPhoto(content, request, parent, callback) {
-			
+			var photoImg;	// The photo page image
+			var photo;		// Element containing the whole photo page
+			var title;		// The photo page title
+
+			setTitle(content.title);
+
+			// Photo page container
+			photo = document.createElement('div');
+			photo.classList.add('card', 'card-block', 'post', 'single-photo');
+
+			// Title
+			title = document.createElement('h3');
+			title.classList.add('card-title', 'title');
+			title.appendChild( document.createTextNode(content.title) );
+
+			// Image
+			photoImg = document.createElement('img');
+			photoImg.setAttribute('src', content.url);
+
+			photo.appendChild(title);
+			photo.appendChild(photoImg);
+
+			// Append
+			parent.appendChild(photo);
+			afterRender(content, request, parent, callback);
 		}
 
 		/**
@@ -284,7 +308,6 @@ var momentumTemplatesModule = (function (helper, app) {
 			var postContentElem;	// The post's content element
 			var postTitleElem;		// The post's title element
 
-			// Set page title
 			setTitle(content.title);
 
 			// Post

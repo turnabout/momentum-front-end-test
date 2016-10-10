@@ -2828,14 +2828,19 @@ textarea {
   margin: 0 20px 20px; }
 
 .photos .photo {
-  display: inline-block;
+  display: block;
+  float: left;
   width: 50%;
-  height: auto; }
+  height: auto;
+  text-align: center; }
   .photos .photo img {
     width: 100%; }
   @media (min-width: 470px) {
     .photos .photo {
       width: 33%; } }
+
+.single-photo img {
+  max-width: 100%; }
 
 body {
   color: #201f1f;

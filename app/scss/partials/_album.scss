@@ -3,9 +3,11 @@
 // 
 .photos {
 	.photo {
-		display: inline-block;
+		display: block;
+		float: left;
 		width: 50%;
 		height: auto;
+		text-align: center;
 		
 		img {
 			width: 100%;
@@ -14,5 +16,15 @@
 		@media (min-width: $dbp-mid-breakpoint) {
 			width: 33%;
 		}
+	}
+}
+
+// 
+// Single photo page
+// 
+.single-photo {
+	
+	img {
+		max-width: 100%;
 	}
 }

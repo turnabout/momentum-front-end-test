@@ -317,6 +317,12 @@ var momentumHelperModule = (function momentumHelperModule() {
 					'type' 			: 'album'
 				};
 			},
+			'photo': function (photoId) { 
+				return {
+					'query' 		: `photos/${photoId}`,
+					'type' 			: 'photo'
+				};
+			},
 			'allPosts': function (userId) { 
 				return {
 					'query' 		: `posts`,
