@@ -213,7 +213,7 @@ var momentumTemplatesModule = (function (helper, app) {
 
 			// Set the title
 			setTitle(content.title);
-			
+
 			// Photos
 			photos = document.createElement('div');
 			photos.classList.add('photos', 'card', 'card-block', 'post');
@@ -668,6 +668,9 @@ var momentumTemplatesModule = (function (helper, app) {
 		function afterRender(content, request, parent, callback) {
 			parent.classList.add('active');
 
+			// Set the dashboard page to non-busy state
+			app.setDbpBusyState(false);
+
 			// Remove any dbp that come after the new, current dashboard page. To avoid having the 'next' option available to irrelevent pages.
 			while (helper.getElemAfter(parent) != null) {
 				let nextElem = helper.getElemAfter(parent);
@@ -714,6 +717,9 @@ var momentumTemplatesModule = (function (helper, app) {
 			elems.dbpContentContainer.appendChild(next);
 			nextContentPage = helper.getElemAfter(currentContentPage);
 		}
+
+		// Set the content page state to "processing"
+		app.setDbpBusyState(true);
 
 		// Request the content and render page with it
 		helper.getApiData(request.query, function(result) {

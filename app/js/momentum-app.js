@@ -423,6 +423,9 @@ var momentumFunctionsModule = (function (helper) {
 			transitionDashboardPage('slideOut');
 		}
 
+		// Set the content page state to "processing"
+		setDbpBusyState(true);
+
 		// Request the content and render page with it
 		helper.getApiData(request.query, function (result) {
 			dbp.render(result, request, elems.dbpContentPageOne);
@@ -490,6 +493,28 @@ var momentumFunctionsModule = (function (helper) {
 		return user;
 	}
 
+	/**
+	 * Set the dashboard page processing state on/off.
+	 * @param {Boolean} set - Whether to set it on or off. 'true' is on.
+	 */
+	function setDbpBusyState(state) {
+		elems.dashboardContentPage.dataset.busy = state;
+
+		if (state) {
+			elems.dashboardContentPage.classList.add('busy');
+		} else {
+			elems.dashboardContentPage.classList.remove('busy');
+		}
+	}
+
+	/**
+	 * Get whether the dashboard page is currently processing.
+	 * @return {Boolean} processing - Whether it's processing or not.
+	 */
+	function dbpIsBusy() {
+		return isElem(elems.dashboardContentPage, 'processing');
+	}
+
 	return {
 		'authenticate': authenticate,
 		'dbpChangePage': dbpChangePage,
@@ -499,9 +524,11 @@ var momentumFunctionsModule = (function (helper) {
 		'getActiveContentPage': getActiveContentPage,
 		'getDbpDependency': getDbpDependency,
 		'handleDashboardMenuClick': handleDashboardMenuClick,
+		'dbpIsBusy': dbpIsBusy,
 		'logout': logout,
 		'resetDbpState': resetDbpState,
 		'resetDashboardState': resetDashboardState,
+		'setDbpBusyState': setDbpBusyState,
 		'submitPostComment': submitPostComment,
 		'transitionDashboardPage': transitionDashboardPage
 	}
