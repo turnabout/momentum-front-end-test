@@ -2827,6 +2827,16 @@ textarea {
   max-width: 100%;
   margin: 0 20px 20px; }
 
+.photos .photo {
+  display: inline-block;
+  width: 50%;
+  height: auto; }
+  .photos .photo img {
+    width: 100%; }
+  @media (min-width: 470px) {
+    .photos .photo {
+      width: 33%; } }
+
 body {
   color: #201f1f;
   background-image: linear-gradient(to right, #2E4172 0%, #314579 100%);

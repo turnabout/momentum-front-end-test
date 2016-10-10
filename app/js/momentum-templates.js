@@ -130,6 +130,10 @@ var momentumTemplatesModule = (function (helper, app) {
 			albums = document.createElement('div');
 			albums.classList.add('albums');
 
+			// Add albums element to parent, keep reference to it
+			parent.appendChild(albums);
+			albums = parent.lastChild;
+
 			// Album
 			album = helper.createAnchor();
 			album.classList.add('card', 'list-group-item-action');
@@ -156,18 +160,17 @@ var momentumTemplatesModule = (function (helper, app) {
 				(function processEntry() {
 					var currentEntry = entry;	// Keep reference to the currently looped entry
 
-					helper.getApiData(`albums/${entry.id}/photos`, function (result) {
+					helper.getApiData(`albums/${currentEntry.id}/photos`, function (result) {
 						albums.appendChild( getAlbumElem(currentEntry.id, result[0].thumbnailUrl, currentEntry.title, album) );
 					});
 				})();
 			}
 
-			parent.appendChild(albums);
 			afterRender(content, request, parent, callback);
 
 			/**
 			 * Clone album element, place content inside and return it.
-			 * @param {String} album - The album's ID.
+			 * @param {String} albumId - The album's ID.
 			 * @param {String} src - The album's first image's source.
 			 * @param {String} title - The album's title.
 			 * @param {Object} base - The base dom element object to clone.
@@ -202,14 +205,60 @@ var momentumTemplatesModule = (function (helper, app) {
 	 	 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
 		function renderAlbum(content, request, parent, callback) {
+			var photo;		// Photo element (anchor)
+			var photoImg;	// Photo image element
+			var photos;		// Element containing all photos
+
+			// Photos
+			photos = document.createElement('div');
+			photos.classList.add('photos');
+
+			// Append photos to parent, but keep reference to it
+			parent.appendChild(photos);
+			photos = parent.lastChild;
+
+			// Photo image
+			photoImg = document.createElement('img');
+
+			// Photo
+			photo = helper.createAnchor();
+			photo.appendChild(photoImg);
+			photo.classList.add('photo');
 
 			// Set the title
 			setTitle(content.title);
+			console.log(`albums/${content.id}/photos`);
+			// Loop through album photos
+			helper.getApiData(`albums/${content.id}/photos`, function (result) {
+				for (var entry of result) {
+					photos.appendChild( getPhotoElem(entry.id, entry.thumbnailUrl, photo) );
+				}
 
-			console.log('rendering an album page');
-			console.log(content);
-			console.log(request);
-			afterRender(content, request, parent, callback);
+				afterRender(content, request, parent, callback);
+			});
+
+			/**
+			 * Clone photo element, place content inside and return it.
+			 * @param {String} photoId - The photo's ID.
+			 * @param {String} src - The photo's image's source.
+			 * @param {Object} base - The base dom element object to clone.
+			 * @return {Object} elem - The album element.
+			 */
+			function getPhotoElem(photoId, src, base) {
+				var photo;	// Photo element
+
+				photo = base.cloneNode(true);
+
+				photo.dataset.id = photoId;
+				photo.dataset.req = 'photo';
+
+				// Handle click on photo
+				helper.addEvent(photo, 'click', renderNewPage);
+
+				photo.firstChild.setAttribute('src', src);
+
+				return photo;
+			}
 		}
 
 		/**

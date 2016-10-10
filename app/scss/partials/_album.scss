@@ -1,0 +1,18 @@
+// 
+// Album page
+// 
+.photos {
+	.photo {
+		display: inline-block;
+		width: 50%;
+		height: auto;
+		
+		img {
+			width: 100%;
+		}
+
+		@media (min-width: $dbp-mid-breakpoint) {
+			width: 33%;
+		}
+	}
+}
