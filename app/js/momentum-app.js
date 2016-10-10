@@ -152,7 +152,7 @@ var momentumFunctionsModule = (function (helper) {
 		currentPage = getActiveContentPage();
 
 		helper.disableForm(form);
-		event.preventDefault();
+		event.preventDefault ? event.preventDefault() : (event.returnValue = false);
 
 		if (!currentPage) {
 			helper.enableForm(form);
@@ -283,7 +283,7 @@ var momentumFunctionsModule = (function (helper) {
 				
 			});
 		}
-		event.preventDefault();
+		event.preventDefault ? event.preventDefault() : (event.returnValue = false);
 
 		/**
 		 * Log user in.
@@ -347,7 +347,7 @@ var momentumFunctionsModule = (function (helper) {
 		helper.animateElem(elems.loginPage, ['fadeIn'], function () {
 			elems.loginField.focus();				
 		});
-		event.preventDefault();
+		event.preventDefault ? event.preventDefault() : (event.returnValue = false);
 	}
 
 	/**
@@ -396,7 +396,7 @@ var momentumFunctionsModule = (function (helper) {
 	 */
 	function handleDashboardMenuClick(event) {
 
-		event.preventDefault();
+		event.preventDefault ? event.preventDefault() : (event.returnValue = false);
 
 		// If already busy being processed/animated or request doesn't exist, don't do anything
 		if (helper.isElem(elems.dashboardContentPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {

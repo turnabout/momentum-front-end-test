@@ -706,7 +706,7 @@ var momentumTemplatesModule = (function (helper, app) {
 		var nextContentPage; 	// The content page after the current one
 		var request;			// The request object to use to render the page
 
-		event.preventDefault();
+		event.preventDefault ? event.preventDefault() : (event.returnValue = false);
 
 		// Set this element to the "last-visited" one
 		lastVisited = document.querySelectorAll('.last-visited')[0];
