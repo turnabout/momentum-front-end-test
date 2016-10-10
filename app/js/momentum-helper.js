@@ -9,6 +9,56 @@ var momentumHelperModule = (function momentumHelperModule() {
 	var apiUrl = '';
 
 	/**
+	 * Do a GET request.
+	 * @param {String} request - The API request.
+	 * @param {Function} callback - The function to call once the JSON data is fetched.
+	 */
+	function doRequest(request, callback) {
+		var url;	// Where to send GET request
+		var xhr;	// XHR object
+
+		url = `${apiUrl}/${request}`;
+		xhr = new XMLHttpRequest();
+
+		// Support for multiple browsers
+		if ('withCredentials' in xhr) {
+
+			// XHR for Chrome/Firefox/Opera/Safari.
+			xhr.open('GET', url, true);
+		} else if (typeof XDomainRequest != 'undefined') {
+
+			// XDomainRequest for IE.
+			xhr = new XDomainRequest();
+			xhr.open('GET', url);
+		} else {
+
+			// CORS not supported.
+			xhr = null;
+		}
+
+		if (!xhr) {
+			return;
+		}
+
+		// Response handlers
+		xhr.onload = function() {
+			callback(xhr.responseText);
+		}
+
+		xhr.onerror = function() {};
+
+		// These blank handlers need to be set to fix ie9 http://cypressnorth.com/programming/internet-explorer-aborting-ajax-requests-fixed/
+		xhr.onprogress = function () {};
+		xhr.ontimeout = function () {};
+
+		// Send request wrapped in timeout to fix ie9
+		setTimeout(function () {
+			xhr.send();
+		}, 0);
+	}
+
+
+	/**
 	 * Get data from API.
 	 * @param {String} request - The API request.
 	 * @param {Function} callback - The function to call once the JSON data is fetched.
@@ -24,7 +74,27 @@ var momentumHelperModule = (function momentumHelperModule() {
 		}
 
 		// Data does not already exist, launch GET request to API
-		http = new XMLHttpRequest();
+		doRequest(request, function handleParsedJSON(result) {
+			result = JSON.parse(result);
+
+			// Store data in global data object to more easily fetch again later
+			if (result.length > 0 && !(request in data)) {
+				data[request] = result;
+			}
+			
+			callback(result);
+		});
+
+
+
+
+
+
+
+
+
+
+/*		http = new XMLHttpRequest();
 
 		addEvent(http, 'load', function returnParsedJSON() {
 			result = JSON.parse(http.responseText);
@@ -38,8 +108,15 @@ var momentumHelperModule = (function momentumHelperModule() {
 		});
 
 		http.open('GET', `${apiUrl}/${request}`);
-		http.send();
+		http.send();*/
 	}
+
+/*
+
+*/
+
+
+
 
 	/**
 	 * Post data to the API.

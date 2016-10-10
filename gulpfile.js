@@ -50,7 +50,7 @@ gulp.task('useref', function() {
 	return gulp.src('app/*.html')
 		.pipe(useref())
 		.pipe(gulpIf('*.js', babel({presets: ['es2015']})))
-		.pipe(gulpIf('*.js', uglify()))
+		// .pipe(gulpIf('*.js', uglify()))
 		.pipe(gulpIf('*.css', cssnano()))
 		.pipe(gulpIf('*.css', autoprefixer({
 			browsers: ['> 1%', 'IE 8'],
