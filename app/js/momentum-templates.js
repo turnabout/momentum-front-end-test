@@ -249,8 +249,9 @@ var momentumTemplatesModule = (function (helper, app) {
 				
 				// Loop through album photos
 				helper.getApiData(`albums/${content.id}/photos`, function (result) {
-					for (var i = 0; i < content.length; i++) {
-						entry = content[i];
+
+					for (var i = 0; i < result.length; i++) {
+						entry = result[i];
 						photos.appendChild( getPhotoElem(entry.id, entry.thumbnailUrl, photo) );
 					}
 					afterRender(content, request, parent, callback);
