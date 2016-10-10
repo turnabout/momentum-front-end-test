@@ -2670,7 +2670,8 @@ textarea {
       text-overflow: ellipsis;
       overflow: hidden; }
     .dbp .main-title .line {
-      float: left; }
+      float: left;
+      width: 100%; }
       .dbp .main-title .line:first-child {
         font-size: 22px; }
       .dbp .main-title .line:last-child {
