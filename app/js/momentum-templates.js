@@ -235,10 +235,8 @@ var momentumTemplatesModule = (function (helper, app) {
 			albumTitle.appendChild( document.createTextNode(content.title) );
 			albumText.appendChild(albumTitle);
 
-
 			// Add the user element
 			addUser(function () {
-				console.log('aa');
 				photos.appendChild(albumText);
 				
 				// Loop through album photos
@@ -246,7 +244,6 @@ var momentumTemplatesModule = (function (helper, app) {
 					for (var entry of result) {
 						photos.appendChild( getPhotoElem(entry.id, entry.thumbnailUrl, photo) );
 					}
-
 					afterRender(content, request, parent, callback);
 				});
 			});
