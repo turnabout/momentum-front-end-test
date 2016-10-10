@@ -2,6 +2,11 @@
 // Album page
 // 
 .photos {
+
+	.title {
+		margin-bottom: ($spacer * 2);
+	}
+
 	.photo {
 		display: block;
 		float: left;
@@ -23,7 +28,7 @@
 // Single photo page
 // 
 .single-photo {
-	
+
 	img {
 		max-width: 100%;
 	}

@@ -205,13 +205,18 @@ var momentumTemplatesModule = (function (helper, app) {
 	 	 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
 		function renderAlbum(content, request, parent, callback) {
-			var photo;		// Photo element (anchor)
-			var photoImg;	// Photo image element
-			var photos;		// Element containing all photos
+			var albumText;		// Element containing all text pertaining to the album
+			var albumTitle;		// The album's title
+			var photo;			// Photo element (anchor)
+			var photoImg;		// Photo image element
+			var photos;			// Element containing all photos
 
+			// Set the title
+			setTitle(content.title);
+			
 			// Photos
 			photos = document.createElement('div');
-			photos.classList.add('photos');
+			photos.classList.add('photos', 'card', 'card-block', 'post');
 
 			// Append photos to parent, but keep reference to it
 			parent.appendChild(photos);
@@ -225,16 +230,30 @@ var momentumTemplatesModule = (function (helper, app) {
 			photo.appendChild(photoImg);
 			photo.classList.add('photo');
 
-			// Set the title
-			setTitle(content.title);
-			console.log(`albums/${content.id}/photos`);
-			// Loop through album photos
-			helper.getApiData(`albums/${content.id}/photos`, function (result) {
-				for (var entry of result) {
-					photos.appendChild( getPhotoElem(entry.id, entry.thumbnailUrl, photo) );
-				}
+			// Text elem
+			albumText = document.createElement('div');
+			albumText.classList.add('album-text');
 
-				afterRender(content, request, parent, callback);
+			// Title elem
+			albumTitle = document.createElement('h3');
+			albumTitle.classList.add('card-title', 'title');
+			albumTitle.appendChild( document.createTextNode(content.title) );
+			albumText.appendChild(albumTitle);
+
+
+			// Add the user element
+			addUser(function () {
+				console.log('aa');
+				photos.appendChild(albumText);
+				
+				// Loop through album photos
+				helper.getApiData(`albums/${content.id}/photos`, function (result) {
+					for (var entry of result) {
+						photos.appendChild( getPhotoElem(entry.id, entry.thumbnailUrl, photo) );
+					}
+
+					afterRender(content, request, parent, callback);
+				});
 			});
 
 			/**
@@ -258,6 +277,37 @@ var momentumTemplatesModule = (function (helper, app) {
 				photo.firstChild.setAttribute('src', src);
 
 				return photo;
+			}
+
+			/**
+			 * Add the user to the album element.
+			 * @param {Function} callback - Function to call after user is added.
+			 */
+			function addUser(callback) {
+				var userElem;		// The user's element
+				var userAround;		// Element wrapping around user element
+
+				helper.getApiData(`users/${content.userId}`, function (result) {
+
+					// User
+					userElem = helper.createAnchor(result.username);
+					userElem.classList.add('post-user');
+					userElem.dataset.id = content.userId;
+					userElem.dataset.req = 'user';
+
+					// User click event handler
+					helper.addEvent(userElem, 'click', renderNewPage);
+
+					// User wrapper
+					userAround = document.createElement('div');
+					userAround.classList.add('user-around');
+					userAround.appendChild( document.createTextNode('Posted by: ') );
+					userAround.appendChild(userElem);
+					
+					albumText.appendChild(userAround);
+
+					callback();
+				});
 			}
 		}
 

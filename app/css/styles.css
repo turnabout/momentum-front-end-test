@@ -2665,6 +2665,7 @@ textarea {
       font-size: 18px;
       padding-top: 22px;
       padding-bottom: 24px;
+      margin-bottom: 0;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden; }
@@ -2826,6 +2827,9 @@ textarea {
 .albums .album-thumbnail {
   max-width: 100%;
   margin: 0 20px 20px; }
+
+.photos .title {
+  margin-bottom: 32px; }
 
 .photos .photo {
   display: block;
