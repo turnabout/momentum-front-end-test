@@ -128,51 +128,6 @@ var momentumFunctionsModule = (function (helper) {
 	}
 
 	/**
-	 * Transition the dashboard page.
-	 * @param {String} type - The type of transition.
-	 * @param {Function} callback - Function to call after transition is over.
-	 */
-	function transitionDashboardPage(type, callback) {
-		elems.dashboardContentPage.dataset.animating = true;
-		elems.dashboardContentPage.classList.add('active');
-		callback = callback || function(){};
-
-		switch (type) {
-		case 'slideIn':
-			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft'], function () {
-				elems.dashboardContentPage.dataset.animating = false;
-				elems.dashboardContentPage.dataset.active = false;
-				elems.dashboardContentPage.classList.remove('active');
-
-				// Sliding back in, so reset head title
-				document.title = pageTitleBase;
-				callback();
-			});
-			break;
-
-		case 'slideOut':
-			helper.animateElem(elems.dashboardContentPage, ['fadeInLeft'], function () {
-				elems.dashboardContentPage.dataset.animating = false;
-				elems.dashboardContentPage.dataset.active = true;
-				callback();
-			});
-			break;
-
-		case 'slideInOut':
-			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft', 'fast'], function () {
-				helper.animateElem(elems.dashboardContentPage, ['slideInLeft'], function () {
-					elems.dashboardContentPage.dataset.animating = false;
-					callback();
-				});
-			});
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	/**
 	 * Handle post comment form submit.
 	 * @param {Event} event - The event.
 	 */
@@ -475,11 +430,64 @@ var momentumFunctionsModule = (function (helper) {
 	}
 
 	/**
+	 * Transition the dashboard page.
+	 * @param {String} type - The type of transition.
+	 * @param {Function} callback - Function to call after transition is over.
+	 */
+	function transitionDashboardPage(type, callback) {
+		elems.dashboardContentPage.dataset.animating = true;
+		elems.dashboardContentPage.classList.add('active');
+		callback = callback || function(){};
+
+		switch (type) {
+		case 'slideIn':
+			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft'], function () {
+				elems.dashboardContentPage.dataset.animating = false;
+				elems.dashboardContentPage.dataset.active = false;
+				elems.dashboardContentPage.classList.remove('active');
+
+				// Sliding back in, so reset head title
+				document.title = pageTitleBase;
+				callback();
+			});
+			break;
+
+		case 'slideOut':
+			helper.animateElem(elems.dashboardContentPage, ['fadeInLeft'], function () {
+				elems.dashboardContentPage.dataset.animating = false;
+				elems.dashboardContentPage.dataset.active = true;
+				callback();
+			});
+			break;
+
+		case 'slideInOut':
+			helper.animateElem(elems.dashboardContentPage, ['slideOutLeft', 'fast'], function () {
+				helper.animateElem(elems.dashboardContentPage, ['slideInLeft'], function () {
+					elems.dashboardContentPage.dataset.animating = false;
+					callback();
+				});
+			});
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/**
 	 * Manually grab and set a reference to the 'momentum-templates' module functions from outside.
 	 * @param {Object} module - The momentum-templates module's public API object.
-	*/
+	 */
 	function getDbpDependency(module) {
 		dbp = module;
+	}
+
+	/**
+	 * Return the current user.
+	 * @return {Object} user - The currently logged-in user.
+	 */
+	function getCurrentUser() {
+		return user;
 	}
 
 	return {
@@ -487,6 +495,7 @@ var momentumFunctionsModule = (function (helper) {
 		'dbpChangePage': dbpChangePage,
 		'dbpNextClick': dbpNextClick,
 		'dbpPreviousClick': dbpPreviousClick,
+		'getCurrentUser': getCurrentUser,
 		'getActiveContentPage': getActiveContentPage,
 		'getDbpDependency': getDbpDependency,
 		'handleDashboardMenuClick': handleDashboardMenuClick,

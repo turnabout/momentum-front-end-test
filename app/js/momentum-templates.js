@@ -28,7 +28,9 @@ var momentumTemplatesModule = (function (helper, app) {
 		
 		renderTemplates = {
 			'posts' : renderPosts,
+			'userAlbums' : renderUserAlbums,
 			'album' : renderAlbum,
+			'photo' : renderPhoto,
 			'post'  : renderPost,
 			'user'  : renderUser
 		};
@@ -93,7 +95,7 @@ var momentumTemplatesModule = (function (helper, app) {
 				postContent.appendChild( document.createTextNode(entry.body) );
 				post.appendChild(postContent);
 
-				// Handle post event
+				// Handle click on post event
 				helper.addEvent(post, 'click', renderNewPage);
 
 				// Append the final post
@@ -104,6 +106,95 @@ var momentumTemplatesModule = (function (helper, app) {
 		}
 
 		/**
+		 * Render a page containing all the albums belonging to a user.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 * @param {Object} parent - The dashboard page in which the content should be rendered.
+	 	 * @param {Function} callback - Function to call once page is finished rendering.
+		 */
+		function renderUserAlbums(content, request, parent, callback) {
+			var album;				// Element containing an album. Element is clonable
+			var albumContentBlock;	// An album overlay, containing the title text
+			var albumLink;			// Link leading to the album page
+			var albums;				// All of the album thumbnails
+			var albumThumb;			// An album's thumbnail
+			var albumTitle;			// An album's title
+			var newAlbum;			// Album element. Created from cloning the base one, 'album'
+
+			// Set page title
+			helper.getApiData(`users/${request.userId}`, function (result) {
+				setTitle(`Albums by: ${result.username}`);
+			});
+
+			// Albums
+			albums = document.createElement('div');
+			albums.classList.add('albums');
+
+			// Album
+			album = helper.createAnchor();
+			album.classList.add('card', 'list-group-item-action');
+
+			// Thumbnail
+			albumThumb = document.createElement('img');
+			albumThumb.classList.add('card', 'album-thumbnail');
+
+			// Title
+			albumTitle = document.createElement('h3');
+			albumTitle.classList.add('card-title');
+
+			// Overlay
+			albumContentBlock = document.createElement('div');
+			albumContentBlock.classList.add('card-block');
+			albumContentBlock.appendChild(albumTitle);
+
+			// Make up clonable album element
+			album.appendChild(albumContentBlock);
+			album.appendChild(albumThumb);
+
+			// Loop through every album and append
+			for (var entry of content) {
+				(function processEntry() {
+					var currentEntry = entry;	// Keep reference to the currently looped entry
+
+					helper.getApiData(`albums/${entry.id}/photos`, function (result) {
+						albums.appendChild( getAlbumElem(currentEntry.id, result[0].thumbnailUrl, currentEntry.title, album) );
+					});
+				})();
+			}
+
+			parent.appendChild(albums);
+			afterRender(content, request, parent, callback);
+
+			/**
+			 * Clone album element, place content inside and return it.
+			 * @param {String} album - The album's ID.
+			 * @param {String} src - The album's first image's source.
+			 * @param {String} title - The album's title.
+			 * @param {Object} base - The base dom element object to clone.
+			 * @return {Object} elem - The album element.
+			 */
+			function getAlbumElem(albumId, src, title, base) {
+				var album;	// The album element
+
+				album = base.cloneNode(true);
+				album.dataset.id = albumId;
+				album.dataset.req = 'album';
+
+				// Handle click on album event
+				helper.addEvent(album, 'click', renderNewPage);
+
+				// Set src to thumbnail
+				album.lastChild.setAttribute('src', src);
+
+				// Set title to heading
+				album.firstChild.firstChild.appendChild( document.createTextNode(title) );
+
+				return album;
+			}
+
+		}
+
+		/**
 		 * Render an album page.
 		 * @param {Array} content - Content to render in the page.
 		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
@@ -111,9 +202,25 @@ var momentumTemplatesModule = (function (helper, app) {
 	 	 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
 		function renderAlbum(content, request, parent, callback) {
+
+			// Set the title
+			setTitle(content.title);
+
+			console.log('rendering an album page');
 			console.log(content);
 			console.log(request);
 			afterRender(content, request, parent, callback);
+		}
+
+		/**
+		 * Render a single photo page.
+		 * @param {Array} content - Content to render in the page.
+		 * @param {Object} request - Info on the request, including the type, used to select the correct render.
+		 * @param {Object} parent - The dashboard page in which the content should be rendered.
+	 	 * @param {Function} callback - Function to call once page is finished rendering.
+		 */
+		function renderPhoto(content, request, parent, callback) {
+			
 		}
 
 		/**

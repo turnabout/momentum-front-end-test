@@ -2818,6 +2818,15 @@ textarea {
 .user .user-info .value {
   display: block; }
 
+.albums .card-title {
+  font-size: 21px;
+  margin-bottom: 0;
+  font-weight: 500; }
+
+.albums .album-thumbnail {
+  max-width: 100%;
+  margin: 0 20px 20px; }
+
 body {
   color: #201f1f;
   background-image: linear-gradient(to right, #2E4172 0%, #314579 100%);

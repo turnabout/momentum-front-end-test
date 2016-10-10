@@ -307,7 +307,14 @@ var momentumHelperModule = (function momentumHelperModule() {
 				return {
 					'query' 		: `albums?userId=${userId}`,
 					'titleQuery' 	: `users/${userId}`,
-					'type' 			: 'album',
+					'type' 			: 'userAlbums',
+					'userId'		: userId
+				};
+			},
+			'album': function (albumId) { 
+				return {
+					'query' 		: `albums/${albumId}`,
+					'type' 			: 'album'
 				};
 			},
 			'allPosts': function (userId) { 
