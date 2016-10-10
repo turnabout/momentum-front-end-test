@@ -25,10 +25,14 @@ var momentumHelperModule = (function momentumHelperModule() {
 
 			// XHR for Chrome/Firefox/Opera/Safari.
 			xhr.open('GET', url, true);
+
 		} else if (typeof XDomainRequest != 'undefined') {
 
 			// XDomainRequest for IE.
 			xhr = new XDomainRequest();
+			
+			// Ensure every request is unique and does not get cached, by appending random to the request url
+			url += ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime();
 			xhr.open('GET', url);
 		} else {
 
