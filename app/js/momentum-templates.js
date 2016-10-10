@@ -73,15 +73,10 @@ var momentumTemplatesModule = (function (helper, app) {
 			for (var entry of content) {
 
 				// Post
-				post = document.createElement('a');
+				post = helper.createAnchor();
 				post.classList.add('list-group-item', 'list-group-item-action');
 				post.dataset.id = entry.id;
 				post.dataset.req = 'post';
-
-				// Href
-				href = document.createAttribute('href');
-				href.value = '#';
-				post.setAttributeNode(href);
 
 				// Title
 				postTitle = document.createElement('h5');
@@ -693,11 +688,14 @@ var momentumTemplatesModule = (function (helper, app) {
 
 	/**
 	 * Render a new page. Attached to every clickable navigation links in DBP inner content.
+	 * @param {Event} event - The event.
 	 */
-	function renderNewPage() {
+	function renderNewPage(event) {
 		var currentContentPage; // The currently active content page
 		var nextContentPage; 	// The content page after the current one
 		var request;			// The request object to use to render the page
+
+		event.preventDefault();
 
 		currentContentPage = app.getActiveContentPage();
 		nextContentPage = helper.getElemAfter(currentContentPage);

@@ -383,6 +383,8 @@ var momentumFunctionsModule = (function (helper) {
 	 */
 	function handleDashboardMenuClick(event) {
 
+		event.preventDefault();
+
 		// If already busy being processed/animated or request doesn't exist, don't do anything
 		if (helper.isElem(elems.dashboardContentPage, ['processing', 'animating']) || !(this.dataset.req in requests)) {
 			return;
