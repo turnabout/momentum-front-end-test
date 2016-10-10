@@ -215,7 +215,7 @@ var momentumFunctionsModule = (function (helper) {
 		// Prepare POST request
 		commentsAmount = parseInt(commentsTitle.dataset.comments);
 		postId = this.dataset.postid;
-		params = `postId=${postId}&name=${name}&body=${body}&email=${body}`;
+		params = `postId=${postId}&name=${name}&body=${body}&email=${user.email}`;
 
 		// Post the comment
 		helper.postApiData('comments', params, `posts/${postId}/comments`, function (result) {
@@ -229,7 +229,7 @@ var momentumFunctionsModule = (function (helper) {
 		});
 
 		/**
-		 * Add the comment to both the DOM and app data.
+		 * Add the comment.
 		 * @param {Object} page - The page in which the comments reside.
 		 * @param {Object} commentData - All data on the comment.
 		 */
