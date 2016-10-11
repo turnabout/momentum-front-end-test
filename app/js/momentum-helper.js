@@ -3,10 +3,9 @@
  * @return {Object} publicApi - Api containing references to the module functions.
  */
 var momentumHelperModule = (function momentumHelperModule() {
-
-	// Variable holding previously fetched data. Used to avoid doing a GET request more than once
-	var data = {};
-	var apiUrl = '';
+	var data = {};											// Variable holding previously fetched data. Used to avoid doing a GET request more than once
+	var apiUrl = '';										// The root URL of the API
+	var whichAnimationEvent = getCurrentAnimationEvent();	// Which animation end event the current browser uses
 
 	/**
 	 * Do a GET request.
@@ -178,21 +177,30 @@ var momentumHelperModule = (function momentumHelperModule() {
 		callback = callback || function() {};
 
 		setData(element, 'animating', true);
-
 		animationNames.push('animated');
 		
 		for (var i = 0; i < animationNames.length; i++) {
 			element.classList.add(animationNames[i]);
 		}
 
-		addAnimEventOnce(element, 'animationend', function afterAnimationEnd(e) {
+		// If animation end event exists, wait for it to execute callback. Otherwise, execute it now
+		if (whichAnimationEvent) {
+			addAnimEventOnce(element, whichAnimationEvent, function afterAnimationEnd(e) {
+				for (var j = 0; j < animationNames.length; j++) {
+					element.classList.remove(animationNames[j]);
+				}
+
+				setData(element, 'animating', false);
+				callback();
+			});
+		} else {
 			for (var j = 0; j < animationNames.length; j++) {
 				element.classList.remove(animationNames[j]);
 			}
 
 			setData(element, 'animating', false);
 			callback();
-		});
+		}
 
 		/**
 		 * Add a one-time event for the duration of an animation.
@@ -418,6 +426,39 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 */
 	function getData(elem, data) {
 		return elem.getAttribute(`data-${data}`);
+	}
+
+	/**
+	 * Get the current browser's correct animation end event name.
+	 */
+	function getCurrentAnimationEvent() {
+		var el;				// Dummy element for test
+		var a;				// The current animation
+		var animations;		// All the different animations
+
+		animations = {
+		'transition':'transitionend',
+		'OTransition':'oTransitionEnd',
+		'MozTransition':'transitionend',
+		'WebkitTransition':'webkitTransitionEnd'
+		}
+
+		animations = {
+		'animation':'animationend',
+		'OAnimation':'oAnimationEnd',
+		'MozAnimation':'animationend',
+		'WebkitAnimation':'webkitAnimationEnd',
+		}
+
+ 		el = document.createElement('fakeelement');
+
+		for (a in animations){
+			if ( el.style[a] !== undefined ) {
+				return animations[a];
+			}
+		}
+
+		return false;
 	}
 
 	/**
