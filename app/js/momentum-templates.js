@@ -722,6 +722,7 @@ var momentumTemplatesModule = (function (helper, app) {
 	function renderNewPage(event) {
 		var currentContentPage; // The currently active content page
 		var lastVisited;		// The last element previously clicked on before this one
+		var next;				// Newly created next content page
 		var nextContentPage; 	// The content page after the current one
 		var request;			// The request object to use to render the page
 
@@ -742,7 +743,7 @@ var momentumTemplatesModule = (function (helper, app) {
 
 		// If next page doesn't exist, create it
 		if (typeof(nextContentPage) === 'undefined' || nextContentPage === null) {
-			let next;		// The next content page
+			next;		// The next content page
 
 			// Create the next content page
 			next = document.createElement('div');
