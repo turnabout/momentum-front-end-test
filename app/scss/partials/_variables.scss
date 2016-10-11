@@ -179,5 +179,7 @@ $animations-duration-fast:  .50s;
 // Dashboard
 $db-borders-col: lighten($primary-light, 45%);
 $dbp-width: 470px;
+$dbp-width-2: $dbp-width + ($dbp-width / 4);
 $dbp-breakpoint: ($dbp-width * 2);
+$dbp-breakpoint-2: ($dbp-width * 3);
 $dbp-mid-breakpoint: ($dbp-breakpoint / 2);

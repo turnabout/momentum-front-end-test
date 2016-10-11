@@ -54,7 +54,7 @@
 // 
 // Dashboard content page busy state
 // 
-.busy {
+.busy, .sliding {
 	.main-title, .content-page {
 		visibility: hidden;
 	}

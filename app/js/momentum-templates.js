@@ -138,10 +138,6 @@ var momentumTemplatesModule = (function (helper, app) {
 			album = helper.createAnchor();
 			album.classList.add('card', 'list-group-item-action');
 
-			// Thumbnail
-			albumThumb = document.createElement('img');
-			albumThumb.classList.add('card', 'album-thumbnail');
-
 			// Title
 			albumTitle = document.createElement('h3');
 			albumTitle.classList.add('card-title');
@@ -153,7 +149,6 @@ var momentumTemplatesModule = (function (helper, app) {
 
 			// Make up clonable album element
 			album.appendChild(albumContentBlock);
-			album.appendChild(albumThumb);
 
 			// Loop through every album and append
 			for (var i = 0; i < content.length; i++) {
@@ -181,6 +176,16 @@ var momentumTemplatesModule = (function (helper, app) {
 			 */
 			function getAlbumElem(albumId, src, title, base) {
 				var album;	// The album element
+				var image;	// The album image
+
+				// Add the image
+				image = new Image();
+
+				image.onload = function () {
+					album.appendChild(image);
+				};
+
+				image.classList.add('card', 'album-thumbnail');
 
 				album = base.cloneNode(true);
 				helper.setData(album, 'id', albumId);
@@ -189,11 +194,11 @@ var momentumTemplatesModule = (function (helper, app) {
 				// Handle click on album event
 				helper.addEvent(album, 'click', renderNewPage);
 
-				// Set src to thumbnail
-				album.lastChild.setAttribute('src', src);
-
 				// Set title to heading
 				album.firstChild.firstChild.appendChild( document.createTextNode(title) );
+
+				// Set src to thumbnail
+				image.src = src;
 
 				return album;
 			}
@@ -212,7 +217,6 @@ var momentumTemplatesModule = (function (helper, app) {
 			var albumTitle;		// The album's title
 			var entry;			// The current content entry being looped through
 			var photo;			// Photo element (anchor)
-			var photoImg;		// Photo image element
 			var photos;			// Element containing all photos
 
 			// Set the title
@@ -226,12 +230,8 @@ var momentumTemplatesModule = (function (helper, app) {
 			parent.appendChild(photos);
 			photos = parent.lastChild;
 
-			// Photo image
-			photoImg = document.createElement('img');
-
 			// Photo
 			photo = helper.createAnchor();
-			photo.appendChild(photoImg);
 			photo.classList.add('photo');
 
 			// Text elem
@@ -267,7 +267,14 @@ var momentumTemplatesModule = (function (helper, app) {
 			 * @return {Object} elem - The album element.
 			 */
 			function getPhotoElem(photoId, src, base) {
+				var img;	// Image element
 				var photo;	// Photo element
+
+				img = new Image();
+
+				img.onload = function () {
+					photo.appendChild(img);
+				};
 
 				photo = base.cloneNode(true);
 
@@ -277,7 +284,8 @@ var momentumTemplatesModule = (function (helper, app) {
 				// Handle click on photo
 				helper.addEvent(photo, 'click', renderNewPage);
 
-				photo.firstChild.setAttribute('src', src);
+				// Set src to thumbnail
+				img.src = src;
 
 				return photo;
 			}
@@ -323,7 +331,7 @@ var momentumTemplatesModule = (function (helper, app) {
 	 	 * @param {Function} callback - Function to call once page is finished rendering.
 		 */
 		function renderPhoto(content, request, parent, callback) {
-			var photoImg;	// The photo page image
+			var img;		// The photo page image
 			var photo;		// Element containing the whole photo page
 			var title;		// The photo page title
 
@@ -339,11 +347,15 @@ var momentumTemplatesModule = (function (helper, app) {
 			title.appendChild( document.createTextNode(content.title) );
 
 			// Image
-			photoImg = document.createElement('img');
-			photoImg.setAttribute('src', content.url);
+			img = new Image();
+
+			img.onload = function () {
+				photo.appendChild(img);
+			};
+
+			img.src = content.url;
 
 			photo.appendChild(title);
-			photo.appendChild(photoImg);
 
 			// Append
 			parent.appendChild(photo);

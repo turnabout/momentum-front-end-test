@@ -2455,7 +2455,11 @@ html {
 
 body {
   height: 100%;
-  overflow: hidden; }
+  overflow: hidden;
+  min-height: 500px; }
+  @media (min-width: 992px) {
+    body {
+      min-height: 0; } }
 
 *,
 *::before,
@@ -2656,6 +2660,9 @@ textarea {
         position: relative;
         top: auto;
         left: auto; } }
+    @media (min-width: 1410px) {
+      .dbp.dbp-2 {
+        max-width: 587.5px; } }
   .dbp .main-title {
     text-align: left;
     padding: 12px 20px;
@@ -2845,7 +2852,8 @@ textarea {
       width: 33%; } }
 
 .single-photo img {
-  max-width: 100%; }
+  max-width: 100%;
+  height: auto; }
 
 .loading-overlay {
   content: '';
@@ -2891,7 +2899,7 @@ textarea {
   100% {
     transform: rotate(360deg); } }
 
-.busy .main-title, .busy .content-page {
+.busy .main-title, .busy .content-page, .sliding .main-title, .sliding .content-page {
   visibility: hidden; }
 
 body {
