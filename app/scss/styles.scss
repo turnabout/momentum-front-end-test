@@ -22,6 +22,7 @@
 
 body {
 	color: $text-color;
+	background-color: $primary;
 	@include gradient-x($start-color: $primary, $end-color: lighten($primary, 2%), $start-percent: 0%, $end-percent: 100%);
 }
 

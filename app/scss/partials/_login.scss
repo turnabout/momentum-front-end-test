@@ -3,9 +3,6 @@
 // 
 
 .login.page  {
-	
-	// Ensure enough space at bottom for phone to correctly see the field on focus
-	margin-bottom: 10%;
 
 	// While animating
 	&.animated {
@@ -24,11 +21,17 @@
 	background: #fefefe;
 	border-radius: $border-radius;
 	max-width: 368px;
+	padding-bottom: 100px;
 
 	.title {
 		color: $primary;
-		font-size: 28px;
+		font-size: 21px;
 		text-align: center;
+
+		@media (min-width: 400px) {
+			font-size: 28px;
+		}
+
 	}
 
 	.login.field {
