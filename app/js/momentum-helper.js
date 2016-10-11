@@ -3,8 +3,11 @@
  * @return {Object} publicApi - Api containing references to the module functions.
  */
 var momentumHelperModule = (function momentumHelperModule() {
-	var data = {};											// Variable holding previously fetched data. Used to avoid doing a GET request more than once
+
+	'use strict';
+
 	var apiUrl = '';										// The root URL of the API
+	var data = {};											// Variable holding previously fetched data. Used to avoid doing a GET request more than once
 	var whichAnimationEvent = getCurrentAnimationEvent();	// Which animation end event the current browser uses
 
 	/**
@@ -151,6 +154,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 */
 	function postApiData(request, params, dataKey = false, callback) {
 		var result;		// Result from the post
+
 		callback = callback || function() {};
 
 		doPost(request, params, function handleParsedJSON(result) {
@@ -281,8 +285,8 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @return {Array} elements - All elements with that attribute.
 	 */
 	function getElemsWithAttr(attribute) {
-		var matchingElements;		// Elements that are matching
 		var allElements;			// Every element
+		var matchingElements;		// Elements that are matching
 
 		matchingElements  = [];
 		allElements = document.getElementsByTagName('*');
@@ -430,16 +434,9 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * Get the current browser's correct animation end event name.
 	 */
 	function getCurrentAnimationEvent() {
-		var el;				// Dummy element for test
 		var a;				// The current animation
 		var animations;		// All the different animations
-
-		animations = {
-		'transition':'transitionend',
-		'OTransition':'oTransitionEnd',
-		'MozTransition':'transitionend',
-		'WebkitTransition':'webkitTransitionEnd'
-		}
+		var el;				// Dummy element for test
 
 		animations = {
 		'animation':'animationend',

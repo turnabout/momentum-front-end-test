@@ -7,6 +7,8 @@
  */
 var momentumModule = (function momentumModule(helper, app, dbp) {
 
+	'use strict'
+
 	var elems = helper.getAppElems(); // Static, reused DOM elements
 
 	/**
@@ -39,4 +41,4 @@ var momentumModule = (function momentumModule(helper, app, dbp) {
 		'init' : init
 	};
 
-})(momentumHelperModule, momentumFunctionsModule, momentumTemplatesModule);
+})(momentumHelperModule, momentumAppModule, momentumTemplatesModule);

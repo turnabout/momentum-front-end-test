@@ -3,13 +3,13 @@
  * @param {Object} helper - Helper functions module.
  * @return {Object} publicApi - Api containing references to the module functions.
  */
-var momentumFunctionsModule = (function (helper) {
+var momentumAppModule = (function (helper) {
 
+	var dbp;				// The templates module. Stands for "Dashboard pages"
 	var elems;				// Object containing references to static, reused DOM elements
 	var pageTitleBase;		// The starting document title base
-	var user;				// The current user
 	var requests;			// The different requests to use to render content pages
-	var dbp;				// The templates module. Stands for "Dashboard pages"
+	var user;				// The current user
 
 	elems = helper.getAppElems();
 	pageTitleBase = document.title;
@@ -306,6 +306,7 @@ var momentumFunctionsModule = (function (helper) {
 			helper.setData(elems.dashboardContentPage, 'active', false);
 
 			elems.dashboardContentPage.classList.remove('active');
+			elems.loginField.blur();
 
 			// Fade dashboard in
 			elems.dashboard.classList.add('active');
@@ -383,10 +384,11 @@ var momentumFunctionsModule = (function (helper) {
 	 * Reset the state of dbp to the original default one. Launch on tab change.
 	 */
 	function resetDbpState() {
+		var nextElem;	// The next content page
 
 		// Remove all additional content pages
 		while (helper.getElemAfter(elems.dbpContentPageOne) != null) {
-			let nextElem = helper.getElemAfter(elems.dbpContentPageOne);
+			nextElem = helper.getElemAfter(elems.dbpContentPageOne);
 			nextElem.parentElement.removeChild(nextElem);
 		}
 

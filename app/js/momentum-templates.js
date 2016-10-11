@@ -847,4 +847,4 @@ var momentumTemplatesModule = (function (helper, app) {
 		'requests': requests
 	}
 	
-})(momentumHelperModule, momentumFunctionsModule);
+})(momentumHelperModule, momentumAppModule);
