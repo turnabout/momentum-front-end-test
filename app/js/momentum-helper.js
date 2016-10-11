@@ -30,7 +30,7 @@ var momentumHelperModule = (function momentumHelperModule() {
 
 			// XDomainRequest for IE.
 			xhr = new XDomainRequest();
-			
+
 			// Ensure every request is unique and does not get cached, by appending random to the request url
 			url += ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime();
 			xhr.open('GET', url);
@@ -64,15 +64,57 @@ var momentumHelperModule = (function momentumHelperModule() {
 	/**
 	 * Do a POST request.
 	 * @param {String} request - The API request.
+	 * @param {String} params - The parameters to send.
 	 * @param {Function} callback - The function to call once the JSON data is fetched.
 	 */
-	function doPost() {
-		var url;	// Where to send GET request
+	function doPost(request, params, callback) {
+		var url;	// Where to send POST request
 		var xhr;	// XHR object
 
-		
-	}
+		url = `${apiUrl}/${request}`;
+		xhr = new XMLHttpRequest();
 
+		// Support for multiple browsers
+		if ('withCredentials' in xhr) {
+
+			// XHR for Chrome/Firefox/Opera/Safari.
+			xhr.open('POST', url, true);
+			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+		} else if (typeof XDomainRequest != 'undefined') {
+
+			// XDomainRequest for IE.
+			xhr = new XDomainRequest();
+
+			// Ensure every request is unique and does not get cached, by appending random to the request url
+			url += ((/\?/).test(url) ? "&" : "?") + (new Date()).getTime();
+			xhr.open('POST', url);
+		} else {
+
+			// CORS not supported.
+			xhr = null;
+		}
+
+		if (!xhr) {
+			return;
+		}
+
+		// Response handlers
+		xhr.onload = function() {
+			callback(xhr.responseText);
+		}
+
+		xhr.onerror = function() {};
+
+		// These blank handlers need to be set to fix ie9 http://cypressnorth.com/programming/internet-explorer-aborting-ajax-requests-fixed/
+		xhr.onprogress = function () {};
+		xhr.ontimeout = function () {};
+
+		// Send request wrapped in timeout to fix ie9
+		setTimeout(function () {
+			xhr.send(params);
+		}, 0);
+	}
 
 	/**
 	 * Get data from API.
@@ -80,7 +122,6 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Function} callback - The function to call once the JSON data is fetched.
 	 */
 	function getApiData(request, callback) {
-		var http;		// Http request
 		var result;		// Http request result
 
 		// If data already stored, skip sending GET request and just execute the callback with it directly
@@ -110,26 +151,21 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 * @param {Function} callback - The function to call once the data is posted.
 	 */
 	function postApiData(request, params, dataKey = false, callback) {
-		var http;		// Http request
+		var result;		// Result from the post
 
 		http = new XMLHttpRequest();
 		callback = callback || function() {};
 
-		http.onreadystatechange = function() {//Call a function when the state changes.
-			if(http.readyState == 4 && http.status == 201) {
-				var result = JSON.parse(http.responseText);
+		doPost(request, params, function handleParsedJSON(result) {
+			result = JSON.parse(result);
 
-				// Append the result to data if needed
-				if (dataKey && dataKey in data) {
-					data[dataKey].push(result);
-				}
-				callback(result);
+			// Append the result to data if needed
+			if (dataKey && dataKey in data) {
+				data[dataKey].push(result);
 			}
-		}
 
-		http.open('POST', `${apiUrl}/${request}`, true);
-		http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		http.send(params);
+			callback(result);
+		});
 	}
 
 	/**
