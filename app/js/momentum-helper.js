@@ -151,8 +151,6 @@ var momentumHelperModule = (function momentumHelperModule() {
 	 */
 	function postApiData(request, params, dataKey = false, callback) {
 		var result;		// Result from the post
-
-		http = new XMLHttpRequest();
 		callback = callback || function() {};
 
 		doPost(request, params, function handleParsedJSON(result) {

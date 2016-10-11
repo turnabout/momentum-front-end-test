@@ -195,8 +195,13 @@ var momentumFunctionsModule = (function (helper) {
 
 			if (result) {
 				helper.clearForm(form);
-				result.newCommentsAmount = commentsAmount + 1;
-				addComment(currentPage, result);
+
+				addComment(currentPage, {
+					'name': name,
+					'body': body,
+					'email': user.email,
+					'newCommentsAmount': commentsAmount + 1,
+				});
 			}
 		});
 
