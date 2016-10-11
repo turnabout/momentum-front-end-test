@@ -11,6 +11,7 @@ var	del = require('del');
 var	runSequence = require('run-sequence');
 var	autoprefixer = require('gulp-autoprefixer');
 var babel = require('gulp-babel');
+var ghPages = require('gulp-gh-pages');
 
 
 // Development tasks
@@ -50,7 +51,7 @@ gulp.task('useref', function() {
 	return gulp.src('app/*.html')
 		.pipe(useref())
 		.pipe(gulpIf('*.js', babel({presets: ['es2015']})))
-		// .pipe(gulpIf('*.js', uglify()))
+		.pipe(gulpIf('*.js', uglify()))
 		.pipe(gulpIf('*.css', cssnano()))
 		.pipe(gulpIf('*.css', autoprefixer({
 			browsers: ['> 1%', 'IE 8'],
@@ -60,25 +61,27 @@ gulp.task('useref', function() {
 		.pipe(gulp.dest('dist'))
 });
 
-gulp.task('cleanDist', function() {
-	return del('dist');
+gulp.task('cleanUp', function() {
+	return del.sync(['dist', '.publish']);
+});
+
+gulp.task('moveResources', function() {
+	return gulp.src('app/resources/**/*')
+		.pipe(gulp.dest('dist/resources'));
+});
+
+gulp.task('push', function(callback) {
+    return gulp.src('dist/**/*')
+        .pipe(ghPages({ branch: 'gh-pages' }));
 });
 
 gulp.task('build', function(callback) {
-	runSequence('cleanDist',
-		['sass', 'useref'],
+	runSequence('cleanUp',
+		['sass', 'useref', 'moveResources'],
 		callback
 	)
 });
 
-gulp.task('browserSyncDist', function() {
-	browserSync.init({
-		server: {
-			baseDir: 'dist'
-		},
-	})
-});
-
-gulp.task('serve', function(callback) {
-	runSequence('build', 'browserSyncDist', callback);
+gulp.task('deploy', function (callback) {
+	runSequence('build', 'push', 'cleanUp');
 });
