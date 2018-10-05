@@ -1,6 +1,6 @@
 # Momentum Front-end Test
 
-[View it here](http://kevinpageau.com/momentum-front-end-test)
+[View it here](http://kevinpageau.com/momentum-front-end-test) (log in using username "Bret").
 
 Uses Javascript only. Separated into four different modules:
 
